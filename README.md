@@ -25,9 +25,24 @@ Web UI / Atlas ─► HTTP ┘     │              │
 - **HTTP bridge:** ~80 endpoints; 20 routes in `src/routes/` (REFACTOR-001 in progress)
 - **Smoke:** 27 bridge checks + UI checks via `npm run smoke:all`
 
+## 60-second quickstart
+
+```bash
+git clone <your-fork> work-intelligence-mcp && cd work-intelligence-mcp
+npm run setup        # install deps, write .env, validate config
+npm run demo         # seed demo data + exercise one recall lane (no credentials needed)
+npm run web:bridge   # HTTP bridge on :3132
+# Terminal 2:
+npm run web:dev      # web UI → http://localhost:5175
+```
+
+A stranger goes from clone to a running UI in under 5 minutes — no API keys required (the demo runs fully offline).
+
 ## Start here
 
 **[`GETTING-STARTED.md`](GETTING-STARTED.md)** — install, run bridge + UI, smoke tests, mental model (read this first).
+
+Want to contribute? Start with **[`CONTRIBUTING.md`](CONTRIBUTING.md)** and the [`good-first-issues`](docs/docs/good-first-issues.md) list.
 
 | If you are… | Read |
 |---|---|
