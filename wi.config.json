@@ -81,9 +81,6 @@
   "database": {
     "pathEnvVar": "DATABASE_PATH"
   },
-  "models": {
-    "configPathEnvVar": "MODEL_CONFIG_PATH"
-  },
   "bridge": {
     "port": 3132,
     "allowedOriginsEnvVar": "MCP_BRIDGE_ALLOWED_ORIGINS",
@@ -93,6 +90,7 @@
     "cypherLoopEnabled": false,
     "pmOrchestrationEnabled": false,
     "pmAgentEnabled": false,
-    "stage1Enabled": false
+    "stage1Enabled": false,
+    "syncIntervalMs": 900000
   }
 }

@@ -12,6 +12,7 @@ import type { Topic as DbTopic } from '../db/schema.js';
 import { AIAnalyzer } from './analyzer.js';
 import type { Message as AnalyzerMessage } from './analyzer.js';
 import { detectTopicCandidates } from '../tools/topic-suggestions.js';
+import { getSyncIntervalMs } from './wi-config.js';
 
 export interface SyncConfig {
   intervals: {
@@ -162,8 +163,7 @@ export class SyncService {
     this.isRunning = true;
     console.error('[SyncService] started');
 
-    const intervalMs =
-      Number(process.env.SYNC_INTERVAL_MS) || 900_000; // default 15 min
+    const intervalMs = getSyncIntervalMs();
 
     // Initial sync — fire-and-forget, errors swallowed inside
     this.syncAllTopics().catch(() => {

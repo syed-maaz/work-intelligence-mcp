@@ -1,8 +1,8 @@
 import Database from 'better-sqlite3';
 import { initializeDatabase, createBackup } from './schema.js';
 import path from 'node:path';
-import os from 'node:os';
 import { existsSync, mkdirSync } from 'node:fs';
+import { getDatabasePath as getConfiguredDatabasePath } from '../services/wi-config.js';
 
 let dbInstance: Database.Database | null = null;
 
@@ -25,7 +25,7 @@ export function getDatabase(config?: DatabaseConfig): Database.Database {
     return dbInstance;
   }
 
-  const defaultPath = path.join(os.homedir(), '.work-intelligence-mcp', 'data.db');
+  const defaultPath = getConfiguredDatabasePath();
   const databasePath = process.env.DATABASE_PATH || config?.path || defaultPath;
   const databaseDir = path.dirname(databasePath);
 
@@ -90,8 +90,7 @@ export function transaction<T>(
 export function backupDatabase(backupPath?: string): void {
   const db = getDatabase();
   const backupLocation = backupPath || path.join(
-    os.homedir(),
-    '.work-intelligence-mcp',
+    path.dirname(getConfiguredDatabasePath()),
     'backups',
     `backup-${new Date().toISOString().replace(/[:.]/g, '-')}.db`
   );

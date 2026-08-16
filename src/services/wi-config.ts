@@ -128,10 +128,6 @@ export interface DatabaseConfig {
   pathEnvVar: string;
 }
 
-export interface ModelsConfig {
-  configPathEnvVar: string;
-}
-
 export interface BridgeConfig {
   port: number;
   allowedOriginsEnvVar: string;
@@ -143,6 +139,7 @@ export interface FeaturesConfig {
   pmOrchestrationEnabled: boolean;
   pmAgentEnabled: boolean;
   stage1Enabled: boolean;
+  syncIntervalMs: number;
 }
 
 export interface WiConfig {
@@ -151,7 +148,6 @@ export interface WiConfig {
   repos: RepoConfig[];
   mempalace: MemPalaceConfig;
   database: DatabaseConfig;
-  models: ModelsConfig;
   bridge: BridgeConfig;
   features: FeaturesConfig;
 }
@@ -233,10 +229,6 @@ export function getMemPalaceConfig(): MemPalaceConfig {
 
 export function getDatabaseConfig(): DatabaseConfig {
   return getWiConfig().database;
-}
-
-export function getModelsConfig(): ModelsConfig {
-  return getWiConfig().models;
 }
 
 export function getBridgeConfig(): BridgeConfig {
@@ -326,7 +318,15 @@ export function getMemPalacePath(): string {
 }
 
 export function getBridgePort(): number {
+  const envVal = Number(process.env.PORT);
+  if (!Number.isNaN(envVal) && envVal > 0) return envVal;
   return getBridgeConfig().port;
+}
+
+export function getSyncIntervalMs(): number {
+  const envVal = Number(process.env.SYNC_INTERVAL_MS);
+  if (!Number.isNaN(envVal) && envVal > 0) return envVal;
+  return getFeaturesConfig().syncIntervalMs ?? 900_000;
 }
 
 export function getBridgeAllowedOrigins(): string[] {
@@ -342,5 +342,5 @@ export function getBridgeToken(): string | undefined {
 }
 
 export function isFeatureEnabled(feature: keyof FeaturesConfig): boolean {
-  return getFeaturesConfig()[feature];
+  return Boolean(getFeaturesConfig()[feature]);
 }

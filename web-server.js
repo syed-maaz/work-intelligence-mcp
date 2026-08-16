@@ -32,6 +32,7 @@ import { ConfigManager } from './dist/services/config.js';
 import { GitHubMcpClient, splitGithubSlug } from './dist/fetcher/sources/github-mcp-client.js';
 // ADR-044 S2.5/S3: connector registry — enabled connectors + capabilities manifest.
 import { getEnabledConnectors, getCapabilitiesManifest, getConnectorStatuses } from './dist/services/connector-registry.js';
+import { getBridgePort } from './dist/services/wi-config.js';
 
 // Default Jira project for endpoints that accept an optional ?project= param.
 const DEFAULT_JIRA_PROJECT = process.env.JIRA_PROJECT_KEY ?? 'PROJ';
@@ -232,7 +233,7 @@ async function embeddingsRankList(query, db, limit = 25) {
   }
 }
 
-const PORT = Number(process.env.PORT) || 3132;
+const PORT = getBridgePort();
 
 // ── C.1 / A-6: dist/ freshness check ───────────────────────────────────────
 // The bridge loads agents and route modules via dynamic `import('./dist/...')`.
