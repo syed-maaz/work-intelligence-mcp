@@ -1,6 +1,6 @@
 # ACHIEVEMENTS
 
-Portfolio notes for work-intelligence-mcp. Every number here was measured directly from this repo (see the [measurement table](#measurements-table-commands) at the bottom for the exact commands used). Where a figure is *documented* rather than *measured*, it says so.
+Portfolio notes for work-intelligence-mcp — what already ships, measured. Every number here was measured directly from this repo (see the [measurement table](#measurements-table-commands) at the bottom for the exact commands used). Where a figure is *documented* rather than *measured*, it says so. For what comes **next**, see [`ROADMAP.md`](ROADMAP.md) — this file is strictly the done pile.
 
 ---
 
@@ -127,7 +127,7 @@ Not just "the AI says so": `brain/verify.ts` has adapters (`github-verifier`, `j
 - Not every background lane runs on every tick: `CorrelationAgent` fires once at UTC 06:00, the code-graph indexer follows ADR-027's schedule, `BugResolverAgent` is opt-in via env flag.
 - The smoke suite is structural, not categorical: it proves a route exists and answers, not that the answer is *good*. Quality is validated by the verify layer, not the harness.
 - There is no Python eval harness in-repo for MemPalace (the Python side ships as an external `mempalace` module referenced by `palace-client.ts`).
-- The README's status header predates the current schema (it cites v46; the codebase is at v108) — refresh it before judging currency from the top of the file.
+- The README's status header was refreshed in STEP 14 (it cites v108, matching the codebase); the v46-era header is gone. Future drift is tracked in ROADMAP's "Docs site parity" item.
 
 ---
 
