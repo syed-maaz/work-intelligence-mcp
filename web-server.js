@@ -2799,6 +2799,7 @@ const server = createServer(async (req, res) => {
           anthropicConnected: !!anthropicApiKey, browserConnected: !!process.env.BROWSER_PROFILE_PATH,
           githubConnected: isGitHubMcpConfigured(),
           embeddingsAvailable,
+          demoMode: process.env.WI_DEMO_MODE === '1',
           min_wi_tools_version: 1,
           brainUser: BRAIN_USER,
           heartbeat,

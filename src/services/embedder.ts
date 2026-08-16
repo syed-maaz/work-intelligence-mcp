@@ -54,6 +54,25 @@ function ollamaBaseUrl(): string {
   return (process.env.OLLAMA_BASE_URL ?? 'http://localhost:11434').replace(/\/$/, '');
 }
 
+/**
+ * WI_EMBED_STUB=1 (STEP 12, OSS release): zero-connector demo mode. When no
+ * Ollama is reachable, `embed` emits a deterministic hash-derived vector at
+ * EMBEDDING_DIM instead of failing, so recall (semantic search, prompt-memory
+ * ranking) runs with no local model and no cloud key. Precedence: real Ollama
+ * on :11434 if present → WI_EMBED_STUB=1 hash vectors → clear message + skip.
+ */
+let stubWarned = false;
+
+function stubEmbedding(text: string): Float32Array {
+  const vec = new Float32Array(EMBEDDING_DIM);
+  const seed = createHash('sha256').update(text).digest();
+  for (let i = 0; i < EMBEDDING_DIM; i++) {
+    const b = seed[i % seed.length];
+    vec[i] = ((b / 127.5) - 1) / 10;
+  }
+  return vec;
+}
+
 async function embed(text: string): Promise<Float32Array | null> {
   try {
     const resp = await fetch(`${ollamaBaseUrl()}/api/embeddings`, {
@@ -66,8 +85,19 @@ async function embed(text: string): Promise<Float32Array | null> {
     if (!json.embedding?.length) return null;
     return new Float32Array(json.embedding);
   } catch {
-    return null;
+    // Ollama unreachable — fall through to the stub / skip paths below.
   }
+  if (process.env.WI_EMBED_STUB === '1') {
+    return stubEmbedding(text);
+  }
+  if (!stubWarned) {
+    stubWarned = true;
+    process.stderr.write(
+      `[embedder] Ollama unavailable and WI_EMBED_STUB!=1 — skipping embeddings. ` +
+        `Install Ollama (brew install ollama && ollama pull ${EMBEDDING_MODEL}) or set WI_EMBED_STUB=1 for the demo.\n`,
+    );
+  }
+  return null;
 }
 
 export { embed };

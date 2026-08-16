@@ -60,6 +60,8 @@ export interface Status {
   anthropicConnected: boolean;
   browserConnected: boolean;
   githubConnected: boolean;
+  /** WI_DEMO_MODE=1 — UI shows "Demo data — not real" banner (STEP 12). */
+  demoMode?: boolean;
   /** JIRA_MY_USERNAME when set — used for brain decide/recall cache keys. */
   brainUser?: string;
 }

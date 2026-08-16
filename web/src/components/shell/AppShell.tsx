@@ -1,13 +1,29 @@
 import { useLocation } from 'react-router-dom';
+import { useQuery } from '@tanstack/react-query';
 import { Sidebar } from './Sidebar';
 import { Topbar } from './Topbar';
 import { StatusBar } from './StatusBar';
 import { ChatPanel } from './ChatPanel';
 import { useUIStore } from '@/store/ui';
+import { api } from '@/lib/api';
 
 /** U-6: chat is the homepage — no duplicate slide-over panel on / or /chat */
 function isChatPrimaryRoute(pathname: string): boolean {
   return pathname === '/' || pathname === '/chat';
+}
+
+/** WI_DEMO_MODE=1 (STEP 12): banner across the top so demo data is never mistaken for real. */
+function DemoBanner() {
+  const { data: status } = useQuery({ queryKey: ['status'], queryFn: api.status });
+  if (!status?.demoMode) return null;
+  return (
+    <div
+      className="w-full px-3 py-1 text-center text-[11px] font-semibold"
+      style={{ background: 'color-mix(in srgb, #f59e0b 18%, transparent)', color: '#92400e' }}
+    >
+      Demo data — not real
+    </div>
+  );
 }
 
 export function AppShell({ children }: { children: React.ReactNode }) {
@@ -38,6 +54,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
 
       {/* Main column */}
       <div className="flex flex-col flex-1 min-w-0 overflow-hidden">
+        <DemoBanner />
         <Topbar />
 
         <div className="flex flex-1 min-h-0 relative">
