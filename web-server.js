@@ -88,7 +88,6 @@ import { systemHealthTokensRoutes } from './dist/routes/system-health-tokens.js'
 import { modelConfigRoutes } from './dist/routes/model-config.js';
 import { bugsRoutes, captureBug, buildBugsHealthBlock } from './dist/routes/bugs.js';
 import { palaceRoutes } from './dist/routes/palace.js';
-import { cypherSessionsRoutes } from './dist/routes/cypher-sessions.js';
 import { dreamRoutes } from './dist/routes/dream.js';
 import { startDreamScheduler } from './dist/services/dream/scheduler.js';
 import { nextSunday0317UTC } from './dist/services/code-graph/scheduler.js';
@@ -130,7 +129,6 @@ const EXTRACTED_ROUTES = [
   ...modelConfigRoutes,
   ...bugsRoutes,
   ...palaceRoutes,
-  ...cypherSessionsRoutes,
   ...dreamRoutes,
 ];
 
