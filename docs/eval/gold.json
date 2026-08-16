@@ -1,0 +1,42 @@
+[
+  {
+    "goal": "Which widget rollout shipped on acme/widgets under PROJ-101, and to what fraction of users?",
+    "expected_tool_or_answer": "40%"
+  },
+  {
+    "goal": "What was the root cause of the PROJ-101 rollout failure on acme/widgets?",
+    "expected_tool_or_answer": "cache invalidation"
+  },
+  {
+    "goal": "Is there an open ticket tracking flaky e2e tests after the acme/widgets v2 rollout?",
+    "expected_tool_or_answer": "12%"
+  },
+  {
+    "goal": "Who drafted the rollback plan for the acme/widgets v2 release?",
+    "expected_tool_or_answer": "cara"
+  },
+  {
+    "goal": "Who owns the widget dashboard migration tracked in PROJ-103 on acme/widgets?",
+    "expected_tool_or_answer": "alex"
+  },
+  {
+    "goal": "When is the rollback window for the acme/widgets v2 deployment scheduled?",
+    "expected_tool_or_answer": "02:00"
+  },
+  {
+    "goal": "Close the loop on the PROJ-101 rollout investigation — record your final verdict on acme/widgets.",
+    "expected_tool_or_answer": "tool:cypher_record_outcome"
+  },
+  {
+    "goal": "Investigate the widget v2 launch on acme/widgets, then record the outcome for the acme team.",
+    "expected_tool_or_answer": "tool:cypher_record_outcome"
+  },
+  {
+    "goal": "Summarize the acme/widgets rollout discussion and close the dispatch with a verdict.",
+    "expected_tool_or_answer": "tool:cypher_record_outcome"
+  },
+  {
+    "goal": "Which ticket tracks the widget dashboard migration for acme/widgets?",
+    "expected_tool_or_answer": "PROJ-103"
+  }
+]

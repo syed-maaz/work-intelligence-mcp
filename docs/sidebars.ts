@@ -375,6 +375,15 @@ const sidebars: SidebarsConfig = {
         'development/skill-management',
       ],
     },
+    {
+      type: 'category',
+      label: 'Walkthroughs & Evaluation',
+      collapsed: true,
+      items: [
+        'walkthroughs/loop-trace',
+        'evaluation',
+      ],
+    },
   ],
 };
 

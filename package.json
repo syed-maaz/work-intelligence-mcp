@@ -18,6 +18,7 @@
     "setup": "node scripts/setup.mjs",
     "demo": "node --import tsx/esm scripts/seed-demo.mjs",
     "demo:trace": "node --import tsx/esm scripts/demo-loop-trace.mjs",
+    "demo:eval": "node --import tsx/esm scripts/demo-eval.mjs",
     "docs:start": "cd docs && npm start",
     "docs:build": "cd docs && npm run build",
     "docs:install": "cd docs && npm install",
