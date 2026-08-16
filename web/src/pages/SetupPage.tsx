@@ -1,9 +1,10 @@
 /**
  * First-run setup wizard.
  */
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { Link } from 'react-router-dom';
 import { api } from '@/lib/api';
+import type { CapabilitiesManifest } from '@/lib/api';
 import { CheckCircle2, Circle, XCircle, AlertCircle, ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui';
 
@@ -17,6 +18,7 @@ interface SetupStep {
 }
 
 export default function SetupPage() {
+  const queryClient = useQueryClient();
   const { data: status, isLoading } = useQuery({
     queryKey: ['status'],
     queryFn: api.status,
@@ -28,8 +30,14 @@ export default function SetupPage() {
     retry: 1,
   });
 
+  const saveConnector = useMutation({
+    mutationFn: api.saveConnector,
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['connectors'] }),
+  });
+
   const configuredMap = connectorsData?.configured ?? {};
   const connectors = Object.entries(configuredMap).map(([name, c]) => ({ ...c, name }));
+  const manifest = (connectorsData?.capabilities ?? { connectors: {} }) as CapabilitiesManifest;
   const connectorsReachable = !connectorsError;
   const connectorsReady =
     connectorsReachable && connectors.length > 0 && connectors.some((c) => c.enabled && c.hasRequiredEnv);
@@ -121,33 +129,58 @@ export default function SetupPage() {
                   <p className="text-[11px] mt-2" style={{ color: 'var(--muted)' }}>No connectors registered.</p>
                 ) : (
                   <>
-                    <div className="mt-2 space-y-1">
-                      {connectors.map((c) => (
-                        <div key={c.name} className="flex items-center gap-2 text-[11px]">
-                          <span className="min-w-0 flex-1 font-medium truncate" style={{ color: 'var(--fg)' }}>{c.name}</span>
-                          <span
-                            className="rounded px-1.5 py-0.5 text-[10px]"
-                            style={{ border: '1px solid var(--border)', color: 'var(--fg-2)' }}
-                          >
-                            {c.mode}
-                          </span>
-                          <span className="flex items-center gap-1" style={{ color: 'var(--fg-2)' }}>
-                            {c.enabled
-                              ? <CheckCircle2 size={12} className="text-emerald-500" />
-                              : <XCircle size={12} style={{ color: 'var(--muted)' }} />}
-                            enabled
-                          </span>
-                          <span className="flex items-center gap-1" style={{ color: 'var(--fg-2)' }}>
-                            {c.hasRequiredEnv
-                              ? <CheckCircle2 size={12} className="text-emerald-500" />
-                              : <XCircle size={12} className="text-amber-500" />}
-                            env
-                          </span>
-                        </div>
-                      ))}
+                    <div className="mt-2 space-y-2">
+                      {connectors.map((c) => {
+                        const entry = manifest.connectors?.[c.name];
+                        const saving = saveConnector.isPending && saveConnector.variables?.name === c.name;
+                        return (
+                          <div key={c.name} className="rounded-lg px-2.5 py-2 flex items-center gap-2 text-[11px]" style={{ border: '1px solid var(--border)', background: 'var(--bg)' }}>
+                            <input
+                              type="checkbox"
+                              checked={c.enabled}
+                              disabled={saving}
+                              onChange={(e) =>
+                                saveConnector.mutate({ name: c.name, enabled: e.target.checked, mode: c.mode ?? undefined })
+                              }
+                              className="accent-emerald-500"
+                              title={`Enable ${entry?.displayName ?? c.name}`}
+                            />
+                            <span className="min-w-0 flex-1 font-medium truncate" style={{ color: 'var(--fg)' }}>
+                              {entry?.displayName ?? c.name}
+                            </span>
+                            {entry && entry.modes.length > 1 && (
+                              <select
+                                value={c.mode ?? entry.modes[0]}
+                                disabled={saving}
+                                onChange={(e) =>
+                                  saveConnector.mutate({ name: c.name, enabled: c.enabled, mode: e.target.value })
+                                }
+                                className="rounded px-1.5 py-0.5 text-[10px] bg-transparent"
+                                style={{ border: '1px solid var(--border)', color: 'var(--fg-2)' }}
+                              >
+                                {entry.modes.map((m) => (
+                                  <option key={m} value={m}>{m}</option>
+                                ))}
+                              </select>
+                            )}
+                            <span className="flex items-center gap-1" style={{ color: 'var(--fg-2)' }}>
+                              {c.hasRequiredEnv
+                                ? <CheckCircle2 size={12} className="text-emerald-500" />
+                                : <XCircle size={12} className="text-red-500" />}
+                              env
+                            </span>
+                            {c.enabled && !c.hasRequiredEnv && (
+                              <span className="rounded px-1.5 py-0.5 text-[10px] font-medium" style={{ background: 'color-mix(in srgb, #ef4444 12%, transparent)', color: '#ef4444' }}>
+                                missing env
+                              </span>
+                            )}
+                            {saving && <span className="text-[10px]" style={{ color: 'var(--muted)' }}>saving…</span>}
+                          </div>
+                        );
+                      })}
                     </div>
                     <p className="text-[11px] mt-2" style={{ color: 'var(--muted)' }}>
-                      Edit wi.config.json → connectors.&lt;name&gt;.enabled: true and set the env vars listed in CONNECTORS.md.
+                      Toggles + mode selects write wi.config.json (structure only) — the env vars themselves go in .env.
                     </p>
                   </>
                 )

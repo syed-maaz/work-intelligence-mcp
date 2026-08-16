@@ -2831,6 +2831,76 @@ const server = createServer(async (req, res) => {
       return;
     }
 
+    // POST /api/connectors — STEP 11: the setup wizard writes enabled/mode.
+    // Structure only: sets connectors.<name>.enabled / .mode, never touches
+    // secret-bearing fields. Validates against capabilities.json modes AND
+    // the full wi.config.schema.json, then atomic-writes (tmp + rename) and
+    // clears the wi-config cache so the next read sees the edit.
+    if (path === '/api/connectors' && req.method === 'POST') {
+      const body = await readBody(req);
+      const { name, enabled, mode } = body || {};
+      const manifest = getCapabilitiesManifest();
+      const entry = manifest.connectors?.[name];
+      if (!entry) {
+        json(res, 400, { error: `Unknown connector "${name}"` });
+        return;
+      }
+      if (enabled !== undefined && typeof enabled !== 'boolean') {
+        json(res, 400, { error: 'enabled must be a boolean' });
+        return;
+      }
+      if (mode !== undefined && !entry.modes.includes(mode)) {
+        json(res, 400, { error: `mode "${mode}" not in ${entry.modes.join('/')} for ${name}` });
+        return;
+      }
+      if (enabled === undefined && mode === undefined) {
+        json(res, 400, { error: 'Nothing to update: send enabled and/or mode' });
+        return;
+      }
+
+      const cfgPath = process.cwd() + '/wi.config.json'; // NOTE: `path` is shadowed by the URL pathname in this scope
+      let cfg;
+      try {
+        cfg = JSON.parse(fs.readFileSync(cfgPath, 'utf-8'));
+      } catch (e) {
+        json(res, 500, { error: `wi.config.json unreadable: ${e.message}` });
+        return;
+      }
+      cfg.connectors = cfg.connectors || {};
+      cfg.connectors[name] = cfg.connectors[name] || {};
+      if (enabled !== undefined) cfg.connectors[name].enabled = enabled;
+      if (mode !== undefined) cfg.connectors[name].mode = mode;
+
+      // Validate the full config vs wi.config.schema.json (same check as
+      // `npm run config:validate`). ajv is a devDependency; if unavailable,
+      // the capabilities.json checks above already bound enabled/mode.
+      try {
+        const { default: Ajv2020 } = await import('ajv/dist/2020.js');
+        const schema = JSON.parse(fs.readFileSync(process.cwd() + '/wi.config.schema.json', 'utf-8'));
+        const validate = new Ajv2020({ validateFormats: false }).compile(schema);
+        if (!validate(cfg)) {
+          const first = validate.errors?.[0];
+          const where = first ? `${first.instancePath || '/root'}: ${first.message}` : 'unknown';
+          json(res, 400, { error: `wi.config.schema.json validation failed — ${where}` });
+          return;
+        }
+      } catch { /* ajv missing → rely on the mode/enabled checks above */ }
+
+      const tmp = cfgPath + '.tmp';
+      fs.writeFileSync(tmp, JSON.stringify(cfg, null, 2));
+      fs.renameSync(tmp, cfgPath);
+      const { clearWiConfigCache } = await import('./dist/services/wi-config.js');
+      clearWiConfigCache();
+
+      json(res, 200, {
+        name,
+        enabled: cfg.connectors[name].enabled === true,
+        mode: cfg.connectors[name].mode ?? null,
+        ok: true,
+      });
+      return;
+    }
+
     // GET /api/config/sprint — returns current active sprint from sprint_config table
     if (path === '/api/config/sprint' && req.method === 'GET') {
       const row = db.prepare('SELECT * FROM sprint_config WHERE active = 1 LIMIT 1').get();

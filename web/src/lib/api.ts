@@ -76,9 +76,25 @@ export interface ConnectorsResponse {
   /** Enabled connector names (in wi.config.json declaration order). */
   registry: string[];
   /** capabilities.json manifest (per-connector capabilities, modes, config). */
-  capabilities: unknown;
+  capabilities: CapabilitiesManifest;
   /** Per-connector status keyed by connector name. */
   configured: Record<string, ConnectorStatus>;
+}
+
+/** capabilities.json shape — per-connector wizard data (STEP 11). */
+export interface CapabilitiesManifest {
+  version: string;
+  registry: { loadsFrom: string; discovery: string };
+  connectors: Record<
+    string,
+    {
+      displayName: string;
+      modes: string[];
+      capabilities: string[];
+      config: { enabled?: string; mode?: string; requiredEnv: string[] };
+      dataIngested: string[];
+    }
+  >;
 }
 
 let cachedBrainUser: string | null = null;
@@ -933,6 +949,9 @@ export interface DreamApplyResult {
 export const api = {
   status: () => request<Status>('/status'),
   connectors: () => request<ConnectorsResponse>('/connectors'),
+  /** STEP 11 — wizard writes enabled/mode for one connector (structure only). */
+  saveConnector: (body: { name: string; enabled?: boolean; mode?: string }) =>
+    request<{ ok: boolean; name: string; enabled: boolean; mode: string | null }>('/connectors', body),
   topics: () => request<Topic[]>('/topics'),
   syncState: () => request<SyncState[]>('/sync-state'),
 

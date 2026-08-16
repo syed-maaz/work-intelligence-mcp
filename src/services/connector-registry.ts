@@ -56,6 +56,11 @@ import { TeamsMeetingsScraper } from '../fetcher/sources/teams-meetings.js';
 import { fetchSlackMessages } from '../fetcher/sources/slack.js';
 import { fetchLinearIssues } from '../fetcher/sources/linear.js';
 import { getGitHubApiBaseUrl, getGitHubApiToken, getRepos, getWiConfig } from './wi-config.js';
+import { ADAPTERS } from '../fetcher/sources/adapter.js';
+import type { AdapterContext } from '../fetcher/sources/adapter.js';
+
+// STEP 11 — the ADAPTERS array is the registry's single dispatch table.
+export { ADAPTERS };
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -191,37 +196,24 @@ export interface BuildSpecOpts {
  * Build orchestrator SourceSpecs for all enabled connectors. Never throws:
  * each connector wires inside its own try/catch and is skipped (with a warn)
  * on any failure.
+ *
+ * STEP 11 (OSS release): dispatch goes through the ADAPTERS array — there is
+ * no switch to edit when a connector is added. Each adapter wraps the real
+ * source-spec builder (src/fetcher/sources/adapter.ts).
  */
 export function buildSourceSpecs(db: Database.Database, opts?: BuildSpecOpts): SourceSpec[] {
   const specs: SourceSpec[] = [];
+  const ctx: AdapterContext = { db, since: opts?.since, config: null };
   for (const name of getEnabledConnectors()) {
+    const a = ADAPTERS.find((x) => x.name === name);
+    if (!a) {
+      console.warn(`no adapter for ${name}, skipping`);
+      continue;
+    }
     try {
-      switch (name) {
-        case 'jira':
-          specs.push(...jiraSourceSpecs(opts?.since));
-          break;
-        case 'github':
-          specs.push(...githubSourceSpecs(db, opts?.since));
-          break;
-        case 'teams':
-          specs.push(...teamsSourceSpecs(db, opts?.since));
-          break;
-        case 'outlook':
-          specs.push(...outlookSourceSpecs(opts?.since));
-          break;
-        case 'slack':
-          specs.push(...slackSourceSpecs());
-          break;
-        case 'linear':
-          specs.push(...linearSourceSpecs());
-          break;
-        default:
-          console.warn(`[registry] unknown connector "${name}" — skipping`);
-      }
+      specs.push(...a.buildSourceSpecs(ctx));
     } catch (err) {
-      console.warn(
-        `[registry] connector "${name}" failed to wire — skipping: ${err instanceof Error ? err.message : String(err)}`,
-      );
+      console.warn(`adapter ${name} failed`, err);
     }
   }
   if (opts?.timeoutMs) {
@@ -242,7 +234,7 @@ function resolveBrowserSession(): BrowserSessionManager | null {
   }
 }
 
-function jiraSourceSpecs(since?: Date): SourceSpec[] {
+export function jiraSourceSpecs(since?: Date): SourceSpec[] {
   // Mode resolution: wi.config.json connectors.jira.mode wins; otherwise the
   // legacy JIRA_SOURCE env var (mcp | browser | auto); default mcp.
   const mode = connectorMode('jira', process.env.JIRA_SOURCE ?? 'mcp');
@@ -278,7 +270,7 @@ function jiraSourceSpecs(since?: Date): SourceSpec[] {
   ];
 }
 
-function githubSourceSpecs(db: Database.Database, since?: Date): SourceSpec[] {
+export function githubSourceSpecs(db: Database.Database, since?: Date): SourceSpec[] {
   const mode = connectorMode('github', 'api');
   const wantApi = mode === 'api' || mode === 'both';
   const wantMcp = mode === 'mcp' || mode === 'both';
@@ -365,7 +357,7 @@ function prToUnifiedMessage(pr: GithubPRMcp, slug: string): UnifiedMessage {
   };
 }
 
-function outlookSourceSpecs(since?: Date): SourceSpec[] {
+export function outlookSourceSpecs(since?: Date): SourceSpec[] {
   const mode = connectorMode('outlook', 'browser');
   if (mode !== 'browser') {
     console.warn(`[registry] connector outlook mode "${mode}" not implemented yet — skipping`);
@@ -389,7 +381,7 @@ function outlookSourceSpecs(since?: Date): SourceSpec[] {
   ];
 }
 
-function teamsSourceSpecs(db: Database.Database, since?: Date): SourceSpec[] {
+export function teamsSourceSpecs(db: Database.Database, since?: Date): SourceSpec[] {
   const mode = connectorMode('teams', 'browser');
   if (mode !== 'browser') {
     console.warn(`[registry] connector teams mode "${mode}" not implemented yet — skipping`);
@@ -447,7 +439,7 @@ function sinceDays(since?: Date): number {
   return Math.max(1, Math.ceil((Date.now() - since.getTime()) / (24 * 60 * 60 * 1000)));
 }
 
-function slackSourceSpecs(): SourceSpec[] {
+export function slackSourceSpecs(): SourceSpec[] {
   const mode = connectorMode('slack', 'api');
   if (mode !== 'api') {
     console.warn(`[registry] connector slack mode "${mode}" not implemented yet — skipping`);
@@ -466,7 +458,7 @@ function slackSourceSpecs(): SourceSpec[] {
   ];
 }
 
-function linearSourceSpecs(): SourceSpec[] {
+export function linearSourceSpecs(): SourceSpec[] {
   const mode = connectorMode('linear', 'api');
   if (mode !== 'api') {
     console.warn(`[registry] connector linear mode "${mode}" not implemented yet — skipping`);
