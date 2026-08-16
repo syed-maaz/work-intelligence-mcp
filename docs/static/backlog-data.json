@@ -1,0 +1,2066 @@
+{
+  "meta": {
+    "lastUpdated": "2026-04-18",
+    "project": "Work Intelligence MCP"
+  },
+  "epics": [
+    {
+      "id": "EP-0",
+      "title": "Foundation",
+      "status": "DONE",
+      "priority": "\u2014",
+      "agentRole": "N/A \u2014 locked, do not modify",
+      "summary": "Core MCP server, SQLite schema, all 4 tools, AIAnalyzer. Everything that works today.",
+      "dependsOn": [],
+      "blocks": [
+        "EP-1",
+        "EP-4",
+        "EP-6",
+        "EP-7"
+      ],
+      "docPath": "/epics/ep0-foundation",
+      "tickets": [
+        {
+          "id": "EP-0-1",
+          "title": "MCP server boots, all 4 tools respond",
+          "status": "DONE"
+        },
+        {
+          "id": "EP-0-2",
+          "title": "SQLite schema v1",
+          "status": "DONE"
+        },
+        {
+          "id": "EP-0-3",
+          "title": "configure_topic tool",
+          "status": "DONE"
+        },
+        {
+          "id": "EP-0-4",
+          "title": "search_messages tool",
+          "status": "DONE"
+        },
+        {
+          "id": "EP-0-5",
+          "title": "get_action_items tool",
+          "status": "DONE"
+        },
+        {
+          "id": "EP-0-6",
+          "title": "get_daily_digest tool",
+          "status": "DONE"
+        },
+        {
+          "id": "EP-0-7",
+          "title": "AIAnalyzer (action items, digest, questions)",
+          "status": "DONE"
+        },
+        {
+          "id": "EP-0-8",
+          "title": "JiraConnector built (not wired)",
+          "status": "DONE"
+        },
+        {
+          "id": "EP-0-9",
+          "title": "SyncService skeleton",
+          "status": "DONE"
+        },
+        {
+          "id": "EP-0-10",
+          "title": "TypeScript builds clean",
+          "status": "DONE"
+        }
+      ]
+    },
+    {
+      "id": "EP-1",
+      "title": "Browser Session Manager",
+      "status": "DONE",
+      "priority": "High",
+      "agentRole": "Browser Infrastructure Engineer",
+      "summary": "Shared Playwright browser instance. Handles launch, profile loading, SSO cookie reuse, and graceful shutdown. Used by all browser connectors.",
+      "dependsOn": [
+        "EP-0"
+      ],
+      "blocks": [
+        "EP-2",
+        "EP-3"
+      ],
+      "docPath": "/epics/ep1-browser-session",
+      "tickets": [
+        {
+          "id": "EP-1-1",
+          "title": "Add playwright to dependencies",
+          "status": "DONE"
+        },
+        {
+          "id": "EP-1-2",
+          "title": "Implement BrowserSessionManager class",
+          "status": "DONE"
+        },
+        {
+          "id": "EP-1-3",
+          "title": "Implement singleton getBrowserSession() factory",
+          "status": "DONE"
+        },
+        {
+          "id": "EP-1-4",
+          "title": "Load config from env vars (BROWSER_PROFILE_PATH etc)",
+          "status": "DONE"
+        },
+        {
+          "id": "EP-1-5",
+          "title": "Map navigation errors to ConnectorError types",
+          "status": "DONE"
+        },
+        {
+          "id": "EP-1-6",
+          "title": "Verify Chrome profile SSO cookie preservation in headless mode",
+          "status": "DONE"
+        }
+      ]
+    },
+    {
+      "id": "EP-2",
+      "title": "Teams Browser Connector",
+      "status": "DONE",
+      "priority": "High",
+      "agentRole": "Teams Scraper Engineer",
+      "summary": "Playwright scraper for teams.microsoft.com. Scrapes group chats and meeting recaps. Includes get_teams_updates MCP tool with FTS5 + LIKE fallback and AI summary.",
+      "dependsOn": [
+        "EP-1"
+      ],
+      "blocks": [
+        "EP-5"
+      ],
+      "docPath": "/epics/ep2-teams-scraper",
+      "tickets": [
+        {
+          "id": "EP-2-1",
+          "title": "DOM spike \u2014 Teams sidebar + chat + Recap tab selectors",
+          "status": "DONE"
+        },
+        {
+          "id": "EP-2-2",
+          "title": "TeamsChatScraper \u2014 sidebar discovery + scrapeChats()",
+          "status": "DONE"
+        },
+        {
+          "id": "EP-2-3",
+          "title": "Message scroll-up loop with since cutoff",
+          "status": "DONE"
+        },
+        {
+          "id": "EP-2-4",
+          "title": "Deduplication \u2014 sha256(chat|sender|timestamp|contentPrefix)",
+          "status": "DONE"
+        },
+        {
+          "id": "EP-2-5",
+          "title": "Auth redirect detection",
+          "status": "DONE"
+        },
+        {
+          "id": "EP-2-6",
+          "title": "TeamsMeetingsScraper \u2014 Recap tab inline scraping",
+          "status": "DONE"
+        },
+        {
+          "id": "EP-2-7",
+          "title": "Claude Haiku meeting analysis (tool use + prompt caching)",
+          "status": "DONE"
+        },
+        {
+          "id": "EP-2-8",
+          "title": "teams-sync.ts CLI with upsertGroupChat/upsertMessage/upsertMeeting",
+          "status": "DONE"
+        },
+        {
+          "id": "EP-2-9",
+          "title": "Schema v3 \u2014 group_chats, extended meetings, FTS5 tables + WAL mode",
+          "status": "DONE"
+        },
+        {
+          "id": "EP-2-10",
+          "title": "get_teams_updates MCP tool \u2014 FTS5 search + AI summary + missing transcript detection",
+          "status": "DONE"
+        },
+        {
+          "id": "EP-2-11",
+          "title": "Wire get_teams_updates into server.ts",
+          "status": "DONE"
+        }
+      ]
+    },
+    {
+      "id": "EP-3",
+      "title": "Outlook Browser Connector",
+      "status": "DONE",
+      "priority": "High",
+      "agentRole": "Outlook Scraper Engineer",
+      "summary": "Playwright scraper for outlook.office.com. Iterates inbox, extracts emails with from/to/subject/body, maps to UnifiedMessage[]. Used by search_all for live email fetching.",
+      "dependsOn": [
+        "EP-1"
+      ],
+      "blocks": [
+        "EP-5"
+      ],
+      "docPath": "/epics/ep3-outlook-scraper",
+      "tickets": [
+        {
+          "id": "EP-3-1",
+          "title": "SPIKE: Inspect Outlook DOM, document selectors and message ID availability",
+          "status": "DONE"
+        },
+        {
+          "id": "EP-3-2",
+          "title": "OutlookBrowserConnector skeleton + fetchMessages signature",
+          "status": "DONE"
+        },
+        {
+          "id": "EP-3-3",
+          "title": "Email list iteration with date filtering",
+          "status": "DONE"
+        },
+        {
+          "id": "EP-3-4",
+          "title": "Email detail extraction",
+          "status": "DONE"
+        },
+        {
+          "id": "EP-3-5",
+          "title": "Deduplication logic",
+          "status": "DONE"
+        },
+        {
+          "id": "EP-3-6",
+          "title": "Auth redirect and error handling",
+          "status": "DONE"
+        },
+        {
+          "id": "EP-3-7",
+          "title": "Manual integration test against real Outlook",
+          "status": "DONE"
+        }
+      ]
+    },
+    {
+      "id": "EP-4",
+      "title": "Jira Browser Connector",
+      "status": "DONE",
+      "priority": "Medium",
+      "agentRole": "Jira Scraper Engineer",
+      "summary": "Playwright scraper for jira.example.com. Browser scraping reuses SSO session to collect issues and comments updated since last sync.",
+      "dependsOn": [
+        "EP-1"
+      ],
+      "blocks": [
+        "EP-5"
+      ],
+      "docPath": "/epics/ep4-jira-wiring",
+      "tickets": [
+        {
+          "id": "EP-4-1",
+          "title": "SPIKE: Inspect Jira DOM, document issue list + detail selectors",
+          "status": "DONE"
+        },
+        {
+          "id": "EP-4-2",
+          "title": "JiraBrowserConnector skeleton + fetchMessages signature",
+          "status": "DONE"
+        },
+        {
+          "id": "EP-4-3",
+          "title": "Issue list scraping with date filter",
+          "status": "DONE"
+        },
+        {
+          "id": "EP-4-4",
+          "title": "Issue detail extraction (title, description, status, assignee, comments)",
+          "status": "DONE"
+        },
+        {
+          "id": "EP-4-5",
+          "title": "Map to UnifiedMessage[] with stable source_id",
+          "status": "DONE"
+        },
+        {
+          "id": "EP-4-6",
+          "title": "Auth redirect and error handling",
+          "status": "DONE"
+        },
+        {
+          "id": "EP-4-7",
+          "title": "Manual integration test against real Jira instance",
+          "status": "DONE"
+        }
+      ]
+    },
+    {
+      "id": "EP-5",
+      "title": "Sync Pipeline Wiring",
+      "status": "DONE",
+      "priority": "High",
+      "agentRole": "Integration / Wiring Engineer",
+      "summary": "Connect all three connectors into SyncService, start on boot, write UnifiedMessage[] to SQLite via upsertMessage(). The end-to-end data pipeline.",
+      "dependsOn": [
+        "EP-1",
+        "EP-2",
+        "EP-3",
+        "EP-4",
+        "EP-7"
+      ],
+      "blocks": [],
+      "docPath": "/epics/ep5-sync-pipeline",
+      "tickets": [
+        {
+          "id": "EP-5-1",
+          "title": "Instantiate + start SyncService in server.ts on boot",
+          "status": "DONE"
+        },
+        {
+          "id": "EP-5-2",
+          "title": "Register all three connectors",
+          "status": "DONE"
+        },
+        {
+          "id": "EP-5-3",
+          "title": "Load topics from DB on startup, start sync for each",
+          "status": "DONE"
+        },
+        {
+          "id": "EP-5-4",
+          "title": "Call upsertMessage() per sync batch",
+          "status": "DONE"
+        },
+        {
+          "id": "EP-5-5",
+          "title": "Post-sync AI action item extraction",
+          "status": "DONE"
+        },
+        {
+          "id": "EP-5-6",
+          "title": "Call updateSyncState() after success",
+          "status": "DONE"
+        },
+        {
+          "id": "EP-5-7",
+          "title": "Global try/catch \u2014 no server crashes on sync error",
+          "status": "DONE"
+        },
+        {
+          "id": "EP-5-8",
+          "title": "configure_topic triggers immediate sync on creation",
+          "status": "DONE"
+        }
+      ]
+    },
+    {
+      "id": "EP-6",
+      "title": "AI Analyzer Upgrade",
+      "status": "DONE",
+      "priority": "Medium",
+      "agentRole": "AI / Prompt Engineer",
+      "summary": "Upgraded AIAnalyzer to use Claude tool use (structured output), prompt caching, and current Claude 4.x models. Added answerQuestion() for topic expert synthesis.",
+      "dependsOn": [
+        "EP-0"
+      ],
+      "blocks": [],
+      "docPath": "/epics/ep6-ai-analyzer",
+      "tickets": [
+        {
+          "id": "EP-6-1",
+          "title": "Refactor detectActionItems to use Claude tool use",
+          "status": "DONE"
+        },
+        {
+          "id": "EP-6-2",
+          "title": "Refactor extractQuestions to use Claude tool use",
+          "status": "DONE"
+        },
+        {
+          "id": "EP-6-3",
+          "title": "Refactor summarizeContent to use Claude tool use",
+          "status": "DONE"
+        },
+        {
+          "id": "EP-6-4",
+          "title": "Refactor generateDigest to use Claude tool use",
+          "status": "DONE"
+        },
+        {
+          "id": "EP-6-5",
+          "title": "Add prompt caching via cache_control on system prompt",
+          "status": "DONE"
+        },
+        {
+          "id": "EP-6-6",
+          "title": "Update model constants to claude-haiku-4-5 / claude-sonnet-4-6",
+          "status": "DONE"
+        },
+        {
+          "id": "EP-6-7",
+          "title": "Message chunking for large batches (>50 messages)",
+          "status": "DONE"
+        }
+      ]
+    },
+    {
+      "id": "EP-7",
+      "title": "Schema Migration v2",
+      "status": "DONE",
+      "priority": "High",
+      "agentRole": "Database Engineer",
+      "summary": "Add source_id, subject, raw_data columns to messages. Add UNIQUE(source, source_id) partial index. Add sync_state table. Implement upsertMessage(), getSyncState(), updateSyncState() query helpers.",
+      "dependsOn": [
+        "EP-0"
+      ],
+      "blocks": [
+        "EP-5"
+      ],
+      "docPath": "/epics/ep7-schema-migration",
+      "tickets": [
+        {
+          "id": "EP-7-1",
+          "title": "Add source_id column + UNIQUE(source, source_id) to messages",
+          "status": "DONE"
+        },
+        {
+          "id": "EP-7-2",
+          "title": "Create sync_state table",
+          "status": "DONE"
+        },
+        {
+          "id": "EP-7-3",
+          "title": "Implement upsertMessage() in queries.ts",
+          "status": "DONE"
+        },
+        {
+          "id": "EP-7-4",
+          "title": "Implement getSyncState() and updateSyncState() in queries.ts",
+          "status": "DONE"
+        },
+        {
+          "id": "EP-7-5",
+          "title": "Bump CURRENT_SCHEMA_VERSION to 2, verify migration on existing DB",
+          "status": "DONE"
+        }
+      ]
+    },
+    {
+      "id": "EP-8",
+      "title": "Testing",
+      "status": "TODO",
+      "priority": "Medium",
+      "agentRole": "QA / Test Engineer",
+      "summary": "Unit tests for AIAnalyzer, JiraConnector, DB queries, and MCP formatters. Integration test scaffolds for browser connectors.",
+      "dependsOn": [
+        "EP-0"
+      ],
+      "blocks": [],
+      "docPath": "/epics/ep8-testing",
+      "tickets": [
+        {
+          "id": "EP-8-1",
+          "title": "Unit tests: AIAnalyzer (mocked Anthropic client)",
+          "status": "TODO"
+        },
+        {
+          "id": "EP-8-2",
+          "title": "Unit tests: JiraConnector (mocked fetch)",
+          "status": "TODO"
+        },
+        {
+          "id": "EP-8-3",
+          "title": "Unit tests: upsertMessage deduplication",
+          "status": "TODO"
+        },
+        {
+          "id": "EP-8-4",
+          "title": "Unit tests: MCP tool formatters",
+          "status": "TODO"
+        },
+        {
+          "id": "EP-8-5",
+          "title": "Integration test scaffold: TeamsBrowserConnector",
+          "status": "TODO"
+        },
+        {
+          "id": "EP-8-6",
+          "title": "Integration test scaffold: OutlookBrowserConnector",
+          "status": "TODO"
+        }
+      ]
+    },
+    {
+      "id": "EP-9",
+      "title": "Dead Code Cleanup",
+      "status": "TODO",
+      "priority": "Low",
+      "agentRole": "Any",
+      "summary": "Delete the three blocked Graph API connector files and remove their npm dependencies. Do only after EP-2 and EP-3 are complete.",
+      "dependsOn": [
+        "EP-2",
+        "EP-3"
+      ],
+      "blocks": [],
+      "docPath": "/epics/ep9-cleanup",
+      "tickets": [
+        {
+          "id": "EP-9-1",
+          "title": "Delete src/connectors/teams.ts",
+          "status": "TODO"
+        },
+        {
+          "id": "EP-9-2",
+          "title": "Delete src/connectors/email.ts",
+          "status": "TODO"
+        },
+        {
+          "id": "EP-9-3",
+          "title": "Delete src/connectors/graph-auth.ts",
+          "status": "TODO"
+        },
+        {
+          "id": "EP-9-4",
+          "title": "Remove @azure/identity, @microsoft/microsoft-graph-* from dependencies",
+          "status": "TODO"
+        },
+        {
+          "id": "EP-9-5",
+          "title": "Verify npm run typecheck still passes",
+          "status": "TODO"
+        }
+      ]
+    },
+    {
+      "id": "EP-10",
+      "title": "Saturn Team Jira Report",
+      "status": "DONE",
+      "priority": "High",
+      "agentRole": "Jira Report Engineer",
+      "summary": "Phase 1 Fetch & Analytical Report: scrape BDS Jira board, persist issues to SQLite, produce structured markdown report with status buckets, assignee workload, and AI team health summary.",
+      "dependsOn": [
+        "EP-4",
+        "EP-7"
+      ],
+      "blocks": [],
+      "docPath": "/epics/ep10-saturn-jira-report",
+      "tickets": [
+        {
+          "id": "EP-10-1",
+          "title": "DB schema migration v2 (source_id, subject, raw_data, sync_state)",
+          "status": "DONE"
+        },
+        {
+          "id": "EP-10-2",
+          "title": "upsertMessage() + sync state query helpers",
+          "status": "DONE"
+        },
+        {
+          "id": "EP-10-3",
+          "title": "convertRapidBoardToNavigatorUrl() + Bitbucket PR scraping",
+          "status": "DONE"
+        },
+        {
+          "id": "EP-10-4",
+          "title": "src/tools/jira-report.ts \u2014 scrape, persist, group, render",
+          "status": "DONE"
+        },
+        {
+          "id": "EP-10-5",
+          "title": "Wire get_jira_report into src/server.ts",
+          "status": "DONE"
+        },
+        {
+          "id": "EP-10-6",
+          "title": "src/scripts/jira-report.ts CLI + npm run report",
+          "status": "DONE"
+        },
+        {
+          "id": "EP-10-7",
+          "title": "Tests: schema-v2, URL conversion",
+          "status": "DONE"
+        },
+        {
+          "id": "EP-10-8",
+          "title": "Manual integration test against real jira.example.com",
+          "status": "DONE"
+        }
+      ]
+    },
+    {
+      "id": "EP-11",
+      "title": "Teams Chat Sync & Search",
+      "status": "DONE",
+      "priority": "High",
+      "agentRole": "Teams Sync Engineer",
+      "summary": "Full Teams chat sync pipeline: sidebar discovery, message scraping, FTS5 indexing. npm run teams-sync CLI. get_teams_updates MCP tool with FTS5 + LIKE fallback, AI summary, missing transcript detection.",
+      "dependsOn": [
+        "EP-2",
+        "EP-7"
+      ],
+      "blocks": [],
+      "docPath": "/epics/ep11-teams-sync",
+      "tickets": [
+        {
+          "id": "EP-11-1",
+          "title": "Schema v3: WAL, group_chats, extended meetings, FTS5 + triggers",
+          "status": "DONE"
+        },
+        {
+          "id": "EP-11-2",
+          "title": "npm run teams-sync CLI",
+          "status": "DONE"
+        },
+        {
+          "id": "EP-11-3",
+          "title": "get_teams_updates MCP tool",
+          "status": "DONE"
+        },
+        {
+          "id": "EP-11-4",
+          "title": "Active/inactive chat tracking (7-day threshold)",
+          "status": "DONE"
+        }
+      ]
+    },
+    {
+      "id": "EP-12",
+      "title": "Universal Search (search_all)",
+      "status": "DONE",
+      "priority": "High",
+      "agentRole": "Search Engineer",
+      "summary": "Cross-source search across Teams, Outlook email, and Jira. FTS5 on stored messages + live Jira browser fetch. Claude Sonnet synthesis with source badges.",
+      "dependsOn": [
+        "EP-3",
+        "EP-4",
+        "EP-11"
+      ],
+      "blocks": [],
+      "docPath": "/epics/ep12-search-all",
+      "tickets": [
+        {
+          "id": "EP-12-1",
+          "title": "search_all MCP tool",
+          "status": "DONE"
+        },
+        {
+          "id": "EP-12-2",
+          "title": "Web UI SearchAll page",
+          "status": "DONE"
+        },
+        {
+          "id": "EP-12-3",
+          "title": "POST /api/search-all endpoint",
+          "status": "DONE"
+        }
+      ]
+    },
+    {
+      "id": "EP-13",
+      "title": "Topic Expert",
+      "status": "DONE",
+      "priority": "High",
+      "agentRole": "AI / Integration Engineer",
+      "summary": "ask_topic_expert MCP tool: natural language question \u2192 rich AI answer synthesized from Jira, GitHub (REST), Teams, and Email. FTS5 DB search + live GitHub API + Claude Sonnet synthesis.",
+      "dependsOn": [
+        "EP-0",
+        "EP-7"
+      ],
+      "blocks": [],
+      "docPath": "/epics/ep13-topic-expert",
+      "tickets": [
+        {
+          "id": "EP-13-1",
+          "title": "Add GitHub source enum + GitHub connector",
+          "status": "DONE"
+        },
+        {
+          "id": "EP-13-2",
+          "title": "answerQuestion() in AIAnalyzer",
+          "status": "DONE"
+        },
+        {
+          "id": "EP-13-3",
+          "title": "src/tools/topic-expert.ts \u2014 FTS5 search + AI synthesis",
+          "status": "DONE"
+        },
+        {
+          "id": "EP-13-4",
+          "title": "Wire ask_topic_expert into server.ts",
+          "status": "DONE"
+        }
+      ]
+    },
+    {
+      "id": "EP-14",
+      "title": "Smart Topic Expert (Topic Notebooks)",
+      "status": "DONE",
+      "priority": "High",
+      "agentRole": "AI Engineer",
+      "summary": "Persistent LLM memory per topic. Claude builds and incrementally updates structured notebooks from Teams/Jira/email. Questions answered against the notebook rather than raw FTS search.",
+      "dependsOn": [
+        "EP-13",
+        "EP-2",
+        "EP-3"
+      ],
+      "blocks": [],
+      "docPath": "/epics/ep14-smart-topic-expert",
+      "tickets": [
+        {
+          "id": "EP-14-1",
+          "title": "topic_notebooks table (schema migration)",
+          "status": "DONE"
+        },
+        {
+          "id": "EP-14-2",
+          "title": "buildNotebook() + updateNotebook() in AIAnalyzer",
+          "status": "DONE"
+        },
+        {
+          "id": "EP-14-3",
+          "title": "getOrBuildNotebook() orchestrator tool",
+          "status": "DONE"
+        },
+        {
+          "id": "EP-14-4",
+          "title": "Notebook API endpoints (GET/POST/rebuild/chat/history)",
+          "status": "DONE"
+        },
+        {
+          "id": "EP-14-5",
+          "title": "Topic Expert page redesign \u2014 notebook + chat split layout",
+          "status": "DONE"
+        }
+      ]
+    },
+    {
+      "id": "EP-15",
+      "title": "Proactive Intelligence Engine",
+      "status": "DONE",
+      "priority": "High",
+      "agentRole": "Backend + Frontend Engineer",
+      "summary": "Auto-sync loop (scheduleNextSync recursion), alert feed (4 SQL rules), workload intensity per topic, pre-meeting briefs auto-generated for next-24h events, morning brief endpoint with slackMarkdown.",
+      "dependsOn": [
+        "EP-14"
+      ],
+      "blocks": [
+        "EP-16"
+      ],
+      "docPath": "/epics/ep15-proactive-agent",
+      "tickets": [
+        {
+          "id": "EP-15-1",
+          "title": "Auto-sync loop \u2014 scheduleNextSync() recursion, SYNC_INTERVAL_MS",
+          "status": "DONE"
+        },
+        {
+          "id": "EP-15-2",
+          "title": "Alert feed \u2014 4 SQL rules, GET /api/alerts, AlertFeed.tsx",
+          "status": "DONE"
+        },
+        {
+          "id": "EP-15-3",
+          "title": "Workload intensity \u2014 per-topic calm/active/intense, GET /api/workload, WorkloadSection.tsx",
+          "status": "DONE"
+        },
+        {
+          "id": "EP-15-4",
+          "title": "Pre-meeting briefs \u2014 calendar_events.pre_brief column, generatePreBrief(), TodaysCalendarSection expand",
+          "status": "DONE"
+        },
+        {
+          "id": "EP-15-5",
+          "title": "Morning brief \u2014 GET /api/morning-brief, 6 sections + slackMarkdown, 1h cache",
+          "status": "DONE"
+        }
+      ]
+    },
+    {
+      "id": "EP-16",
+      "title": "macOS Trigger System (Smart Resync)",
+      "status": "DONE",
+      "priority": "High",
+      "agentRole": "Backend Engineer",
+      "summary": "Event-driven sync triggers: HxStore.hxd fs.watch for Outlook (instant), AppleScript badge poll for Teams (60s). getLastSyncTime() fix. Targeted sync functions per source. watcherState in sync/status.",
+      "dependsOn": [
+        "EP-15"
+      ],
+      "blocks": [],
+      "docPath": "/epics/ep16-n8n-http-transport",
+      "tickets": [
+        {
+          "id": "EP-16-1",
+          "title": "OutlookWatcher \u2014 fs.watch on HxStore.hxd, 2s debounce, unread count guard",
+          "status": "DONE"
+        },
+        {
+          "id": "EP-16-2",
+          "title": "getTeamsBadgeCount() \u2014 AppleScript AXStatusLabel",
+          "status": "DONE"
+        },
+        {
+          "id": "EP-16-3",
+          "title": "getLastSyncTime(source) \u2014 MIN(last_synced_at) fix",
+          "status": "DONE"
+        },
+        {
+          "id": "EP-16-4",
+          "title": "runTargetedTeamsSync / JiraSync / CalendarSync()",
+          "status": "DONE"
+        },
+        {
+          "id": "EP-16-5",
+          "title": "watcherState exposed in GET /api/sync/status",
+          "status": "DONE"
+        }
+      ]
+    },
+    {
+      "id": "EP-17",
+      "title": "Headless Browser (invisible Jira/Outlook)",
+      "status": "DONE",
+      "priority": "High",
+      "agentRole": "Infrastructure Engineer",
+      "summary": "Default BROWSER_HEADLESS=true. Browser runs invisible in background. Web UI can trigger scrapes without a browser window appearing.",
+      "dependsOn": [],
+      "blocks": [],
+      "docPath": "/epics/ep17-headless-browser",
+      "tickets": [
+        {
+          "id": "EP-17-1",
+          "title": "Default BROWSER_HEADLESS=true in browser-session.ts",
+          "status": "DONE"
+        },
+        {
+          "id": "EP-17-2",
+          "title": "Fix fs.lstatSync SingletonLock detection",
+          "status": "DONE"
+        }
+      ]
+    },
+    {
+      "id": "EP-18",
+      "title": "Error Tracking & Auto Bug Report",
+      "status": "DONE",
+      "priority": "High",
+      "agentRole": "Backend / Full-Stack Engineer",
+      "summary": "error_logs table in SQLite. persistError() wraps all catch blocks. GET /api/errors, POST /api/errors/:id/analyze (Claude Haiku), POST /api/errors/:id/resolve. ErrorLogSection on Dashboard.",
+      "dependsOn": [],
+      "blocks": [],
+      "docPath": "/epics/ep18-error-tracking",
+      "tickets": [
+        {
+          "id": "EP-18-1",
+          "title": "error_logs table \u2014 schema migration",
+          "status": "DONE"
+        },
+        {
+          "id": "EP-18-2",
+          "title": "insertErrorLog, listErrorLogs, markErrorResolved, updateErrorAnalysis in queries.ts",
+          "status": "DONE"
+        },
+        {
+          "id": "EP-18-3",
+          "title": "persistError() helper + wrap catch(err) in web-server.js",
+          "status": "DONE"
+        },
+        {
+          "id": "EP-18-4",
+          "title": "30-day auto-cleanup on startup",
+          "status": "DONE"
+        },
+        {
+          "id": "EP-18-5",
+          "title": "GET /api/errors, POST /api/errors/:id/analyze, POST /api/errors/:id/resolve",
+          "status": "DONE"
+        },
+        {
+          "id": "EP-18-6",
+          "title": "analyzeError() using Claude Haiku (src/tools/error-analyzer.ts)",
+          "status": "DONE"
+        },
+        {
+          "id": "EP-18-7",
+          "title": "ErrorLog type + listErrors, analyzeError, resolveError in api.ts",
+          "status": "DONE"
+        },
+        {
+          "id": "EP-18-8",
+          "title": "ErrorLogSection component",
+          "status": "DONE"
+        },
+        {
+          "id": "EP-18-9",
+          "title": "ErrorLogSection on Dashboard",
+          "status": "DONE"
+        }
+      ]
+    },
+    {
+      "id": "EP-19",
+      "title": "Persistent Digests (Memory / History)",
+      "status": "DONE",
+      "priority": "High",
+      "agentRole": "Backend / Full-Stack Engineer",
+      "summary": "digests table in SQLite with TTL support. POST /api/digest checks cache first. GET /api/digests + DELETE /api/digests/:id. Date shortcuts on Digest page. Cached badge. Recent Digests list.",
+      "dependsOn": [],
+      "blocks": [],
+      "docPath": "/epics/ep19-persistent-digests",
+      "tickets": [
+        {
+          "id": "EP-19-1",
+          "title": "digests table \u2014 schema migration",
+          "status": "DONE"
+        },
+        {
+          "id": "EP-19-2",
+          "title": "saveDigest, getCachedDigest, listDigests, deleteDigest in queries.ts",
+          "status": "DONE"
+        },
+        {
+          "id": "EP-19-3",
+          "title": "POST /api/digest checks + populates cache",
+          "status": "DONE"
+        },
+        {
+          "id": "EP-19-4",
+          "title": "GET /api/digests + DELETE /api/digests/:id",
+          "status": "DONE"
+        },
+        {
+          "id": "EP-19-5",
+          "title": "Date shortcuts on DigestPage (Today/Yesterday/2 days ago/Last Monday)",
+          "status": "DONE"
+        },
+        {
+          "id": "EP-19-6",
+          "title": "Cached badge in MarkdownPanel",
+          "status": "DONE"
+        },
+        {
+          "id": "EP-19-7",
+          "title": "Recent Digests collapsible list",
+          "status": "DONE"
+        },
+        {
+          "id": "EP-19-8",
+          "title": "DigestResult type + listDigests, deleteDigest in api.ts",
+          "status": "DONE"
+        }
+      ]
+    },
+    {
+      "id": "EP-20",
+      "title": "Saturn Board Dashboard Section",
+      "status": "DONE",
+      "priority": "High",
+      "agentRole": "Full-Stack Engineer",
+      "summary": "Live Saturn Jira board scraped via browser, cached with isRefreshing pattern, displayed on Dashboard. Epic grouping, sprint/backlog columns, fire-and-forget cold start.",
+      "dependsOn": [
+        "EP-17"
+      ],
+      "blocks": [],
+      "docPath": "/epics/ep20-saturn-board",
+      "tickets": [
+        {
+          "id": "EP-20-1",
+          "title": "GET /api/saturn/issues with isRefreshing fire-and-forget pattern",
+          "status": "DONE"
+        },
+        {
+          "id": "EP-20-2",
+          "title": "SaturnBoardSection component",
+          "status": "DONE"
+        },
+        {
+          "id": "EP-20-3",
+          "title": "Epic grouping with collapsible EpicGroup headers",
+          "status": "DONE"
+        }
+      ]
+    },
+    {
+      "id": "EP-21",
+      "title": "My Jira Issues (Assigned to Me)",
+      "status": "DONE",
+      "priority": "High",
+      "agentRole": "Full-Stack Engineer",
+      "summary": "My Jira issues (filter=-1) scraped via browser, cached with isRefreshing pattern. MyIssuesSection on Dashboard.",
+      "dependsOn": [
+        "EP-17"
+      ],
+      "blocks": [],
+      "docPath": "/epics/ep21-my-jira-issues",
+      "tickets": [
+        {
+          "id": "EP-21-1",
+          "title": "GET /api/jira/my-issues with isRefreshing pattern",
+          "status": "DONE"
+        },
+        {
+          "id": "EP-21-2",
+          "title": "MyIssuesSection component",
+          "status": "DONE"
+        }
+      ]
+    },
+    {
+      "id": "EP-22",
+      "title": "Sync All Button on Dashboard",
+      "status": "DONE",
+      "priority": "High",
+      "agentRole": "Full-Stack Engineer",
+      "summary": "POST /api/sync/all triggers full sync (Teams + Jira + Calendar + Notebooks). GET /api/sync/status with live progress. SyncAllButton component with animated progress bar.",
+      "dependsOn": [],
+      "blocks": [],
+      "docPath": "/epics/ep22-sync-all",
+      "tickets": [
+        {
+          "id": "EP-22-1",
+          "title": "POST /api/sync/all + GET /api/sync/status",
+          "status": "DONE"
+        },
+        {
+          "id": "EP-22-2",
+          "title": "SyncAllButton with progress bar",
+          "status": "DONE"
+        }
+      ]
+    },
+    {
+      "id": "EP-23",
+      "title": "Daily Summary Dashboard Section",
+      "status": "DONE",
+      "priority": "High",
+      "agentRole": "Full-Stack Engineer",
+      "summary": "DailySummarySection on Dashboard: AI-generated yesterday summary + today priorities + Saturn snapshot + open actions. Accordion layout. Cached 1h in digests table.",
+      "dependsOn": [],
+      "blocks": [],
+      "docPath": "/epics/ep23-daily-summary",
+      "tickets": [
+        {
+          "id": "EP-23-1",
+          "title": "GET /api/daily-summary endpoint",
+          "status": "DONE"
+        },
+        {
+          "id": "EP-23-2",
+          "title": "DailySummarySection component with accordion",
+          "status": "DONE"
+        }
+      ]
+    },
+    {
+      "id": "EP-24",
+      "title": "Smart Chat Sidebar",
+      "status": "DONE",
+      "priority": "High",
+      "agentRole": "Full-Stack Engineer",
+      "summary": "Persistent chat sidebar (w-80, ChatPanel). POST /api/chat with FTS5 context retrieval. Model routing: Haiku for short, Sonnet for complex. sendToChat() pattern for Jira board. Draft PR flow.",
+      "dependsOn": [],
+      "blocks": [],
+      "docPath": "/epics/ep24-smart-chat",
+      "tickets": [
+        {
+          "id": "EP-24-1",
+          "title": "POST /api/chat with FTS5 context + model routing",
+          "status": "DONE"
+        },
+        {
+          "id": "EP-24-2",
+          "title": "ChatPanel component + Zustand chat store",
+          "status": "DONE"
+        },
+        {
+          "id": "EP-24-3",
+          "title": "sendToChat() pattern for Jira board ticket actions",
+          "status": "DONE"
+        },
+        {
+          "id": "EP-24-4",
+          "title": "Draft PR flow \u2014 create PR intent detection + GitHub URL builder",
+          "status": "DONE"
+        }
+      ]
+    },
+    {
+      "id": "EP-25",
+      "title": "Outlook Calendar Sync",
+      "status": "DONE",
+      "priority": "Medium",
+      "agentRole": "Full-Stack Engineer",
+      "summary": "Calendar events scraped from outlook.office.com/calendar. calendar_events table. GET /api/calendar/upcoming. TodaysCalendarSection on Dashboard with pre-brief expand.",
+      "dependsOn": [
+        "EP-17"
+      ],
+      "blocks": [],
+      "docPath": "/epics/ep25-calendar-sync",
+      "tickets": [
+        {
+          "id": "EP-25-1",
+          "title": "calendar_events table + OutlookCalendarScraper",
+          "status": "DONE"
+        },
+        {
+          "id": "EP-25-2",
+          "title": "GET /api/calendar/upcoming",
+          "status": "DONE"
+        },
+        {
+          "id": "EP-25-3",
+          "title": "TodaysCalendarSection with pre-brief expand",
+          "status": "DONE"
+        }
+      ]
+    },
+    {
+      "id": "EP-26",
+      "title": "Topic Notebooks (LLM Memory)",
+      "status": "DONE",
+      "priority": "High",
+      "agentRole": "AI Engineer",
+      "summary": "topic_notebooks + notebook_chat_history tables. buildNotebook() + updateNotebook() in AIAnalyzer. Notebook endpoints (list/get/rebuild/chat/history). Topic Expert page redesigned as notebook+chat split layout.",
+      "dependsOn": [
+        "EP-13"
+      ],
+      "blocks": [
+        "EP-15"
+      ],
+      "docPath": "/epics/ep26-topic-notebooks",
+      "tickets": [
+        {
+          "id": "EP-26-1",
+          "title": "topic_notebooks + notebook_chat_history tables",
+          "status": "DONE"
+        },
+        {
+          "id": "EP-26-2",
+          "title": "getNotebook, saveNotebook, listNotebooks, deleteNotebook in queries.ts",
+          "status": "DONE"
+        },
+        {
+          "id": "EP-26-3",
+          "title": "buildNotebook() + updateNotebook() in AIAnalyzer",
+          "status": "DONE"
+        },
+        {
+          "id": "EP-26-4",
+          "title": "getOrBuildNotebook() orchestrator (src/tools/notebook.ts)",
+          "status": "DONE"
+        },
+        {
+          "id": "EP-26-5",
+          "title": "Notebook API endpoints: GET/POST /api/notebooks/:topicName, rebuild, chat, history",
+          "status": "DONE"
+        },
+        {
+          "id": "EP-26-6",
+          "title": "Topic Expert page redesign \u2014 notebook panel (left) + chat panel (right)",
+          "status": "DONE"
+        },
+        {
+          "id": "EP-26-7",
+          "title": "Auto-update notebooks in runFullSync()",
+          "status": "DONE"
+        }
+      ]
+    },
+    {
+      "id": "EP-27",
+      "title": "Obsidian Knowledge Graph Mirror",
+      "status": "TODO",
+      "priority": "Medium",
+      "agentRole": "Full-Stack Engineer",
+      "summary": "Export topic notebooks to an Obsidian vault as .md files with [[wikilinks]] between related topics. Daily auto-sync writes updated notebooks to disk. Optional: backlinks from Jira issues.",
+      "dependsOn": [
+        "EP-26"
+      ],
+      "blocks": [],
+      "docPath": "/epics/ep27-obsidian-vault-mirror",
+      "tickets": [
+        {
+          "id": "EP-27-1",
+          "title": "OBSIDIAN_VAULT_PATH env var + vault directory validation",
+          "status": "TODO"
+        },
+        {
+          "id": "EP-27-2",
+          "title": "writeNotebookToVault() \u2014 sanitize filename, add frontmatter, write .md",
+          "status": "TODO"
+        },
+        {
+          "id": "EP-27-3",
+          "title": "POST /api/obsidian/sync \u2014 export all notebooks to vault",
+          "status": "TODO"
+        },
+        {
+          "id": "EP-27-4",
+          "title": "Auto-sync after runFullSync() when OBSIDIAN_VAULT_PATH is set",
+          "status": "TODO"
+        },
+        {
+          "id": "EP-27-5",
+          "title": "Wikilink injection \u2014 scan notebook for topic name mentions, convert to [[links]]",
+          "status": "TODO"
+        },
+        {
+          "id": "EP-27-6",
+          "title": "Obsidian sync status in GET /api/sync/status",
+          "status": "TODO"
+        }
+      ]
+    },
+    {
+      "id": "EP-28",
+      "title": "Web UI/UX Overhaul",
+      "status": "DONE",
+      "priority": "High",
+      "agentRole": "Full-Stack Engineer",
+      "summary": "Full density + mobile responsiveness pass. Uniform px-3 py-2 text-xs tokens across all 8 pages. Mobile sidebar drawer (fixed inset-y-0 z-40 + translate transition). Sync status in Topbar. Dashboard simplified to DailySummary \u2192 3-col grid \u2192 2-col Jira grid.",
+      "dependsOn": [
+        "EP-20",
+        "EP-21",
+        "EP-22",
+        "EP-23",
+        "EP-24",
+        "EP-25",
+        "EP-26"
+      ],
+      "blocks": [],
+      "docPath": "/epics/ep28-web-ui-ux-overhaul",
+      "tickets": [
+        {
+          "id": "EP-28-1",
+          "title": "Unified density tokens across all 8 pages",
+          "status": "DONE"
+        },
+        {
+          "id": "EP-28-2",
+          "title": "Mobile sidebar drawer (fixed + translate + backdrop)",
+          "status": "DONE"
+        },
+        {
+          "id": "EP-28-3",
+          "title": "Mobile chat full-screen overlay",
+          "status": "DONE"
+        },
+        {
+          "id": "EP-28-4",
+          "title": "Sync status moved into Topbar center",
+          "status": "DONE"
+        },
+        {
+          "id": "EP-28-5",
+          "title": "Dashboard layout simplification",
+          "status": "DONE"
+        },
+        {
+          "id": "EP-28-6",
+          "title": "Forms inside bordered card pattern",
+          "status": "DONE"
+        },
+        {
+          "id": "EP-28-7",
+          "title": "Topics page: delete + edit buttons",
+          "status": "DONE"
+        }
+      ]
+    },
+    {
+      "id": "EP-29",
+      "title": "Jira Deep Analysis",
+      "status": "DONE",
+      "priority": "High",
+      "agentRole": "Full-Stack Engineer",
+      "summary": "3-tab inline analysis per ticket (Analysis/Effort/Explanation). jira_analysis DB table (schema v15). POST /api/jira/analyze returns 202 immediately, 3 parallel background AI calls. Polling every 3s while pending. Results persist across page refresh.",
+      "dependsOn": [
+        "EP-20"
+      ],
+      "blocks": [],
+      "docPath": "/epics/ep29-jira-deep-analysis",
+      "tickets": [
+        {
+          "id": "EP-29-1",
+          "title": "jira_analysis table \u2014 schema migration 14\u219215",
+          "status": "DONE"
+        },
+        {
+          "id": "EP-29-2",
+          "title": "saveJiraAnalysis, loadJiraAnalysis, listJiraAnalyses in queries.ts",
+          "status": "DONE"
+        },
+        {
+          "id": "EP-29-3",
+          "title": "POST /api/jira/analyze \u2014 202 immediate, 3 parallel background AI calls",
+          "status": "DONE"
+        },
+        {
+          "id": "EP-29-4",
+          "title": "GET /api/jira/analysis/:issueKey + GET /api/jira/analyses",
+          "status": "DONE"
+        },
+        {
+          "id": "EP-29-5",
+          "title": "AnalysisCard 3-tab inline component in JiraReportPage",
+          "status": "DONE"
+        },
+        {
+          "id": "EP-29-6",
+          "title": "Polling every 3s while pendingKeys.size > 0",
+          "status": "DONE"
+        },
+        {
+          "id": "EP-29-7",
+          "title": "Epic filter + collapsible epic groups in JiraReportPage",
+          "status": "DONE"
+        }
+      ]
+    },
+    {
+      "id": "EP-30",
+      "title": "Teams Updates Redesign",
+      "status": "DONE",
+      "priority": "High",
+      "agentRole": "Full-Stack Engineer",
+      "summary": "Favourite keyword chips (DB-persisted in teams_fav_keywords table, schema v16). Stacked result accordion cards (newest first, collapsible, copy button). Inline MdBlock markdown renderer. Advanced options panel (since/maxResults/meetings) collapsed by default.",
+      "dependsOn": [
+        "EP-11"
+      ],
+      "blocks": [],
+      "docPath": "/epics/ep30-teams-updates-redesign",
+      "tickets": [
+        {
+          "id": "EP-30-1",
+          "title": "teams_fav_keywords table \u2014 schema migration 15\u219216",
+          "status": "DONE"
+        },
+        {
+          "id": "EP-30-2",
+          "title": "listFavKeywords, saveFavKeyword, deleteFavKeyword in queries.ts",
+          "status": "DONE"
+        },
+        {
+          "id": "EP-30-3",
+          "title": "GET/POST/DELETE /api/teams-fav-keywords endpoints",
+          "status": "DONE"
+        },
+        {
+          "id": "EP-30-4",
+          "title": "FavChip component + add/remove flow",
+          "status": "DONE"
+        },
+        {
+          "id": "EP-30-5",
+          "title": "ResultCard stacked accordion (newest first, copy, collapse)",
+          "status": "DONE"
+        },
+        {
+          "id": "EP-30-6",
+          "title": "MdBlock inline markdown renderer",
+          "status": "DONE"
+        },
+        {
+          "id": "EP-30-7",
+          "title": "Advanced options panel (collapsed by default)",
+          "status": "DONE"
+        }
+      ]
+    },
+    {
+      "id": "EP-31",
+      "title": "Architecture Hardening",
+      "status": "DONE",
+      "priority": "High",
+      "agentRole": "Senior Backend Engineer",
+      "summary": "8-ticket hardening sprint: Zod validation on all POST endpoints, ResourceCache class, structured JSON logger, split queries.ts into domain files, AnalysisService with max_tokens, split web-server.js into route modules, withRetry + backoff, Hono router.",
+      "dependsOn": [],
+      "blocks": [],
+      "docPath": "/epics/ep31-architecture-hardening",
+      "tickets": [
+        {
+          "id": "EP-31-1",
+          "title": "Zod validation on all 16 POST endpoints",
+          "status": "TODO"
+        },
+        {
+          "id": "EP-31-2",
+          "title": "ResourceCache class replacing 5 hand-rolled cache objects",
+          "status": "TODO"
+        },
+        {
+          "id": "EP-31-3",
+          "title": "Structured JSON logger (src/lib/logger.ts)",
+          "status": "TODO"
+        },
+        {
+          "id": "EP-31-4",
+          "title": "Split queries.ts (1047 lines) \u2192 src/db/queries/ domain files",
+          "status": "TODO"
+        },
+        {
+          "id": "EP-31-5",
+          "title": "AnalysisService with max_tokens: 4096, no truncation",
+          "status": "TODO"
+        },
+        {
+          "id": "EP-31-6",
+          "title": "Split web-server.js \u2192 src/routes/ (8 modules)",
+          "status": "TODO"
+        },
+        {
+          "id": "EP-31-7",
+          "title": "withRetry + exponential backoff on AnalysisService methods",
+          "status": "TODO"
+        },
+        {
+          "id": "EP-31-8",
+          "title": "Hono router replacing 31 if/else handlers",
+          "status": "TODO"
+        }
+      ],
+      "sprint": "Sprint 6"
+    },
+    {
+      "id": "EP-32",
+      "title": "[AI] Token Usage Tracking",
+      "status": "DONE",
+      "priority": "High",
+      "agentRole": "Senior ML Engineer",
+      "summary": "Add token_usage table (schema v17). Wrap every AIAnalyzer call to log method, model, input/output/cache tokens, cost_usd, topic. Auto-purge rows >30d. GET /api/token-stats endpoint. TokenStatsWidget on dashboard. Foundation for all cost optimization.",
+      "dependsOn": [],
+      "blocks": [
+        "EP-37",
+        "EP-38"
+      ],
+      "docPath": "/epics/ep32-token-usage-tracking",
+      "tickets": [
+        {
+          "id": "EP-32-1",
+          "title": "token_usage table \u2014 schema migration 16\u219217",
+          "status": "TODO"
+        },
+        {
+          "id": "EP-32-2",
+          "title": "Cost rate constants + computeCost() helper",
+          "status": "TODO"
+        },
+        {
+          "id": "EP-32-3",
+          "title": "insertTokenUsage, getTokenStats, getTotalCost in queries.ts",
+          "status": "TODO"
+        },
+        {
+          "id": "EP-32-4",
+          "title": "AIAnalyzer._track() \u2014 wire db into constructor, call after every API call",
+          "status": "TODO"
+        },
+        {
+          "id": "EP-32-5",
+          "title": "GET /api/token-stats endpoint",
+          "status": "TODO"
+        },
+        {
+          "id": "EP-32-6",
+          "title": "TokenStatsWidget component + dashboard integration",
+          "status": "TODO"
+        }
+      ],
+      "sprint": "Sprint 6"
+    },
+    {
+      "id": "EP-33",
+      "title": "Data Quality & Pipeline Observability",
+      "status": "DONE",
+      "priority": "High",
+      "agentRole": "Senior Data Engineer",
+      "summary": "Add ingestion_log table (per-run sync stats) and data_quality table (per-row anomalies). quality-checks.ts validates messages/meetings/action_items at ingest. FTS5 rebuilt to include subject field. Soft retention via archived_at + 90d hard purge. Topbar sync health dot.",
+      "dependsOn": [],
+      "blocks": [],
+      "docPath": "/epics/ep33-data-quality-observability",
+      "tickets": [
+        {
+          "id": "EP-33-1",
+          "title": "ingestion_log + data_quality tables \u2014 schema migration 17\u219218",
+          "status": "TODO"
+        },
+        {
+          "id": "EP-33-2",
+          "title": "quality-checks.ts \u2014 checkMessage, checkMeeting, checkActionItem",
+          "status": "TODO"
+        },
+        {
+          "id": "EP-33-3",
+          "title": "Wire quality checks into upsertMessage / upsertMeeting / insertActionItem",
+          "status": "TODO"
+        },
+        {
+          "id": "EP-33-4",
+          "title": "Wrap sync calls with startIngestionRun / updateIngestionRun / completeIngestionRun",
+          "status": "TODO"
+        },
+        {
+          "id": "EP-33-5",
+          "title": "FTS5 rebuild to include subject field + update triggers",
+          "status": "TODO"
+        },
+        {
+          "id": "EP-33-6",
+          "title": "archiveOldMessages + purgeArchivedMessages in runFullSync",
+          "status": "TODO"
+        },
+        {
+          "id": "EP-33-7",
+          "title": "GET /api/ingestion/runs + GET /api/data-quality endpoints",
+          "status": "TODO"
+        },
+        {
+          "id": "EP-33-8",
+          "title": "Topbar sync health dot (green/yellow/red)",
+          "status": "TODO"
+        }
+      ],
+      "sprint": "Sprint 6"
+    },
+    {
+      "id": "EP-34",
+      "title": "[AI] Relevance-Ranked Context Injection",
+      "status": "DONE",
+      "priority": "High",
+      "agentRole": "Senior ML Engineer",
+      "summary": "Replace naive recency-based message truncation with BM25\u00d7recency combined scoring. New context-ranker.ts util. Expose fts_rank from FTS queries. Wire into teams-updates, topic-expert, digest tools and web-server chat/teams/topic-expert endpoints.",
+      "dependsOn": [],
+      "blocks": [],
+      "docPath": "/epics/ep34-relevance-ranked-context",
+      "tickets": [
+        {
+          "id": "EP-34-1",
+          "title": "context-ranker.ts \u2014 rankAndTruncate() with BM25\u00d7recency scoring",
+          "status": "TODO"
+        },
+        {
+          "id": "EP-34-2",
+          "title": "Expose fts_rank in FTS SELECT queries + MessageRow type",
+          "status": "TODO"
+        },
+        {
+          "id": "EP-34-3",
+          "title": "Wire rankAndTruncate into teams-updates.ts",
+          "status": "TODO"
+        },
+        {
+          "id": "EP-34-4",
+          "title": "Wire rankAndTruncate into topic-expert.ts",
+          "status": "TODO"
+        },
+        {
+          "id": "EP-34-5",
+          "title": "Wire rankAndTruncate into digest.ts + web-server chat endpoint",
+          "status": "TODO"
+        }
+      ],
+      "sprint": "Sprint 6"
+    },
+    {
+      "id": "EP-35",
+      "title": "[AI] Action Item Confidence Triage",
+      "status": "DONE",
+      "priority": "Medium",
+      "agentRole": "Senior ML Engineer",
+      "summary": "Store confidence score on action_items. Items below 0.65 threshold \u2192 pending_review status instead of open. PendingReviewWidget on dashboard for confirm/dismiss. Sidebar badge count. Auto-promote stale pending items after 48h. Closes the AI output quality feedback loop.",
+      "dependsOn": [],
+      "blocks": [],
+      "docPath": "/epics/ep35-action-item-triage",
+      "tickets": [
+        {
+          "id": "EP-35-1",
+          "title": "action_items schema: add confidence, confirmed, confirmed_at, auto_promoted_at \u2014 migration 18\u219219",
+          "status": "TODO"
+        },
+        {
+          "id": "EP-35-2",
+          "title": "insertActionItem: route to pending_review if confidence < 0.65",
+          "status": "TODO"
+        },
+        {
+          "id": "EP-35-3",
+          "title": "resolveActionItemReview + autoPromotePendingItems in queries.ts",
+          "status": "TODO"
+        },
+        {
+          "id": "EP-35-4",
+          "title": "GET /api/action-items/pending-review + confirm/dismiss endpoints",
+          "status": "TODO"
+        },
+        {
+          "id": "EP-35-5",
+          "title": "PendingReviewWidget component",
+          "status": "TODO"
+        },
+        {
+          "id": "EP-35-6",
+          "title": "Sidebar badge count for pending items",
+          "status": "TODO"
+        },
+        {
+          "id": "EP-35-7",
+          "title": "Call autoPromotePendingItems in runFullSync",
+          "status": "TODO"
+        }
+      ],
+      "sprint": "Sprint 6"
+    },
+    {
+      "id": "EP-36",
+      "title": "[AI] Notebook Auto-Refresh & Pre-Brief Enhancement",
+      "status": "DONE",
+      "priority": "Medium",
+      "agentRole": "Senior ML Engineer",
+      "summary": "Fire getOrBuildNotebook() for each topic in runFullSync (async, fire-and-forget). Pass topic notebook content to generatePreBrief() as system context block. findTopicForEvent() matches calendar events to topics for notebook lookup.",
+      "dependsOn": [
+        "EP-26"
+      ],
+      "blocks": [],
+      "docPath": "/epics/ep36-notebook-auto-refresh",
+      "tickets": [
+        {
+          "id": "EP-36-1",
+          "title": "Call getOrBuildNotebook per topic in runFullSync (fire-and-forget)",
+          "status": "TODO"
+        },
+        {
+          "id": "EP-36-2",
+          "title": "generatePreBrief(): add optional notebookContent param + system block",
+          "status": "TODO"
+        },
+        {
+          "id": "EP-36-3",
+          "title": "findTopicForEvent() helper \u2014 keyword-match calendar event title to topics",
+          "status": "TODO"
+        },
+        {
+          "id": "EP-36-4",
+          "title": "Wire notebook into pre-brief generation loop in runFullSync",
+          "status": "TODO"
+        }
+      ],
+      "sprint": "Sprint 6"
+    },
+    {
+      "id": "EP-37",
+      "title": "[AI] Semantic Search via Embeddings",
+      "status": "DONE",
+      "priority": "Medium",
+      "agentRole": "Senior ML Engineer",
+      "summary": "Add message_embeddings table + sqlite-vec virtual table (schema v20). EmbeddingService using text-embedding-3-small. Embed at ingest. hybridSearch() combines FTS5 + vector cosine similarity. Background backfill script for existing messages. Enables concept queries FTS misses.",
+      "dependsOn": [
+        "EP-32"
+      ],
+      "blocks": [
+        "EP-39"
+      ],
+      "docPath": "/epics/ep37-semantic-search",
+      "tickets": [
+        {
+          "id": "EP-37-1",
+          "title": "message_embeddings + messages_vec virtual table \u2014 schema migration 19\u219220",
+          "status": "TODO"
+        },
+        {
+          "id": "EP-37-2",
+          "title": "Load sqlite-vec extension in src/db/index.ts",
+          "status": "TODO"
+        },
+        {
+          "id": "EP-37-3",
+          "title": "EmbeddingService (src/services/embedder.ts) \u2014 embed() + embedBatch()",
+          "status": "TODO"
+        },
+        {
+          "id": "EP-37-4",
+          "title": "saveEmbedding + getMissingEmbeddingIds + semanticSearch in queries.ts",
+          "status": "TODO"
+        },
+        {
+          "id": "EP-37-5",
+          "title": "hybridSearch() \u2014 union FTS + semantic, re-rank by combined score",
+          "status": "TODO"
+        },
+        {
+          "id": "EP-37-6",
+          "title": "Wire embedder into upsertMessage (embed at ingest)",
+          "status": "TODO"
+        },
+        {
+          "id": "EP-37-7",
+          "title": "Wire hybridSearch into teams-updates + topic-expert tools",
+          "status": "TODO"
+        },
+        {
+          "id": "EP-37-8",
+          "title": "scripts/embed-existing.ts \u2014 backfill script for existing messages",
+          "status": "TODO"
+        },
+        {
+          "id": "EP-37-9",
+          "title": "GET /api/embeddings/status endpoint",
+          "status": "TODO"
+        }
+      ],
+      "sprint": "Sprint 6"
+    },
+    {
+      "id": "EP-38",
+      "title": "[AI] Weekly Pattern Analysis",
+      "status": "DONE",
+      "priority": "Medium",
+      "agentRole": "Senior ML Engineer",
+      "summary": "4 SQL aggregation queries (open questions, overdue items, empty meetings, message volume anomalies) \u2192 Sonnet generates team health report \u2192 cached in digests table for 7 days. New WeeklyReportPage at /weekly-report. Low token cost (~$0.02/report).",
+      "dependsOn": [
+        "EP-32"
+      ],
+      "blocks": [],
+      "docPath": "/epics/ep38-weekly-pattern-analysis",
+      "tickets": [
+        {
+          "id": "EP-38-1",
+          "title": "getWeeklyStats() \u2014 4 SQL aggregation queries in queries.ts",
+          "status": "TODO"
+        },
+        {
+          "id": "EP-38-2",
+          "title": "generateWeeklyReport(stats) AI method in analyzer.ts",
+          "status": "TODO"
+        },
+        {
+          "id": "EP-38-3",
+          "title": "GET /api/weekly-report endpoint with 7-day digest cache",
+          "status": "TODO"
+        },
+        {
+          "id": "EP-38-4",
+          "title": "WeeklyReportPage component at /weekly-report",
+          "status": "TODO"
+        },
+        {
+          "id": "EP-38-5",
+          "title": "Add Weekly Report to Sidebar nav",
+          "status": "TODO"
+        }
+      ],
+      "sprint": "Sprint 6"
+    },
+    {
+      "id": "EP-39",
+      "title": "[AI] Cross-Topic Relationship Detection",
+      "status": "DONE",
+      "priority": "Low",
+      "agentRole": "Senior ML Engineer",
+      "summary": "Detect relationships between topics: Jira key co-mention (exact overlap) + notebook embedding cosine similarity (semantic). topic_relationships table (schema v21). Run after each runFullSync. Related Topics panel in TopicExpertPage notebook view.",
+      "dependsOn": [
+        "EP-37"
+      ],
+      "blocks": [],
+      "docPath": "/epics/ep39-cross-topic-relationships",
+      "tickets": [
+        {
+          "id": "EP-39-1",
+          "title": "topic_relationships table \u2014 schema migration 20\u219221",
+          "status": "TODO"
+        },
+        {
+          "id": "EP-39-2",
+          "title": "detectJiraOverlaps() \u2014 Jira key co-mention detection",
+          "status": "TODO"
+        },
+        {
+          "id": "EP-39-3",
+          "title": "detectSemanticRelationships() \u2014 notebook embedding cosine similarity",
+          "status": "TODO"
+        },
+        {
+          "id": "EP-39-4",
+          "title": "Wire detection into runFullSync after notebook updates",
+          "status": "TODO"
+        },
+        {
+          "id": "EP-39-5",
+          "title": "GET /api/topics/:name/relationships endpoint",
+          "status": "TODO"
+        },
+        {
+          "id": "EP-39-6",
+          "title": "Related Topics panel in TopicExpertPage",
+          "status": "TODO"
+        }
+      ],
+      "sprint": "Sprint 6"
+    },
+    {
+      "id": "EP-40",
+      "title": "[AI] AI Resilience & Model Hygiene",
+      "status": "DONE",
+      "priority": "High",
+      "agentRole": "Senior ML Engineer",
+      "summary": "Three ML gaps: (1) Wire topic notebook into chatWithContext() as persistent system context. (2) withStaleFallback() for digest/brief/notebook endpoints \u2014 return cached content instead of 500 on AI failure. (3) Use claude-haiku-latest / claude-sonnet-latest aliases via env vars instead of hardcoded pinned versions.",
+      "dependsOn": [],
+      "blocks": [],
+      "docPath": "/epics/ep40-ai-resilience-model-hygiene",
+      "tickets": [
+        {
+          "id": "EP-40-1",
+          "title": "chatWithContext(): add notebookContent? param + system block injection",
+          "status": "TODO"
+        },
+        {
+          "id": "EP-40-2",
+          "title": "Wire notebook into /api/notebooks/:topicName/chat endpoint",
+          "status": "TODO"
+        },
+        {
+          "id": "EP-40-3",
+          "title": "withStaleFallback() helper in web-server.js",
+          "status": "TODO"
+        },
+        {
+          "id": "EP-40-4",
+          "title": "Apply withStaleFallback to digest, morning-brief, weekly-report, notebook endpoints",
+          "status": "TODO"
+        },
+        {
+          "id": "EP-40-5",
+          "title": "UI stale banner \u2014 show \u26a0 when response has stale: true",
+          "status": "TODO"
+        },
+        {
+          "id": "EP-40-6",
+          "title": "EXTRACTION_MODEL + DIGEST_MODEL read from env vars with latest aliases",
+          "status": "TODO"
+        }
+      ],
+      "sprint": "Sprint 6"
+    },
+    {
+      "id": "EP-41",
+      "title": "Topic Health Score",
+      "status": "TODO",
+      "priority": "High",
+      "agentRole": "Senior Data Engineer",
+      "summary": "SQL-computed health score (0\u20131) per topic from four components: message recency, activity ratio (7d/30d), action item completion rate, meeting transcript coverage. Displayed as colored badge (green/yellow/red) on Topics page. Zero new tables \u2014 pure SQL aggregation. Surface red/yellow topics in NeedsAttentionSection.",
+      "dependsOn": [],
+      "blocks": [],
+      "docPath": "/epics/ep41-topic-health-score",
+      "tickets": [
+        {
+          "id": "EP-41-1",
+          "title": "getTopicHealthScores() SQL function in queries.ts",
+          "status": "TODO"
+        },
+        {
+          "id": "EP-41-2",
+          "title": "GET /api/topics/health endpoint",
+          "status": "TODO"
+        },
+        {
+          "id": "EP-41-3",
+          "title": "Colored health badge on TopicsPage",
+          "status": "TODO"
+        },
+        {
+          "id": "EP-41-4",
+          "title": "Wire red/yellow topics into NeedsAttentionSection",
+          "status": "TODO"
+        }
+      ]
+    },
+    {
+      "id": "EP-42",
+      "title": "Jira Transition History",
+      "status": "TODO",
+      "priority": "High",
+      "agentRole": "Senior Data Engineer",
+      "summary": "Add jira_transitions table (schema v22) to record every Jira status change. Enables cycle time analysis (In Progress \u2192 Done duration), blocker detection (stuck in same status > N days), and sprint velocity trends. Transition detection runs on every Jira sync by comparing current status to last recorded transition.",
+      "dependsOn": [],
+      "blocks": [],
+      "docPath": "/epics/ep42-jira-transition-history",
+      "tickets": [
+        {
+          "id": "EP-42-1",
+          "title": "jira_transitions table \u2014 schema migration v22",
+          "status": "TODO"
+        },
+        {
+          "id": "EP-42-2",
+          "title": "Transition detection in jira-browser.ts on each sync",
+          "status": "TODO"
+        },
+        {
+          "id": "EP-42-3",
+          "title": "getCycleTime() + getWeeklyVelocity() query functions",
+          "status": "TODO"
+        },
+        {
+          "id": "EP-42-4",
+          "title": "GET /api/jira/velocity + /api/jira/cycle-time + /api/jira/stuck endpoints",
+          "status": "TODO"
+        },
+        {
+          "id": "EP-42-5",
+          "title": "VelocityWidget \u2014 mini bar chart + cycle time badge",
+          "status": "TODO"
+        }
+      ]
+    },
+    {
+      "id": "EP-43",
+      "title": "Multi-Repo Code Intelligence",
+      "status": "done",
+      "priority": "High",
+      "agentRole": "Senior Architect",
+      "dependsOn": [],
+      "blocks": [
+        "EP-44",
+        "EP-45"
+      ],
+      "docPath": "/epics/ep43-multi-repo-code-intelligence",
+      "tickets": [
+        {
+          "id": "EP-43-1",
+          "title": "code_graph table \u2014 schema migration v23",
+          "status": "TODO"
+        },
+        {
+          "id": "EP-43-2",
+          "title": "RepoConfig in config.ts + example-service_PATH/OPERATIONS_PATH/GITHUB_TOKEN env vars",
+          "status": "TODO"
+        },
+        {
+          "id": "EP-43-3",
+          "title": "CodeIndexer class \u2014 ts-morph AST extraction for .ts/.tsx files",
+          "status": "TODO"
+        },
+        {
+          "id": "EP-43-4",
+          "title": "Incremental indexing via git diff --name-only",
+          "status": "TODO"
+        },
+        {
+          "id": "EP-43-5",
+          "title": "getBlastRadius() + getTestCoverage() + getFileOwners() query functions",
+          "status": "TODO"
+        },
+        {
+          "id": "EP-43-6",
+          "title": "GET /api/code-graph/blast-radius + /test-coverage + /owners endpoints",
+          "status": "TODO"
+        },
+        {
+          "id": "EP-43-7",
+          "title": "POST /api/code-graph/index \u2014 background reindex (202 pattern)",
+          "status": "TODO"
+        },
+        {
+          "id": "EP-43-8",
+          "title": "Wire CodeIndexer.syncAll() into runFullSync()",
+          "status": "TODO"
+        },
+        {
+          "id": "EP-43-9",
+          "title": "CLAUDE.md Connected Repositories section",
+          "status": "TODO"
+        }
+      ]
+    },
+    {
+      "id": "EP-44",
+      "title": "PR Intelligence",
+      "status": "TODO",
+      "priority": "High",
+      "agentRole": "Senior Fullstack",
+      "summary": "Three PR capabilities: (1) Review open PRs \u2014 AI reads diff + blast radius + work context (Jira/Teams/notebook), runs targeted tests, posts structured GitHub review comment via gh CLI. (2) Enrich any PR with work context (fast, no AI). (3) Create draft PRs after MCP implements changes \u2014 auto-generated body with business context + test evidence + blast radius disclosure.",
+      "dependsOn": [
+        "EP-43"
+      ],
+      "blocks": [],
+      "docPath": "/epics/ep44-pr-intelligence",
+      "tickets": [
+        {
+          "id": "EP-44-1",
+          "title": "reviewPR() + generatePRDescription() methods on AIAnalyzer",
+          "status": "TODO"
+        },
+        {
+          "id": "EP-44-2",
+          "title": "GET /api/pr/list + /api/pr/review + /api/pr/enrich endpoints",
+          "status": "TODO"
+        },
+        {
+          "id": "EP-44-3",
+          "title": "POST /api/pr/create \u2014 draft PR with auto-generated body",
+          "status": "TODO"
+        },
+        {
+          "id": "EP-44-4",
+          "title": "Post review to GitHub via gh pr review --comment",
+          "status": "TODO"
+        },
+        {
+          "id": "EP-44-5",
+          "title": "PRReviewPage \u2014 open PR list + review output panel",
+          "status": "TODO"
+        }
+      ]
+    },
+    {
+      "id": "EP-45",
+      "title": "Teammate Intelligence",
+      "status": "TODO",
+      "priority": "High",
+      "agentRole": "Senior Fullstack",
+      "summary": "Explicit opt-in profiling: you mark teammates, system builds full AI profiles (activity, Jira workload, meetings, code ownership). Unmarked people in synced channels get basic stats only (message count, last active) \u2014 no AI analysis. Profiles refreshed on every sync. Private notes field never sent to AI. Expert finder: who to ping for a given file.",
+      "dependsOn": [
+        "EP-43"
+      ],
+      "blocks": [],
+      "docPath": "/epics/ep45-teammate-intelligence",
+      "tickets": [
+        {
+          "id": "EP-45-1",
+          "title": "team_members + member_profiles tables \u2014 schema migration v24",
+          "status": "TODO"
+        },
+        {
+          "id": "EP-45-2",
+          "title": "buildMemberProfile() on AIAnalyzer (Haiku model)",
+          "status": "TODO"
+        },
+        {
+          "id": "EP-45-3",
+          "title": "profile-builder.ts \u2014 buildOrUpdateMemberProfile() orchestrator",
+          "status": "TODO"
+        },
+        {
+          "id": "EP-45-4",
+          "title": "Wire profile builder into runFullSync() for marked members",
+          "status": "TODO"
+        },
+        {
+          "id": "EP-45-5",
+          "title": "GET/POST/PATCH /api/teammates endpoints + expert finder",
+          "status": "TODO"
+        },
+        {
+          "id": "EP-45-6",
+          "title": "TeammatesPage \u2014 marked/unmarked separation + profile panel",
+          "status": "TODO"
+        },
+        {
+          "id": "EP-45-7",
+          "title": "Wire suggested reviewers from EP-45 into PR review (EP-44)",
+          "status": "TODO"
+        }
+      ]
+    }
+  ]
+}

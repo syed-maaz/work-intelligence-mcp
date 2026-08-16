@@ -1,0 +1,227 @@
+<mxfile host="65bd71144e">
+    <diagram id="wi-dispatch-flow" name="/wi Dispatch Flow">
+        <mxGraphModel dx="1255" dy="929" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="0" pageScale="1" pageWidth="2400" pageHeight="1600" math="0" shadow="0">
+            <root>
+                <mxCell id="0" />
+                <mxCell id="1" parent="0" />
+                <mxCell id="title" value="/wi &lt;goal&gt; — Cypher dispatch flow (ADR-037 loop / ADR-039 scope / ADR-043 PM routing)&#10;grounded in src/services/cypher/loop.ts::runLoop" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=13;fontStyle=1;fontColor=#1a1a1a;" parent="1" vertex="1">
+                    <mxGeometry x="120" y="16" width="660" height="44" as="geometry" />
+                </mxCell>
+                <mxCell id="entry" value="/wi &lt;goal&gt;&#10;&#10;POST /api/wi/dispatch/stream&#10;runLoop({ goal, phase:'scope' })&#10;— opens cypher_sessions row (ledger) · model = Opus" style="rounded=1;whiteSpace=wrap;html=1;arcSize=12;fillColor=#e8eaf6;strokeColor=#3949ab;fontColor=#1a237e;fontSize=11;verticalAlign=middle;" parent="1" vertex="1">
+                    <mxGeometry x="300" y="80" width="300" height="80" as="geometry" />
+                </mxCell>
+                <mxCell id="scope" value="SCOPE phase&#10;(re-prompt #1 — goal refinement)&#10;&#10;Read-only pass · tool catalog EXCLUDES all mutators&#10;raw goal → RefinedGoal { intent, target, constraints, success_criteria }&#10;(ADR-039 / ADR-042 &quot;Stage-1&quot;)" style="rounded=1;whiteSpace=wrap;html=1;arcSize=10;fillColor=#fff8e1;strokeColor=#f9a825;fontColor=#6d4c00;fontSize=11;verticalAlign=middle;" parent="1" vertex="1">
+                    <mxGeometry x="270" y="200" width="360" height="96" as="geometry" />
+                </mxCell>
+                <mxCell id="clarify" value="Clarifying question&#10;back to user&#10;(instead of proceeding)" style="rounded=1;whiteSpace=wrap;html=1;arcSize=20;dashed=1;fillColor=#f5f5f5;strokeColor=#9e9e9e;fontColor=#424242;fontSize=10;verticalAlign=middle;" parent="1" vertex="1">
+                    <mxGeometry x="690" y="212" width="170" height="72" as="geometry" />
+                </mxCell>
+                <mxCell id="pmtag" value="PM layer&#10;(ADR-043 backlog router)" style="rounded=1;whiteSpace=wrap;html=1;arcSize=30;fillColor=#d1c4e9;strokeColor=#5e35b1;fontColor=#311b92;fontSize=10;fontStyle=1;verticalAlign=middle;" parent="1" vertex="1">
+                    <mxGeometry x="610" y="330" width="140" height="48" as="geometry" />
+                </mxCell>
+                <mxCell id="e_pmtag" style="edgeStyle=none;html=1;strokeColor=#5e35b1;dashed=1;endArrow=none;" parent="1" source="pmtag" target="decision" edge="1">
+                    <mxGeometry relative="1" as="geometry" />
+                </mxCell>
+                <mxCell id="decision" value="PM routing&#10;intent ?&#10;&#10;(ADR-043&#10;loop.ts:1670&#10;shouldCaptureToBoard)" style="rhombus;whiteSpace=wrap;html=1;fillColor=#ede7f6;strokeColor=#5e35b1;fontColor=#311b92;fontSize=11;fontStyle=1;verticalAlign=middle;" parent="1" vertex="1">
+                    <mxGeometry x="330" y="340" width="240" height="130" as="geometry" />
+                </mxCell>
+                <mxCell id="pmboard" value="PM board (deliberative)&#10;captureToBoard()&#10;&#10;→ PM backlog card (thinking-card)&#10;session closes outcome = 'captured_to_board'&#10;NOT executed" style="rounded=1;whiteSpace=wrap;html=1;arcSize=12;fillColor=#e8f5e9;strokeColor=#2e7d32;fontColor=#1b5e20;fontSize=11;verticalAlign=middle;" parent="1" vertex="1">
+                    <mxGeometry x="40" y="520" width="270" height="96" as="geometry" />
+                </mxCell>
+                <mxCell id="execute" value="EXECUTE phase&#10;(re-prompt #2 — agentic tool-use loop)&#10;loop.ts:925" style="rounded=1;whiteSpace=wrap;html=1;arcSize=10;fillColor=#e3f2fd;strokeColor=#1565c0;fontColor=#0d3c78;fontSize=11;fontStyle=1;verticalAlign=top;spacingTop=8;" parent="1" vertex="1">
+                    <mxGeometry x="440" y="520" width="420" height="220" as="geometry" />
+                </mxCell>
+                <mxCell id="ex_model" value="model (Claude)&#10;→ tool_use" style="rounded=1;whiteSpace=wrap;html=1;arcSize=30;fillColor=#bbdefb;strokeColor=#1565c0;fontColor=#0d3c78;fontSize=10;" parent="1" vertex="1">
+                    <mxGeometry x="470" y="574" width="150" height="54" as="geometry" />
+                </mxCell>
+                <mxCell id="ex_run" value="run tool&#10;(palace recall · code-graph ·&#10;jira/teams search · brain_decide …)" style="rounded=1;whiteSpace=wrap;html=1;arcSize=20;fillColor=#bbdefb;strokeColor=#1565c0;fontColor=#0d3c78;fontSize=10;" parent="1" vertex="1">
+                    <mxGeometry x="670" y="568" width="170" height="66" as="geometry" />
+                </mxCell>
+                <mxCell id="ex_result" value="append tool_result&#10;→ re-prompt model" style="rounded=1;whiteSpace=wrap;html=1;arcSize=30;fillColor=#bbdefb;strokeColor=#1565c0;fontColor=#0d3c78;fontSize=10;" parent="1" vertex="1">
+                    <mxGeometry x="580" y="662" width="180" height="54" as="geometry" />
+                </mxCell>
+                <mxCell id="ex_exit" value="until end_turn  OR  cap (iterations / tokens / wallclock) — text = answer" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;fontSize=9;fontColor=#0d3c78;fontStyle=2;" parent="1" vertex="1">
+                    <mxGeometry x="450" y="726" width="400" height="18" as="geometry" />
+                </mxCell>
+                <mxCell id="close" value="Close + learn&#10;&#10;session closes with outcome&#10;(success | mixed | failed | captured_to_board)&#10;→ updates Beta priors (Cypher learns skill/tool routing)" style="rounded=1;whiteSpace=wrap;html=1;arcSize=12;fillColor=#eceff1;strokeColor=#455a64;fontColor=#263238;fontSize=11;verticalAlign=middle;" parent="1" vertex="1">
+                    <mxGeometry x="270" y="820" width="360" height="96" as="geometry" />
+                </mxCell>
+                <mxCell id="bug814" value="⚠ bug #814 (HIGH, OPEN)&#10;SCOPE often HALTS before EXECUTE — returns the&#10;RefinedGoal JSON as the answer with a false 'success',&#10;never entering the tool-use loop.&#10;Why smoke §20 shows steps = 0." style="rounded=1;whiteSpace=wrap;html=1;arcSize=8;dashed=1;dashPattern=6 4;fillColor=#ffebee;strokeColor=#c62828;fontColor=#b71c1c;fontSize=10;fontStyle=1;verticalAlign=middle;" parent="1" vertex="1">
+                    <mxGeometry x="20" y="330" width="290" height="110" as="geometry" />
+                </mxCell>
+                <mxCell id="e1" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#3949ab;strokeWidth=2;endArrow=block;endFill=1;" parent="1" source="entry" target="scope" edge="1">
+                    <mxGeometry relative="1" as="geometry" />
+                </mxCell>
+                <mxCell id="e_clarify" value="needs input" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;dashed=1;strokeColor=#9e9e9e;endArrow=block;fontSize=9;fontColor=#616161;" parent="1" source="scope" target="clarify" edge="1">
+                    <mxGeometry relative="1" as="geometry" />
+                </mxCell>
+                <mxCell id="e2" value="RefinedGoal" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#f9a825;strokeWidth=2;endArrow=block;endFill=1;fontSize=9;fontColor=#6d4c00;" parent="1" source="scope" target="decision" edge="1">
+                    <mxGeometry relative="1" as="geometry" />
+                </mxCell>
+                <mxCell id="e3" value="DELIBERATIVE&#10;brainstorm | plan | decide" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#2e7d32;strokeWidth=2;endArrow=block;endFill=1;fontSize=10;fontColor=#1b5e20;fontStyle=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;" parent="1" source="decision" target="pmboard" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <Array as="points">
+                            <mxPoint x="175" y="405" />
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="e4" value="DOING&#10;investigate | build | review&#10;analyze | refactor" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#1565c0;strokeWidth=2;endArrow=block;endFill=1;fontSize=10;fontColor=#0d3c78;fontStyle=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;" parent="1" source="decision" target="execute" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <Array as="points">
+                            <mxPoint x="650" y="405" />
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="c1" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#1565c0;endArrow=block;endFill=1;" parent="1" source="ex_model" target="ex_run" edge="1">
+                    <mxGeometry relative="1" as="geometry" />
+                </mxCell>
+                <mxCell id="c2" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#1565c0;endArrow=block;endFill=1;" parent="1" source="ex_run" target="ex_result" edge="1">
+                    <mxGeometry relative="1" as="geometry" />
+                </mxCell>
+                <mxCell id="c3" value="loop" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#1565c0;strokeWidth=2;endArrow=block;endFill=1;dashed=1;dashPattern=4 3;fontSize=9;fontColor=#0d3c78;exitX=0;exitY=0.5;entryX=0;entryY=1;" parent="1" source="ex_result" target="ex_model" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <Array as="points">
+                            <mxPoint x="450" y="689" />
+                            <mxPoint x="450" y="601" />
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="e5" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#2e7d32;strokeWidth=2;endArrow=block;endFill=1;" parent="1" source="pmboard" target="close" edge="1">
+                    <mxGeometry relative="1" as="geometry" />
+                </mxCell>
+                <mxCell id="e6" value="end_turn → answer" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#1565c0;strokeWidth=2;endArrow=block;endFill=1;fontSize=9;fontColor=#0d3c78;" parent="1" source="execute" target="close" edge="1">
+                    <mxGeometry relative="1" as="geometry" />
+                </mxCell>
+                <mxCell id="e_bug" value="halts here" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;dashed=1;dashPattern=6 4;strokeColor=#c62828;strokeWidth=2;endArrow=blockThin;endFill=1;fontSize=9;fontColor=#b71c1c;fontStyle=1;" parent="1" source="bug814" target="decision" edge="1">
+                    <mxGeometry relative="1" as="geometry" />
+                </mxCell>
+                <mxCell id="e_bug2" value="⚠ returns RefinedGoal, skips EXECUTE (false success)" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;dashed=1;dashPattern=6 4;strokeColor=#c62828;strokeWidth=2;endArrow=block;endFill=1;fontSize=9;fontColor=#b71c1c;fontStyle=1;exitX=0;exitY=0.5;entryX=0;entryY=0.5;" parent="1" source="scope" target="close" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <Array as="points">
+                            <mxPoint x="240" y="248" />
+                            <mxPoint x="240" y="868" />
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+
+                
+                <mxCell id="tbl_title" value="SCOPE phase — 10 real dispatches (cypher_sessions): what SCOPE received → what it generated → what PM routing did" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;fontSize=12;fontStyle=1;fontColor=#1a1a1a;" parent="1" vertex="1">
+                    <mxGeometry x="920.0" y="960" width="820" height="24" as="geometry" />
+                </mxCell>
+
+                
+                <mxCell id="h0" value="#" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#37474f;strokeColor=#263238;fontColor=#ffffff;fontStyle=1;fontSize=10;align=center;" parent="1" vertex="1"><mxGeometry x="920.0" y="990" width="30" height="34" as="geometry" /></mxCell>
+                <mxCell id="h1" value="RECEIVED — raw /wi goal" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#37474f;strokeColor=#263238;fontColor=#ffffff;fontStyle=1;fontSize=10;align=center;" parent="1" vertex="1"><mxGeometry x="950.0" y="990" width="300" height="34" as="geometry" /></mxCell>
+                <mxCell id="h2" value="GENERATED — RefinedGoal (intent · target)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#37474f;strokeColor=#263238;fontColor=#ffffff;fontStyle=1;fontSize=10;align=center;" parent="1" vertex="1"><mxGeometry x="1250.0" y="990" width="330" height="34" as="geometry" /></mxCell>
+                <mxCell id="h3" value="→ PM ROUTING (outcome)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#37474f;strokeColor=#263238;fontColor=#ffffff;fontStyle=1;fontSize=10;align=center;" parent="1" vertex="1"><mxGeometry x="1580.0" y="990" width="160" height="34" as="geometry" /></mxCell>
+
+                
+                <mxCell id="r1c0" value="1" style="rounded=0;html=1;fillColor=#e8f5e9;strokeColor=#b0bec5;fontSize=9;align=center;" parent="1" vertex="1"><mxGeometry x="920.0" y="1024" width="30" height="40" as="geometry" /></mxCell>
+                <mxCell id="r1c1" value="plan the rollout approach for the smoke-outcome test suite" style="rounded=0;html=1;fillColor=#e8f5e9;strokeColor=#b0bec5;fontSize=9;align=left;spacingLeft=6;whiteSpace=wrap;" parent="1" vertex="1"><mxGeometry x="950.0" y="1024" width="300" height="40" as="geometry" /></mxCell>
+                <mxCell id="r1c2" value="intent=plan · target=smoke-outcome test suite rollout" style="rounded=0;html=1;fillColor=#e8f5e9;strokeColor=#b0bec5;fontSize=9;align=left;spacingLeft=6;whiteSpace=wrap;" parent="1" vertex="1"><mxGeometry x="1250.0" y="1024" width="330" height="40" as="geometry" /></mxCell>
+                <mxCell id="r1c3" value="DELIBERATIVE → PM board&#10;captured_to_board" style="rounded=0;html=1;fillColor=#c8e6c9;strokeColor=#b0bec5;fontColor=#1b5e20;fontSize=9;align=center;fontStyle=1;whiteSpace=wrap;" parent="1" vertex="1"><mxGeometry x="1580.0" y="1024" width="160" height="40" as="geometry" /></mxCell>
+
+                
+                <mxCell id="r2c0" value="2" style="rounded=0;html=1;fillColor=#e8f5e9;strokeColor=#b0bec5;fontSize=9;align=center;" parent="1" vertex="1"><mxGeometry x="920.0" y="1064" width="30" height="40" as="geometry" /></mxCell>
+                <mxCell id="r2c1" value="decide whether to use Redis or in-memory cache for the search-provider token" style="rounded=0;html=1;fillColor=#e8f5e9;strokeColor=#b0bec5;fontSize=9;align=left;spacingLeft=6;whiteSpace=wrap;" parent="1" vertex="1"><mxGeometry x="950.0" y="1064" width="300" height="40" as="geometry" /></mxCell>
+                <mxCell id="r2c2" value="intent=decide · target=search-provider token cache strategy — Redis vs in-memory" style="rounded=0;html=1;fillColor=#e8f5e9;strokeColor=#b0bec5;fontSize=9;align=left;spacingLeft=6;whiteSpace=wrap;" parent="1" vertex="1"><mxGeometry x="1250.0" y="1064" width="330" height="40" as="geometry" /></mxCell>
+                <mxCell id="r2c3" value="DELIBERATIVE → PM board&#10;captured_to_board" style="rounded=0;html=1;fillColor=#c8e6c9;strokeColor=#b0bec5;fontColor=#1b5e20;fontSize=9;align=center;fontStyle=1;whiteSpace=wrap;" parent="1" vertex="1"><mxGeometry x="1580.0" y="1064" width="160" height="40" as="geometry" /></mxCell>
+
+                
+                <mxCell id="r3c0" value="3" style="rounded=0;html=1;fillColor=#fff3e0;strokeColor=#b0bec5;fontSize=9;align=center;" parent="1" vertex="1"><mxGeometry x="920.0" y="1104" width="30" height="46" as="geometry" /></mxCell>
+                <mxCell id="r3c1" value="brainstorm ways to speed up the morning brief" style="rounded=0;html=1;fillColor=#fff3e0;strokeColor=#b0bec5;fontSize=9;align=left;spacingLeft=6;whiteSpace=wrap;" parent="1" vertex="1"><mxGeometry x="950.0" y="1104" width="300" height="46" as="geometry" /></mxCell>
+                <mxCell id="r3c2" value="intent=brainstorm · target=wi-morning-brief pipeline" style="rounded=0;html=1;fillColor=#fff3e0;strokeColor=#b0bec5;fontSize=9;align=left;spacingLeft=6;whiteSpace=wrap;" parent="1" vertex="1"><mxGeometry x="1250.0" y="1104" width="330" height="46" as="geometry" /></mxCell>
+                <mxCell id="r3c3" value="DELIBERATIVE → PM board&#10;captured_to_board&#10;⚠ files empty card, no ideas (reminder-parked A+B fix)" style="rounded=0;html=1;fillColor=#ffe0b2;strokeColor=#e65100;fontColor=#bf360c;fontSize=8;align=center;fontStyle=1;whiteSpace=wrap;" parent="1" vertex="1"><mxGeometry x="1580.0" y="1104" width="160" height="46" as="geometry" /></mxCell>
+
+                
+                <mxCell id="r4c0" value="4" style="rounded=0;html=1;fillColor=#e3f2fd;strokeColor=#b0bec5;fontSize=9;align=center;" parent="1" vertex="1"><mxGeometry x="920.0" y="1150" width="30" height="40" as="geometry" /></mxCell>
+                <mxCell id="r4c1" value="review PR 4714 for correctness bugs in the ProductFunctions endpoint" style="rounded=0;html=1;fillColor=#e3f2fd;strokeColor=#b0bec5;fontSize=9;align=left;spacingLeft=6;whiteSpace=wrap;" parent="1" vertex="1"><mxGeometry x="950.0" y="1150" width="300" height="40" as="geometry" /></mxCell>
+                <mxCell id="r4c2" value="intent=review · target=PR 4714 — ProductFunctions endpoint" style="rounded=0;html=1;fillColor=#e3f2fd;strokeColor=#b0bec5;fontSize=9;align=left;spacingLeft=6;whiteSpace=wrap;" parent="1" vertex="1"><mxGeometry x="1250.0" y="1150" width="330" height="40" as="geometry" /></mxCell>
+                <mxCell id="r4c3" value="DOING → EXECUTE&#10;mixed" style="rounded=0;html=1;fillColor=#bbdefb;strokeColor=#b0bec5;fontColor=#0d3c78;fontSize=9;align=center;fontStyle=1;whiteSpace=wrap;" parent="1" vertex="1"><mxGeometry x="1580.0" y="1150" width="160" height="40" as="geometry" /></mxCell>
+
+                
+                <mxCell id="r5c0" value="5" style="rounded=0;html=1;fillColor=#e3f2fd;strokeColor=#b0bec5;fontSize=9;align=center;" parent="1" vertex="1"><mxGeometry x="920.0" y="1190" width="30" height="40" as="geometry" /></mxCell>
+                <mxCell id="r5c3" value="DOING → EXECUTE&#10;success" style="rounded=0;html=1;fillColor=#bbdefb;strokeColor=#b0bec5;fontColor=#0d3c78;fontSize=9;align=center;fontStyle=1;whiteSpace=wrap;" parent="1" vertex="1"><mxGeometry x="1580.0" y="1190" width="160" height="40" as="geometry" /></mxCell>
+
+                
+                <mxCell id="r6c0" value="6" style="rounded=0;html=1;fillColor=#e3f2fd;strokeColor=#b0bec5;fontSize=9;align=center;" parent="1" vertex="1"><mxGeometry x="920.0" y="1230" width="30" height="40" as="geometry" /></mxCell>
+                <mxCell id="r6c1" value="analyze why the morning brief cron is slow" style="rounded=0;html=1;fillColor=#e3f2fd;strokeColor=#b0bec5;fontSize=9;align=left;spacingLeft=6;whiteSpace=wrap;" parent="1" vertex="1"><mxGeometry x="950.0" y="1230" width="300" height="40" as="geometry" /></mxCell>
+                <mxCell id="r6c2" value="intent=investigate · target=wi-morning-brief cron job&#10;(note: raw said 'analyze' → refined to investigate)" style="rounded=0;html=1;fillColor=#e3f2fd;strokeColor=#b0bec5;fontSize=9;align=left;spacingLeft=6;whiteSpace=wrap;" parent="1" vertex="1"><mxGeometry x="1250.0" y="1230" width="330" height="40" as="geometry" /></mxCell>
+                <mxCell id="r6c3" value="DOING → EXECUTE&#10;mixed" style="rounded=0;html=1;fillColor=#bbdefb;strokeColor=#b0bec5;fontColor=#0d3c78;fontSize=9;align=center;fontStyle=1;whiteSpace=wrap;" parent="1" vertex="1"><mxGeometry x="1580.0" y="1230" width="160" height="40" as="geometry" /></mxCell>
+
+                
+                <mxCell id="r7c0" value="7" style="rounded=0;html=1;fillColor=#e3f2fd;strokeColor=#b0bec5;fontSize=9;align=center;" parent="1" vertex="1"><mxGeometry x="920.0" y="1270" width="30" height="40" as="geometry" /></mxCell>
+                <mxCell id="r7c1" value="build two WI skills: wi-memory-compact + wi-recall-tune" style="rounded=0;html=1;fillColor=#e3f2fd;strokeColor=#b0bec5;fontSize=9;align=left;spacingLeft=6;whiteSpace=wrap;" parent="1" vertex="1"><mxGeometry x="950.0" y="1270" width="300" height="40" as="geometry" /></mxCell>
+                <mxCell id="r7c2" value="intent=build · target=wi-memory-compact skill (MEMORY.md compaction)" style="rounded=0;html=1;fillColor=#e3f2fd;strokeColor=#b0bec5;fontSize=9;align=left;spacingLeft=6;whiteSpace=wrap;" parent="1" vertex="1"><mxGeometry x="1250.0" y="1270" width="330" height="40" as="geometry" /></mxCell>
+                <mxCell id="r7c3" value="DOING → EXECUTE&#10;success" style="rounded=0;html=1;fillColor=#bbdefb;strokeColor=#b0bec5;fontColor=#0d3c78;fontSize=9;align=center;fontStyle=1;whiteSpace=wrap;" parent="1" vertex="1"><mxGeometry x="1580.0" y="1270" width="160" height="40" as="geometry" /></mxCell>
+
+                
+                <mxCell id="r8c0" value="8" style="rounded=0;html=1;fillColor=#e3f2fd;strokeColor=#b0bec5;fontSize=9;align=center;" parent="1" vertex="1"><mxGeometry x="920.0" y="1310" width="30" height="40" as="geometry" /></mxCell>
+                <mxCell id="r8c1" value="ADR-044 S2.7: wire Jira background fetch into runFullSync" style="rounded=0;html=1;fillColor=#e3f2fd;strokeColor=#b0bec5;fontSize=9;align=left;spacingLeft=6;whiteSpace=wrap;" parent="1" vertex="1"><mxGeometry x="950.0" y="1310" width="300" height="40" as="geometry" /></mxCell>
+                <mxCell id="r8c2" value="intent=build · target=runFullSync — add runJiraSync via fetcher orchestrator" style="rounded=0;html=1;fillColor=#e3f2fd;strokeColor=#b0bec5;fontSize=9;align=left;spacingLeft=6;whiteSpace=wrap;" parent="1" vertex="1"><mxGeometry x="1250.0" y="1310" width="330" height="40" as="geometry" /></mxCell>
+                <mxCell id="r8c3" value="DOING → EXECUTE&#10;failed" style="rounded=0;html=1;fillColor=#bbdefb;strokeColor=#b0bec5;fontColor=#0d3c78;fontSize=9;align=center;fontStyle=1;whiteSpace=wrap;" parent="1" vertex="1"><mxGeometry x="1580.0" y="1310" width="160" height="40" as="geometry" /></mxCell>
+
+                
+                <mxCell id="r9c0" value="9" style="rounded=0;html=1;fillColor=#e3f2fd;strokeColor=#b0bec5;fontSize=9;align=center;" parent="1" vertex="1"><mxGeometry x="920.0" y="1350" width="30" height="40" as="geometry" /></mxCell>
+                <mxCell id="r9c1" value="fix async/await mismatch in tool-catalog-phase.test.ts" style="rounded=0;html=1;fillColor=#e3f2fd;strokeColor=#b0bec5;fontSize=9;align=left;spacingLeft=6;whiteSpace=wrap;" parent="1" vertex="1"><mxGeometry x="950.0" y="1350" width="300" height="40" as="geometry" /></mxCell>
+                <mxCell id="r9c2" value="intent=build · target=tool-catalog-phase.test.ts (getCatalogHint tests)" style="rounded=0;html=1;fillColor=#e3f2fd;strokeColor=#b0bec5;fontSize=9;align=left;spacingLeft=6;whiteSpace=wrap;" parent="1" vertex="1"><mxGeometry x="1250.0" y="1350" width="330" height="40" as="geometry" /></mxCell>
+                <mxCell id="r9c3" value="DOING → EXECUTE&#10;mixed" style="rounded=0;html=1;fillColor=#bbdefb;strokeColor=#b0bec5;fontColor=#0d3c78;fontSize=9;align=center;fontStyle=1;whiteSpace=wrap;" parent="1" vertex="1"><mxGeometry x="1580.0" y="1350" width="160" height="40" as="geometry" /></mxCell>
+
+                
+                <mxCell id="r10c0" value="10" style="rounded=0;html=1;fillColor=#e3f2fd;strokeColor=#b0bec5;fontSize=9;align=center;" parent="1" vertex="1"><mxGeometry x="920.0" y="1390" width="30" height="44" as="geometry" /></mxCell>
+                <mxCell id="r10c1" value="AC-A1: extend RefinedGoalIntent enum with brainstorm|plan|decide" style="rounded=0;html=1;fillColor=#e3f2fd;strokeColor=#b0bec5;fontSize=9;align=left;spacingLeft=6;whiteSpace=wrap;" parent="1" vertex="1"><mxGeometry x="950.0" y="1390" width="300" height="44" as="geometry" /></mxCell>
+                <mxCell id="r10c2" value="intent=build · target=RefinedGoalIntent enum" style="rounded=0;html=1;fillColor=#e3f2fd;strokeColor=#b0bec5;fontSize=9;align=left;spacingLeft=6;whiteSpace=wrap;" parent="1" vertex="1"><mxGeometry x="1250.0" y="1390" width="330" height="44" as="geometry" /></mxCell>
+                <mxCell id="r10c3" value="DOING → EXECUTE&#10;success" style="rounded=0;html=1;fillColor=#bbdefb;strokeColor=#b0bec5;fontColor=#0d3c78;fontSize=9;align=center;fontStyle=1;whiteSpace=wrap;" parent="1" vertex="1"><mxGeometry x="1580.0" y="1390" width="160" height="44" as="geometry" /></mxCell>
+
+                
+                <mxCell id="tbl_legend" value="Rows 1–3 (green/orange) = DELIBERATIVE → parked on PM board · Rows 4–10 (blue) = DOING → executed. Real rows pulled from cypher_sessions (130 total with a refined_goal). Row 3 is the brainstorm gap (empty card, no ideas)." style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;fontSize=9;fontStyle=2;fontColor=#455a64;" parent="1" vertex="1">
+                    <mxGeometry x="920.0" y="1440" width="820" height="30" as="geometry" />
+                </mxCell>
+
+                <!-- ============ PM LAYER — DETAIL PANEL (ADR-043 backlog router internals) ============ -->
+                <mxCell id="pm_panel" value="PM LAYER — ADR-043 backlog router (what happens to a parked card)" style="rounded=1;whiteSpace=wrap;html=1;arcSize=3;fillColor=#f3e5f5;strokeColor=#5e35b1;strokeWidth=2;verticalAlign=top;align=center;spacingTop=8;fontSize=12;fontStyle=1;fontColor=#4527a0;" parent="1" vertex="1">
+                    <mxGeometry x="1800" y="80" width="360" height="740" as="geometry"/>
+                </mxCell>
+
+                <mxCell id="pm_in" value="deliberative goal&#10;(brainstorm | plan | decide)&#10;arrives from PM routing" style="rounded=1;whiteSpace=wrap;html=1;arcSize=20;dashed=1;fillColor=#ede7f6;strokeColor=#5e35b1;fontColor=#311b92;fontSize=10;fontStyle=2;verticalAlign=middle;" parent="1" vertex="1">
+                    <mxGeometry x="1840" y="120" width="280" height="56" as="geometry"/>
+                </mxCell>
+
+                <mxCell id="pm_capture" value="1 · CAPTURE&#10;captureToBoard() — pm-capture-hook.ts:89&#10;files a real kanban card (never .claude/plans/*.md)&#10;{ id=task_… , goal_text, intent }" style="rounded=1;whiteSpace=wrap;html=1;arcSize=12;fillColor=#e8f5e9;strokeColor=#2e7d32;fontColor=#1b5e20;fontSize=10;verticalAlign=middle;" parent="1" vertex="1">
+                    <mxGeometry x="1840" y="204" width="280" height="80" as="geometry"/>
+                </mxCell>
+
+                <mxCell id="pm_prioritize" value="2 · PRIORITIZE&#10;/pm prioritize task_… &lt;n&gt; · /pm effort&#10;sets priority + effort on the card" style="rounded=1;whiteSpace=wrap;html=1;arcSize=12;fillColor=#e8f5e9;strokeColor=#2e7d32;fontColor=#1b5e20;fontSize=10;verticalAlign=middle;" parent="1" vertex="1">
+                    <mxGeometry x="1840" y="312" width="280" height="72" as="geometry"/>
+                </mxCell>
+
+                <mxCell id="pm_rank" value="3 · RANK&#10;src/services/board/ranker.ts&#10;scores backlog with explicit contribution&#10;breakdown → ordered list" style="rounded=1;whiteSpace=wrap;html=1;arcSize=12;fillColor=#e8f5e9;strokeColor=#2e7d32;fontColor=#1b5e20;fontSize=10;verticalAlign=middle;" parent="1" vertex="1">
+                    <mxGeometry x="1840" y="412" width="280" height="80" as="geometry"/>
+                </mxCell>
+
+                <mxCell id="pm_query" value="4 · QUERY&#10;/pm next · GET /api/board/backlog&#10;→ { top_task_id, backlog[] }&#10;answers &quot;what should I work on next?&quot;" style="rounded=1;whiteSpace=wrap;html=1;arcSize=12;fillColor=#e8f5e9;strokeColor=#2e7d32;fontColor=#1b5e20;fontSize=10;verticalAlign=middle;" parent="1" vertex="1">
+                    <mxGeometry x="1840" y="520" width="280" height="80" as="geometry"/>
+                </mxCell>
+
+                <mxCell id="pm_board" value="WI KANBAN BOARD (/board — ADR-040)&#10;the card lives here until a human promotes it" style="rounded=1;whiteSpace=wrap;html=1;arcSize=12;fillColor=#d1c4e9;strokeColor=#5e35b1;fontColor=#311b92;fontSize=10;fontStyle=1;verticalAlign=middle;" parent="1" vertex="1">
+                    <mxGeometry x="1840" y="628" width="280" height="60" as="geometry"/>
+                </mxCell>
+
+                <mxCell id="pm_worker" value="BoardWorkerAgent&#10;picks up cards with intent='execute' (a promoted/&#10;re-curated card) → dispatches them back through /wi EXECUTE.&#10;Deliberative cards wait for a human decision first." style="rounded=1;whiteSpace=wrap;html=1;arcSize=12;fillColor=#e3f2fd;strokeColor=#1565c0;fontColor=#0d3c78;fontSize=9;verticalAlign=middle;" parent="1" vertex="1">
+                    <mxGeometry x="1840" y="712" width="280" height="88" as="geometry"/>
+                </mxCell>
+
+                <!-- PM panel internal edges -->
+                <mxCell id="pe_in" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#5e35b1;endArrow=block;endFill=1;dashed=1;" parent="1" source="pm_in" target="pm_capture" edge="1"><mxGeometry relative="1" as="geometry"/></mxCell>
+                <mxCell id="pe1" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#2e7d32;endArrow=block;endFill=1;" parent="1" source="pm_capture" target="pm_prioritize" edge="1"><mxGeometry relative="1" as="geometry"/></mxCell>
+                <mxCell id="pe2" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#2e7d32;endArrow=block;endFill=1;" parent="1" source="pm_prioritize" target="pm_rank" edge="1"><mxGeometry relative="1" as="geometry"/></mxCell>
+                <mxCell id="pe3" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#2e7d32;endArrow=block;endFill=1;" parent="1" source="pm_rank" target="pm_query" edge="1"><mxGeometry relative="1" as="geometry"/></mxCell>
+                <mxCell id="pe4" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#5e35b1;endArrow=block;endFill=1;" parent="1" source="pm_query" target="pm_board" edge="1"><mxGeometry relative="1" as="geometry"/></mxCell>
+                <mxCell id="pe5" value="promote (intent→execute)" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#1565c0;endArrow=block;endFill=1;fontSize=8;fontColor=#0d3c78;" parent="1" source="pm_board" target="pm_worker" edge="1"><mxGeometry relative="1" as="geometry"/></mxCell>
+
+                <!-- link the flow's PM ROUTING decision (the deciding side) to this detail panel -->
+                <mxCell id="pe_link" value="deliberative ▶ detail" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#5e35b1;strokeWidth=2;endArrow=block;endFill=1;dashed=1;dashPattern=8 4;fontSize=9;fontColor=#4527a0;fontStyle=1;" parent="1" source="decision" target="pm_capture" edge="1"><mxGeometry relative="1" as="geometry"/></mxCell>
+                </root>
+        </mxGraphModel>
+    </diagram>
+</mxfile>

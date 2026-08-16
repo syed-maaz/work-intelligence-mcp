@@ -1,0 +1,193 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Work Intelligence Configuration",
+  "type": "object",
+  "properties": {
+    "version": { "type": "string", "const": "1.0" },
+    "connectors": {
+      "type": "object",
+      "properties": {
+        "jira": {
+          "type": "object",
+          "properties": {
+            "enabled": { "type": "boolean", "default": false },
+            "mode": { "type": "string", "enum": ["mcp", "browser", "both"], "default": "mcp" },
+            "mcp": {
+              "type": "object",
+              "properties": {
+                "clientName": { "type": "string", "default": "jira" },
+                "url": { "type": "string", "format": "uri" },
+                "tokenEnvVar": { "type": "string", "default": "JIRA_MCP_TOKEN" }
+              },
+              "required": ["url"]
+            },
+            "browser": {
+              "type": "object",
+              "properties": {
+                "baseUrl": { "type": "string", "format": "uri" },
+                "profilePathEnvVar": { "type": "string", "default": "BROWSER_PROFILE_PATH" },
+                "headlessEnvVar": { "type": "string", "default": "BROWSER_HEADLESS" }
+              },
+              "required": ["baseUrl"]
+            },
+            "defaultList": { "type": "string", "default": "my-issues" },
+            "boardUrl": { "type": "string", "format": "uri" }
+          },
+          "required": ["enabled"]
+        },
+        "github": {
+          "type": "object",
+          "properties": {
+            "enabled": { "type": "boolean", "default": false },
+            "mode": { "type": "string", "enum": ["mcp", "api", "both"], "default": "api" },
+            "mcp": {
+              "type": "object",
+              "properties": {
+                "url": { "type": "string", "format": "uri" },
+                "tokenEnvVar": { "type": "string", "default": "GITHUB_MCP_TOKEN" }
+              },
+              "required": ["url"]
+            },
+            "api": {
+              "type": "object",
+              "properties": {
+                "baseUrl": { "type": "string", "format": "uri", "default": "https://api.github.com" },
+                "tokenEnvVar": { "type": "string", "default": "GITHUB_TOKEN" }
+              }
+            },
+            "enterpriseHost": { "type": "string", "default": "" }
+          },
+          "required": ["enabled"]
+        },
+        "slack": {
+          "type": "object",
+          "properties": {
+            "enabled": { "type": "boolean", "default": false },
+            "mode": { "type": "string", "enum": ["mcp", "api"], "default": "api" },
+            "api": {
+              "type": "object",
+              "properties": {
+                "tokenEnvVar": { "type": "string", "default": "SLACK_TOKEN" },
+                "teamIdEnvVar": { "type": "string", "default": "SLACK_TEAM_ID" }
+              }
+            }
+          },
+          "required": ["enabled"]
+        },
+        "linear": {
+          "type": "object",
+          "properties": {
+            "enabled": { "type": "boolean", "default": false },
+            "mode": { "type": "string", "enum": ["api"], "default": "api" },
+            "api": {
+              "type": "object",
+              "properties": {
+                "apiKeyEnvVar": { "type": "string", "default": "LINEAR_API_KEY" }
+              }
+            }
+          },
+          "required": ["enabled"]
+        },
+        "teams": {
+          "type": "object",
+          "properties": {
+            "enabled": { "type": "boolean", "default": false },
+            "mode": { "type": "string", "enum": ["browser", "graph"], "default": "browser" },
+            "browser": {
+              "type": "object",
+              "properties": {
+                "profilePathEnvVar": { "type": "string", "default": "BROWSER_PROFILE_PATH" },
+                "headlessEnvVar": { "type": "string", "default": "BROWSER_HEADLESS" }
+              }
+            },
+            "graph": {
+              "type": "object",
+              "properties": {
+                "tenantIdEnvVar": { "type": "string", "default": "AZURE_TENANT_ID" },
+                "clientIdEnvVar": { "type": "string", "default": "AZURE_CLIENT_ID" },
+                "clientSecretEnvVar": { "type": "string", "default": "AZURE_CLIENT_SECRET" }
+              }
+            }
+          },
+          "required": ["enabled"]
+        },
+        "outlook": {
+          "type": "object",
+          "properties": {
+            "enabled": { "type": "boolean", "default": false },
+            "mode": { "type": "string", "enum": ["browser", "graph"], "default": "browser" },
+            "browser": {
+              "type": "object",
+              "properties": {
+                "profilePathEnvVar": { "type": "string", "default": "BROWSER_PROFILE_PATH" },
+                "headlessEnvVar": { "type": "string", "default": "BROWSER_HEADLESS" }
+              }
+            },
+            "graph": {
+              "type": "object",
+              "properties": {
+                "tenantIdEnvVar": { "type": "string", "default": "AZURE_TENANT_ID" },
+                "clientIdEnvVar": { "type": "string", "default": "AZURE_CLIENT_ID" },
+                "clientSecretEnvVar": { "type": "string", "default": "AZURE_CLIENT_SECRET" }
+              }
+            }
+          },
+          "required": ["enabled"]
+        }
+      },
+      "additionalProperties": false
+    },
+    "repos": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": { "type": "string" },
+          "localPath": { "type": "string" },
+          "githubSlug": { "type": "string" },
+          "defaultBranch": { "type": "string", "default": "main" }
+        },
+        "required": ["name", "localPath"]
+      },
+      "default": []
+    },
+    "mempalace": {
+      "type": "object",
+      "properties": {
+        "pathEnvVar": { "type": "string", "default": "MEMPALACE_PATH" },
+        "embeddingsProvider": { "type": "string", "enum": ["ollama", "openai", "huggingface"], "default": "ollama" },
+        "ollamaModel": { "type": "string", "default": "nomic-embed-text" }
+      }
+    },
+    "database": {
+      "type": "object",
+      "properties": {
+        "pathEnvVar": { "type": "string", "default": "DATABASE_PATH" }
+      }
+    },
+    "models": {
+      "type": "object",
+      "properties": {
+        "configPathEnvVar": { "type": "string", "default": "MODEL_CONFIG_PATH" }
+      }
+    },
+    "bridge": {
+      "type": "object",
+      "properties": {
+        "port": { "type": "integer", "default": 3132 },
+        "allowedOriginsEnvVar": { "type": "string", "default": "MCP_BRIDGE_ALLOWED_ORIGINS" },
+        "tokenEnvVar": { "type": "string", "default": "MCP_BRIDGE_TOKEN" }
+      }
+    },
+    "features": {
+      "type": "object",
+      "properties": {
+        "cypherLoopEnabled": { "type": "boolean", "default": false },
+        "pmOrchestrationEnabled": { "type": "boolean", "default": false },
+        "pmAgentEnabled": { "type": "boolean", "default": false },
+        "stage1Enabled": { "type": "boolean", "default": false }
+      }
+    }
+  },
+  "required": ["version", "connectors", "repos", "mempalace", "database", "models", "bridge", "features"]
+}

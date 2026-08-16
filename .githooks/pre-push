@@ -1,0 +1,67 @@
+#!/usr/bin/env bash
+# .githooks/pre-push
+# Enforces AGENT-RULES.md Rule 3 (no push from slots, no direct push to master).
+#
+# Installed by: scripts/install-hooks.sh
+
+set -euo pipefail
+
+remote="$1"
+url="$2"
+
+# ---------- Rule 3: no push from inside a slot ----------
+if [[ "$PWD" == *"/.slots/"* ]] || [[ -f "SLOT.md" ]]; then
+  cat >&2 <<EOF
+❌ REFUSED: AGENT-RULES.md Rule 3 violation
+
+Pushing from inside a slot directory is forbidden.
+Slots merge to master via the framework; master pushes to remote.
+
+Current PWD: $PWD
+Remote:      $remote ($url)
+
+Fix:
+  - Use: slot merge <slot-id>   (framework handles merge to master)
+  - Then: master session pushes when ready
+
+To bypass (emergency only):
+  git push --no-verify
+EOF
+  exit 1
+fi
+
+# ---------- Rule 3: no direct push to master/main from any location ----------
+protected='^refs/heads/(master|main|develop|trunk)$'
+while read local_ref local_sha remote_ref remote_sha; do
+  if [[ "$remote_ref" =~ $protected ]]; then
+    cat >&2 <<EOF
+❌ REFUSED: AGENT-RULES.md Rule 3 violation
+
+Direct push to protected branch: $remote_ref
+
+Push destination: $remote ($url)
+Local ref:        $local_ref
+
+Fix:
+  - Open a PR (via GitHub / GitLab UI, or 'gh pr create')
+  - Merge through the platform's review flow
+
+To bypass (emergency, human-authorized only):
+  git push --no-verify
+EOF
+    exit 1
+  fi
+done
+
+# ---------- Audit log ----------
+audit_log="$HOME/Library/Application Support/slot/audit.log"
+mkdir -p "$(dirname "$audit_log")" 2>/dev/null || true
+{
+  echo "$(date -u +%Y-%m-%dT%H:%M:%SZ) push ok"
+  echo "  repo:   $(basename "$(git rev-parse --show-toplevel)")"
+  echo "  remote: $remote"
+  echo "  pwd:    $PWD"
+  echo "  agent:  ${CLAUDECODE:-${HERMES_SESSION:-${OPENCODE_SESSION:-${USER:-unknown}}}}"
+} >> "$audit_log" 2>/dev/null || true
+
+exit 0

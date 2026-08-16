@@ -1,0 +1,1 @@
+^scripts/leak-(patterns|names|allow)\.txt

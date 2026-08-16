@@ -1,0 +1,94 @@
+.wrapper {
+  position: relative;
+}
+
+/* Zoom button: hover-revealed on mouse devices, always visible on touch */
+.zoomButton {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  z-index: 2;
+  padding: 4px 10px;
+  font-size: 0.85rem;
+  background: var(--ifm-background-surface-color, #fff);
+  border: 1px solid var(--ifm-color-emphasis-300, #e0e0e0);
+  border-radius: 4px;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.15s ease;
+  color: var(--ifm-font-color-base);
+}
+.wrapper:hover .zoomButton,
+.wrapper:focus-within .zoomButton {
+  opacity: 1;
+}
+@media (hover: none) {
+  .zoomButton {
+    opacity: 1;
+  }
+}
+.zoomButton:hover {
+  background: var(--ifm-color-emphasis-100);
+}
+
+/* Fullscreen dialog */
+.backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.75);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+
+.dialog {
+  background: var(--ifm-background-color, #fff);
+  border-radius: 8px;
+  width: min(95vw, 1600px);
+  height: min(92vh, 1200px);
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 12px 48px rgba(0, 0, 0, 0.4);
+  overflow: hidden;
+}
+
+.toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--ifm-color-emphasis-200);
+  flex: 0 0 auto;
+}
+
+.hint {
+  font-size: 0.8rem;
+  color: var(--ifm-color-emphasis-700);
+}
+
+.closeButton {
+  padding: 4px 10px;
+  border: 1px solid var(--ifm-color-emphasis-300);
+  background: var(--ifm-background-surface-color);
+  border-radius: 4px;
+  cursor: pointer;
+  color: var(--ifm-font-color-base);
+}
+.closeButton:hover {
+  background: var(--ifm-color-emphasis-100);
+}
+
+/* Stage — scrollable + zoomable via native browser controls */
+.stage {
+  flex: 1 1 auto;
+  overflow: auto;
+  padding: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.stage svg {
+  display: block;
+}

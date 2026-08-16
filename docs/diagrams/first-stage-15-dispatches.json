@@ -1,0 +1,1129 @@
+[
+  {
+    "session_id": "cyp_840f3300430f",
+    "goal": "PROJ-17726: add econnreset/error logging+502 to shared createProxyMiddleware to prove+bound proxy hang",
+    "intent": "build",
+    "target": "shared createProxyMiddleware \u2014 error/ECONNRESET logging",
+    "task_class": "build-feature",
+    "phase": 2,
+    "chosen_skill": "snowflake-development",
+    "outcome": "success",
+    "scope_iters": 1,
+    "duration_ms": 77270,
+    "scope_tools": [
+      {
+        "idx": 0,
+        "tool": "(single_pass refiner)",
+        "input_summary": ""
+      }
+    ],
+    "exec_tools": [
+      {
+        "idx": 0,
+        "tool": "brain_recall",
+        "input_summary": "limit=6, pattern=createProxyMiddleware ECONNRESET pr"
+      },
+      {
+        "idx": 1,
+        "tool": "fts_search",
+        "input_summary": "limit=10, query=createProxyMiddleware"
+      },
+      {
+        "idx": 2,
+        "tool": "wi_search",
+        "input_summary": "limit=10, query=createProxyMiddleware shared proxy "
+      },
+      {
+        "idx": 3,
+        "tool": "palace_search",
+        "input_summary": "limit=6, query=shared createProxyMiddleware file l"
+      },
+      {
+        "idx": 4,
+        "tool": "fts_search",
+        "input_summary": "limit=10, query=proxy middleware xfwd onError httpx"
+      },
+      {
+        "idx": 5,
+        "tool": "palace_search",
+      },
+      {
+        "idx": 6,
+        "tool": "code_graph_blast_radius",
+        "input_summary": "file=src/server/proxy/createProxyMiddlew, repo=example-service"
+      },
+      {
+        "idx": 7,
+        "tool": "wi_search",
+        "input_summary": "limit=10, query=PROJ-17726 proxy hang 502 ECONNRESET"
+      },
+      {
+        "idx": 8,
+        "tool": "wi_jira_analyze",
+        "input_summary": "jira_key=PROJ-17726"
+      },
+      {
+        "idx": 9,
+        "tool": "code_graph_blast_radius",
+        "input_summary": "file=src/proxy/createProxyMiddleware.ts, repo=example-service"
+      },
+      {
+        "idx": 10,
+        "tool": "code_graph_blast_radius",
+        "input_summary": "file=src/middleware/createProxyMiddlewar, repo=example-service"
+      },
+      {
+        "idx": 11,
+        "tool": "fts_search",
+        "input_summary": "limit=8, query=PR 3664 search-provider proxy xfwd X-Forwarde"
+      },
+      {
+        "idx": 12,
+        "tool": "wi_investigate",
+        "input_summary": "jira_key=PROJ-17726"
+      },
+      {
+        "idx": 13,
+        "tool": "palace_recall",
+        "input_summary": "limit=4, query=search-provider proxy createProxyMiddleware h, wing=investigations"
+      },
+      {
+        "idx": 14,
+        "tool": "code_graph_blast_radius",
+        "input_summary": "file=src/server/routes/search-providerProxy.ts, repo=example-service"
+      },
+      {
+        "idx": 15,
+        "tool": "palace_search",
+        "input_summary": "limit=3, query=search-provider proxy PR 3664 the shape we la, wing=decisions"
+      },
+      {
+        "idx": 16,
+        "tool": "palace_search",
+        "input_summary": "limit=2, query=httpxy proxyReq event handler creat"
+      },
+      {
+        "idx": 17,
+        "tool": "cypher_record_outcome",
+        "input_summary": "note=Grounded PROJ-17726 in prior proxy w, outcome=mixed, session_id=cyp_840f3300430f"
+      }
+    ],
+    "passed_to": "EXECUTE"
+  },
+  {
+    "session_id": "cyp_93041a5b101f",
+    "goal": "PROJ-17726: add econnreset/error logging+502-response to shared createProxyMiddleware (lib-backend-express-http-proxy) to prove and bound the",
+    "intent": "build",
+    "target": "lib-backend-express-http-proxy: createProxyMiddleware error/ECONNRESET logging",
+    "task_class": "build-feature",
+    "phase": 2,
+    "chosen_skill": "agent-development",
+    "outcome": "success",
+    "scope_iters": 1,
+    "duration_ms": 69954,
+    "scope_tools": [
+      {
+        "idx": 0,
+        "tool": "(single_pass refiner)",
+        "input_summary": ""
+      }
+    ],
+    "exec_tools": [
+      {
+        "idx": 0,
+        "tool": "brain_recall",
+        "input_summary": "pattern=createProxyMiddleware ECONNRESET er"
+      },
+      {
+        "idx": 1,
+        "tool": "fts_search",
+        "input_summary": "limit=10, query=createProxyMiddleware ECONNRESET pr"
+      },
+      {
+        "idx": 2,
+        "tool": "wi_search",
+        "input_summary": "limit=10, query=lib-backend-express-http-proxy crea"
+      },
+      {
+        "idx": 3,
+        "tool": "palace_search",
+        "input_summary": "limit=5, query=express http proxy middleware error"
+      },
+      {
+        "idx": 4,
+        "tool": "palace_search",
+        "input_summary": "limit=8, query=createProxyMiddleware lib-backend-e"
+      },
+      {
+        "idx": 5,
+        "tool": "fts_search",
+        "input_summary": "limit=10, query=enforceProxyTimeout forwardClientIp"
+      },
+      {
+        "idx": 6,
+        "tool": "palace_search",
+        "input_summary": "limit=6, query=packages lib-backend-express-http-p"
+      },
+      {
+        "idx": 7,
+        "tool": "wi_search",
+        "input_summary": "limit=10, query=http-proxy-middleware on error hand"
+      },
+      {
+        "idx": 8,
+        "tool": "code_graph_owners",
+        "input_summary": "file=packages/lib-backend-express-http-p, repo=example-service"
+      },
+      {
+        "idx": 9,
+        "tool": "brain_verify",
+        "input_summary": "claim=PROJ-17726 requires adding ECONNRESE, evidence_needed=[\"jira:PROJ-17726\", \"jira:PROJ-16722\""
+      },
+      {
+        "idx": 10,
+        "tool": "wi_jira_analyze",
+        "input_summary": "jira_key=PROJ-17726"
+      },
+      {
+        "idx": 11,
+        "tool": "code_graph_blast_radius",
+        "input_summary": "file=packages/lib-backend-express-http-p, repo=example-service"
+      },
+      {
+        "idx": 12,
+        "tool": "palace_recall",
+        "input_summary": "limit=8, query=createProxyMiddleware lib-backend-e, wing=code"
+      },
+      {
+        "idx": 13,
+        "tool": "code_graph_blast_radius",
+        "input_summary": "file=packages/lib-backend-express-http-p, repo=example-service"
+      },
+      {
+        "idx": 14,
+        "tool": "palace_search",
+        "input_summary": "limit=6, query=proxyReq listener socket setTimeout, wing=investigations"
+      },
+      {
+        "idx": 15,
+        "tool": "fts_search",
+        "input_summary": "limit=10, query=lib-backend-express-http-proxy, sortBy=recency"
+      },
+      {
+        "idx": 16,
+        "tool": "code_graph_blast_radius",
+        "input_summary": "file=packages/lib-backend-core/src/http-, repo=example-service"
+      },
+      {
+        "idx": 17,
+        "tool": "code_graph_owners",
+        "input_summary": "file=packages/lib-backend-core/src/http-, repo=example-service"
+      },
+      {
+        "idx": 18,
+        "tool": "cypher_record_outcome",
+        "input_summary": "note=Produced a concrete patch plan for , outcome=mixed, session_id=cyp_93041a5b101f"
+      }
+    ],
+    "passed_to": "EXECUTE"
+  },
+  {
+    "session_id": "cyp_8df957e5ba02",
+    "intent": "build",
+    "target": "fix/test-debt-2026-07-24 \u2014 94 vitest failures across 18 test files in work-intel",
+    "task_class": "build-feature",
+    "phase": 2,
+    "chosen_skill": "",
+    "outcome": "success",
+    "scope_iters": 1,
+    "duration_ms": 47411,
+    "scope_tools": [
+      {
+        "idx": 0,
+        "tool": "(single_pass refiner)",
+        "input_summary": ""
+      }
+    ],
+    "exec_tools": [
+      {
+        "idx": 0,
+        "tool": "brain_recall",
+        "input_summary": "pattern=fix vitest test failures test-debt "
+      },
+      {
+        "idx": 1,
+        "tool": "cypher_self_assess",
+        "input_summary": "goal=Fix 94 pre-existing vitest failures, task_class=test_debt_cleanup"
+      },
+      {
+        "idx": 2,
+        "tool": "palace_search",
+        "input_summary": "limit=6, query=vitest test suite failures test deb"
+      },
+      {
+        "idx": 3,
+        "tool": "fts_search",
+        "input_summary": "limit=8, query=vitest failing tests master test de"
+      },
+      {
+        "idx": 4,
+        "tool": "cypher_record_outcome",
+        "input_summary": "note=Goal requires hands-on execution \u2014 , outcome=failed, session_id=cyp_current"
+      }
+    ],
+    "passed_to": "EXECUTE"
+  },
+  {
+    "session_id": "cyp_e87d577728ef",
+    "goal": "build GET /api/sync/stream SSE endpoint \u2014 per-source started/result/error/done (ADR-044 AC-U3/U4)",
+    "intent": "build",
+    "target": "GET /api/sync/stream SSE endpoint",
+    "task_class": "build-feature",
+    "phase": 2,
+    "chosen_skill": "wi-investigate",
+    "outcome": "success",
+    "scope_iters": 1,
+    "duration_ms": 63049,
+    "scope_tools": [
+      {
+        "idx": 0,
+        "tool": "(single_pass refiner)",
+        "input_summary": ""
+      }
+    ],
+    "exec_tools": [
+      {
+        "idx": 0,
+        "tool": "brain_recall",
+        "input_summary": "pattern=SSE sync stream endpoint per-source"
+      },
+      {
+        "idx": 1,
+        "tool": "palace_search",
+        "input_summary": "query=ADR-044 fetcher module AC-U3 AC-U4 "
+      },
+      {
+        "idx": 2,
+        "tool": "wi_search",
+        "input_summary": "query=ADR-044 AC-U3 AC-U4 sync stream SSE"
+      },
+      {
+        "idx": 3,
+        "tool": "cypher_task_list",
+        "input_summary": "status=open"
+      },
+      {
+        "idx": 4,
+        "tool": "palace_search",
+        "input_summary": "limit=8, query=FetchProgress envelope runFullSync "
+      },
+      {
+        "idx": 5,
+        "tool": "palace_search",
+        "input_summary": "limit=6, query=GET /api/sync/telemetry route expre, wing=code"
+      }
+    ],
+    "passed_to": "EXECUTE"
+  },
+  {
+    "session_id": "cyp_c6188071ca7b",
+    "goal": "PMAgent stall gate multi-column (in_progress/e2e) + wire pm-auto autoLink/autoClose into loop.ts (June-23 regression)",
+    "intent": "investigate",
+    "target": "PMAgent multi-column gate stall (in_progress/e2e columns) \u2014 June-23 regression",
+    "task_class": "bug-fix",
+    "phase": 2,
+    "chosen_skill": "wi-investigate",
+    "outcome": "success",
+    "scope_iters": 1,
+    "duration_ms": 57980,
+    "scope_tools": [
+      {
+        "idx": 0,
+        "tool": "(single_pass refiner)",
+        "input_summary": ""
+      }
+    ],
+    "exec_tools": [
+      {
+        "idx": 0,
+        "tool": "brain_recall",
+        "input_summary": "pattern=PMAgent stall gate multi-column in_"
+      },
+      {
+        "idx": 1,
+        "tool": "brain_context",
+        "input_summary": ""
+      },
+      {
+        "idx": 2,
+        "tool": "palace_search",
+        "input_summary": "limit=8, query=PMAgent stall multi-column gate in_"
+      },
+      {
+        "idx": 3,
+        "tool": "fts_search",
+        "input_summary": "limit=10, query=PMAgent stall gate in_progress e2e"
+      },
+      {
+        "idx": 4,
+        "tool": "wi_code_research",
+        "input_summary": "goal=Find the PMAgent multi-column gate "
+      },
+      {
+        "idx": 5,
+        "tool": "wi_search",
+        "input_summary": "limit=15, query=PMAgent gate stall in_progress e2e "
+      },
+      {
+        "idx": 6,
+        "tool": "fts_search",
+        "input_summary": "limit=10, query=pm-auto autoLink autoClose loop.ts"
+      },
+      {
+        "idx": 7,
+        "tool": "fts_search",
+        "input_summary": "limit=10, query=PMAgent stall gate"
+      },
+      {
+        "idx": 8,
+        "tool": "wi_teams_search",
+        "input_summary": "query=PM agent stall multi-column gate re"
+      },
+      {
+        "idx": 9,
+        "tool": "palace_search",
+        "input_summary": "limit=6, query=PM orchestration gate stall regress, wing=investigations"
+      },
+      {
+        "idx": 10,
+        "tool": "cypher_self_assess",
+        "input_summary": "goal=RCA of June-23 PMAgent multi-column, task_class=bug_investigate"
+      },
+      {
+        "idx": 11,
+        "tool": "cypher_record_outcome",
+        "input_summary": "note=Scoped the RCA to primary intent (r, outcome=mixed, session_id=cyp_current"
+      }
+    ],
+    "passed_to": "EXECUTE"
+  },
+  {
+    "session_id": "cyp_175a19103a51",
+    "goal": "fix wi_search_all EXECUTE stall: local-first FTS return + background live enrich (tsk_445432091927)",
+    "intent": "investigate",
+    "target": "wi_search_all EXECUTE stall (tsk_445432091927)",
+    "task_class": "bug-fix",
+    "phase": 2,
+    "chosen_skill": "wi-investigate",
+    "outcome": "success",
+    "scope_iters": 1,
+    "duration_ms": 7431,
+    "scope_tools": [
+      {
+        "idx": 0,
+        "tool": "(single_pass refiner)",
+        "input_summary": ""
+      }
+    ],
+    "exec_tools": [],
+    "passed_to": "EXECUTE"
+  },
+  {
+    "session_id": "cyp_5bd8f7a2b90d",
+    "intent": "refactor",
+    "task_class": "build-feature",
+    "phase": 2,
+    "chosen_skill": "wi-investigate",
+    "outcome": "success",
+    "scope_iters": 1,
+    "duration_ms": 119533,
+    "scope_tools": [
+      {
+        "idx": 0,
+        "tool": "(single_pass refiner)",
+        "input_summary": ""
+      }
+    ],
+    "exec_tools": [
+      {
+        "idx": 0,
+        "tool": "brain_recall",
+        "input_summary": "pattern=PROJ-16602 PR 4714 SYSTEM_NUMBER_OVE"
+      },
+      {
+        "idx": 1,
+        "tool": "wi_pr_review",
+        "input_summary": "pr=4714, repo=example-service"
+      },
+      {
+        "idx": 2,
+        "tool": "fts_search",
+      },
+      {
+        "idx": 3,
+        "tool": "wi_search",
+        "input_summary": "limit=10, query=buildSessionJwt testHelpers"
+      },
+      {
+        "idx": 4,
+        "tool": "wi_search",
+        "input_summary": "limit=10, query=SuperAgentResponseError catch cast"
+      },
+      {
+        "idx": 5,
+        "tool": "wi_code_research",
+        "input_summary": "goal=In the example-service repo, find every re"
+      },
+      {
+        "idx": 6,
+        "tool": "code_graph_owners",
+        "input_summary": "file=test/testHelpers.ts, repo=example-service"
+      },
+      {
+        "idx": 7,
+        "tool": "code_graph_owners",
+        "input_summary": "file=src/testHelpers.ts, repo=example-service"
+      },
+      {
+        "idx": 8,
+        "tool": "wi_search_all",
+        "input_summary": "query=PROJ-16602 PR 4714 SYSTEM_NUMBER_OVE"
+      },
+      {
+        "idx": 9,
+        "tool": "cypher_self_assess",
+        "input_summary": "goal=refactor PR review-response: remove, task_class=pr_review"
+      }
+    ],
+    "passed_to": "EXECUTE"
+  },
+  {
+    "session_id": "cyp_807bd22ba4ab",
+    "goal": "harden SCOPE single-pass timeout clamp floor + fix c-alendar comment typo",
+    "intent": "refactor",
+    "target": "SCOPE single-pass timeout clamp floor logic",
+    "task_class": "build-feature",
+    "phase": 2,
+    "chosen_skill": "senior-backend",
+    "outcome": "success",
+    "scope_iters": 1,
+    "duration_ms": 43206,
+    "scope_tools": [
+      {
+        "idx": 0,
+        "tool": "(single_pass refiner)",
+        "input_summary": ""
+      }
+    ],
+    "exec_tools": [
+      {
+        "idx": 0,
+        "tool": "brain_recall",
+        "input_summary": "pattern=SCOPE single-pass timeout clamp flo"
+      },
+      {
+        "idx": 1,
+        "tool": "fts_search",
+        "input_summary": "limit=10, query=single-pass timeout clamp"
+      },
+      {
+        "idx": 2,
+        "tool": "wi_code_research",
+        "input_summary": "goal=Find the SCOPE phase single-pass ti"
+      },
+      {
+        "idx": 3,
+        "tool": "wi_code_research",
+        "input_summary": "goal=Find the source comment containing "
+      },
+      {
+        "idx": 4,
+        "tool": "fts_search",
+        "input_summary": "limit=10, query=clamp timeout floor Math.min"
+      },
+      {
+        "idx": 5,
+        "tool": "palace_search",
+        "input_summary": "limit=5, query=SCOPE phase single-pass timeout cla"
+      },
+      {
+        "idx": 6,
+        "tool": "fts_search",
+        "input_summary": "limit=5, query=c-alendar calendar comment typo"
+      },
+      {
+        "idx": 7,
+        "tool": "code_graph_owners",
+        "input_summary": "file=src/calendar/index.ts, repo=operations"
+      },
+      {
+        "idx": 8,
+        "tool": "wi_search",
+        "input_summary": "limit=10, query=SCOPE two-pass timeout clamp single"
+      },
+      {
+        "idx": 9,
+        "tool": "cypher_record_outcome",
+        "input_summary": "note=Scoped both work items (timeout cla, outcome=mixed, session_id=cyp_807bd22ba4ab"
+      }
+    ],
+    "passed_to": "EXECUTE"
+  },
+  {
+    "session_id": "cyp_94568e4b5f75",
+    "goal": "harden SCOPE single-pass timeout clamp floor + fix c-alendar comment typo",
+    "intent": "refactor",
+    "target": "SCOPE single-pass timeout clamp floor (EXECUTE phase timeout clamp \u2014 exact file ",
+    "task_class": "build-feature",
+    "phase": 2,
+    "chosen_skill": "senior-backend",
+    "outcome": "success",
+    "scope_iters": 1,
+    "duration_ms": 50854,
+    "scope_tools": [
+      {
+        "idx": 0,
+        "tool": "(single_pass refiner)",
+        "input_summary": ""
+      }
+    ],
+    "exec_tools": [
+      {
+        "idx": 0,
+        "tool": "brain_recall",
+        "input_summary": "pattern=SCOPE single-pass timeout clamp flo"
+      },
+      {
+        "idx": 1,
+        "tool": "fts_search",
+        "input_summary": "query=SCOPE timeout clamp single pass"
+      },
+      {
+        "idx": 2,
+        "tool": "wi_code_research",
+        "input_summary": "goal=Locate the SCOPE phase single-pass "
+      },
+      {
+        "idx": 3,
+        "tool": "wi_code_research",
+        "input_summary": "goal=Find a source-code comment about th"
+      },
+      {
+        "idx": 4,
+        "tool": "wi_search",
+        "input_summary": "query=SCOPE pass timeout clamp Math.max f"
+      },
+      {
+        "idx": 5,
+        "tool": "palace_search",
+        "input_summary": "query=SCOPE single-pass timeout clamp EXE, wing=code"
+      },
+      {
+        "idx": 6,
+        "tool": "palace_search",
+        "input_summary": "query=timeout clamp wallclock cap dispatc"
+      },
+      {
+        "idx": 7,
+        "tool": "fts_search",
+        "input_summary": "query=calendar comment typo meeting intel"
+      },
+      {
+        "idx": 8,
+        "tool": "code_graph_blast_radius",
+        "input_summary": "file=src/services/cypher-loop.ts, repo=example-service"
+      },
+      {
+        "idx": 9,
+        "tool": "code_graph_blast_radius",
+        "input_summary": "file=src/services/model-config.ts, repo=operations"
+      },
+      {
+        "idx": 10,
+        "tool": "cypher_self_assess",
+        "input_summary": "goal=harden SCOPE single-pass timeout cl, task_class=refactor"
+      },
+      {
+        "idx": 11,
+        "tool": "cypher_record_outcome",
+        "input_summary": "note=Blocked: task requires editing WI b, outcome=failed, session_id=cyp_94568e4b5f75"
+      }
+    ],
+    "passed_to": "EXECUTE"
+  },
+  {
+    "session_id": "cyp_d91841225a2c",
+    "goal": "Assess the FETCH pipeline gaps in web-server.js and produce a precise implementation plan for: (1) adding a per-source /api/sync?source=emai",
+    "intent": "analyze",
+    "target": "web-server.js FETCH pipeline (per-source sync endpoint, OutlookWatcher wiring, s",
+    "task_class": "dispatch",
+    "phase": 2,
+    "chosen_skill": "wi-bis-regression",
+    "outcome": "mixed",
+    "scope_iters": 1,
+    "duration_ms": 173286,
+    "scope_tools": [
+      {
+        "idx": 0,
+        "tool": "(single_pass refiner)",
+        "input_summary": ""
+      }
+    ],
+    "exec_tools": [
+      {
+        "idx": 0,
+        "tool": "brain_recall",
+        "input_summary": "pattern=web-server.js FETCH pipeline sync g"
+      },
+      {
+        "idx": 1,
+        "tool": "wi_code_research",
+        "input_summary": "goal=Analyze web-server.js for: (1) exis"
+      },
+      {
+        "idx": 2,
+        "tool": "fts_search",
+        "input_summary": "limit=20, query=runEmailSync runTargetedJiraSync ru"
+      },
+      {
+        "idx": 3,
+        "tool": "palace_search",
+        "input_summary": "limit=8, query=web-server.js sync endpoint Outlook"
+      },
+      {
+        "idx": 4,
+        "tool": "wi_search",
+        "input_summary": "query=runTargetedJiraSync messages table "
+      },
+      {
+        "idx": 5,
+        "tool": "wi_search",
+        "input_summary": "query=OutlookWatcher email events web-ser"
+      },
+      {
+        "idx": 6,
+        "tool": "wi_ask_topic",
+        "input_summary": "goal=What is the current implementation "
+      },
+      {
+        "idx": 7,
+        "tool": "fts_search",
+        "input_summary": "limit=15, query=runTargetedJiraSync"
+      },
+      {
+        "idx": 8,
+        "tool": "fts_search",
+        "input_summary": "limit=15, query=OutlookWatcher on emit email event"
+      },
+      {
+        "idx": 9,
+        "tool": "fts_search",
+        "input_summary": "limit=20, query=sync_state web-server jira email fr"
+      },
+      {
+        "idx": 10,
+        "tool": "palace_recall",
+        "input_summary": "limit=8, query=web-server.js sync runEmailSync run, wing=code"
+      },
+      {
+        "idx": 11,
+        "tool": "palace_recall",
+        "input_summary": "limit=10, query=FETCH pipeline web-server sync endp, wing=investigations"
+      },
+      {
+        "idx": 12,
+        "tool": "wi_jira_report",
+        "input_summary": "goal=EP-5 EP-22 EP-16 sync pipeline fetc"
+      },
+      {
+        "idx": 13,
+        "tool": "code_graph_blast_radius",
+        "input_summary": "file=web-server.js, repo=example-service"
+      },
+      {
+        "idx": 14,
+        "tool": "palace_search",
+        "input_summary": "limit=8, query=ADR-044 fetcher module sync pipelin"
+      },
+      {
+        "idx": 15,
+        "tool": "palace_recall",
+        "input_summary": "limit=10, query=ADR-044 web-server sync route runEm, wing=cypher_sessions"
+      },
+      {
+        "idx": 16,
+        "tool": "brain_recall",
+        "input_summary": "limit=10, pattern=ADR-044 web-server.js runEmailSync "
+      },
+      {
+        "idx": 17,
+        "tool": "palace_search",
+        "input_summary": "limit=5, query=ADR-044 S2.5 OutlookWatcher runEmai, wing=cypher_sessions"
+      },
+      {
+        "idx": 18,
+        "tool": "palace_search",
+        "input_summary": "limit=5, query=ADR-044 S2.6 fetch telemetry fetch_, wing=cypher_sessions"
+      },
+      {
+        "idx": 19,
+        "tool": "cypher_task_list",
+        "input_summary": "limit=20, scope=all_projects, status=open"
+      },
+      {
+        "idx": 20,
+        "tool": "palace_recall",
+        "input_summary": "limit=8, query=runTargetedJiraSync runJiraSync mes, wing=decisions"
+      },
+      {
+        "idx": 21,
+        "tool": "cypher_task_show_context",
+        "input_summary": "task_id=task_3913"
+      },
+      {
+        "idx": 22,
+        "tool": "code_graph_owners",
+        "input_summary": "file=web-server.js, repo=example-service"
+      },
+      {
+        "idx": 23,
+        "tool": "code_graph_test_coverage",
+        "input_summary": "file=web-server.js, repo=example-service"
+      },
+      {
+        "idx": 24,
+        "tool": "wi_search_all",
+        "input_summary": "query=web-server.js runEmailSync runJiraS"
+      },
+      {
+        "idx": 25,
+        "tool": "fts_search",
+        "input_summary": "limit=10, query=web-server.js changed modified pull, sortBy=recency"
+      },
+      {
+        "idx": 26,
+        "tool": "wi_teams_search",
+        "input_summary": "query=web-server runEmailSync runTargeted"
+      },
+      {
+        "idx": 27,
+        "tool": "wi_investigate",
+        "input_summary": "jira_key=WI-044"
+      },
+      {
+        "idx": 28,
+        "tool": "brain_decide",
+        "input_summary": "question=For the web-server.js FETCH pipelin"
+      }
+    ],
+    "passed_to": "EXECUTE"
+  },
+  {
+    "session_id": "cyp_1cab03b7c1ea",
+    "goal": "commit Phase 88 web-server.js sync-query column fixes (8 bugs) so KG-enrich is durably shipped",
+    "intent": "build",
+    "target": "web-server.js (Phase 88 sync-query column fixes)",
+    "task_class": "build-feature",
+    "phase": 2,
+    "chosen_skill": "do",
+    "outcome": "success",
+    "scope_iters": 1,
+    "duration_ms": 42555,
+    "scope_tools": [
+      {
+        "idx": 0,
+        "tool": "(single_pass refiner)",
+        "input_summary": ""
+      }
+    ],
+    "exec_tools": [
+      {
+        "idx": 0,
+        "tool": "brain_recall",
+        "input_summary": "pattern=Phase 88 web-server.js sync-query c"
+      },
+      {
+        "idx": 1,
+        "tool": "cypher_self_assess",
+        "input_summary": "goal=commit Phase 88 web-server.js sync-"
+      },
+      {
+        "idx": 2,
+        "tool": "palace_search",
+        "input_summary": "query=Phase 88 web-server.js sync-query c"
+      },
+      {
+        "idx": 3,
+        "tool": "fts_search",
+        "input_summary": "query=Phase 88 sync-query column KG-enric"
+      },
+      {
+        "idx": 4,
+        "tool": "cypher_project_list",
+        "input_summary": ""
+      },
+      {
+        "idx": 5,
+        "tool": "wi_search",
+        "input_summary": "query=Phase 88 sync-query column fixes we"
+      },
+      {
+        "idx": 6,
+        "tool": "palace_search",
+        "input_summary": "query=KG-enrich enrichment sync-query col, wing=code"
+      },
+      {
+        "idx": 7,
+        "tool": "cypher_record_outcome",
+        "input_summary": "note=Task is a git-commit of Phase 88 we, outcome=failed, session_id=cyp_1cab03b7c1ea"
+      }
+    ],
+    "passed_to": "EXECUTE"
+  },
+  {
+    "session_id": "cyp_d0ca2161c7de",
+    "goal": "drop 10 dead tables + migrate digest.ts off empty decisions/questions tables, drop those 2, VACUUM, schema migration bump",
+    "intent": "refactor",
+    "target": "10 dead/unused database tables identified against database-schema.md",
+    "task_class": "build-feature",
+    "phase": 2,
+    "chosen_skill": "",
+    "outcome": "success",
+    "scope_iters": 1,
+    "duration_ms": 52199,
+    "scope_tools": [
+      {
+        "idx": 0,
+        "tool": "(single_pass refiner)",
+        "input_summary": ""
+      }
+    ],
+    "exec_tools": [
+      {
+        "idx": 0,
+        "tool": "brain_recall",
+        "input_summary": "limit=8, pattern=dead table drop schema migration di"
+      },
+      {
+        "idx": 1,
+        "tool": "palace_search",
+        "input_summary": "limit=6, query=database schema dead unused tables , wing=code"
+      },
+      {
+        "idx": 2,
+        "tool": "fts_search",
+        "input_summary": "limit=10, query=dead tables drop schema migration d"
+      },
+      {
+        "idx": 3,
+        "tool": "wi_search",
+        "input_summary": "limit=10, query=schema migration version bump dead "
+      },
+      {
+        "idx": 4,
+        "tool": "cypher_self_assess",
+        "input_summary": "goal=Drop 10 dead DB tables, migrate dig, task_class=refactor"
+      },
+      {
+        "idx": 5,
+        "tool": "wi_code_research",
+        "input_summary": "goal=In the WI bridge repo (not example-service"
+      },
+      {
+        "idx": 6,
+        "tool": "palace_search",
+        "input_summary": "limit=8, query=CREATE TABLE decisions questions di"
+      },
+      {
+        "idx": 7,
+        "tool": "palace_recall",
+        "input_summary": "limit=8, query=schema migration version tables dig, wing=decisions"
+      },
+      {
+        "idx": 8,
+        "tool": "brain_verify",
+        "input_summary": "claim=The WI bridge SQLite schema defines, evidence_needed=[\"code:database-schema.md\", \"code:d"
+      },
+      {
+        "idx": 9,
+        "tool": "cypher_record_outcome",
+        "input_summary": "note=Scoped the 5-part refactor and iden, outcome=mixed, session_id=cyp_d0ca2161c7de"
+      }
+    ],
+    "passed_to": "EXECUTE"
+  },
+  {
+    "session_id": "cyp_cfd11f739c30",
+    "goal": "fix ADR-043 Scenario 4 smoke brittleness (top-50 window misses dep-penalized card in 136-card organic backlog) then flip ADR-043 to Accepted",
+    "intent": "investigate",
+    "target": "ADR-043 Scenario 4 smoke test \u2014 top-50 window vs dep-penalized card",
+    "task_class": "build-feature",
+    "phase": 2,
+    "chosen_skill": "",
+    "outcome": "success",
+    "scope_iters": 1,
+    "duration_ms": 65787,
+    "scope_tools": [
+      {
+        "idx": 0,
+        "tool": "(single_pass refiner)",
+        "input_summary": ""
+      }
+    ],
+    "exec_tools": [
+      {
+        "idx": 0,
+        "tool": "brain_recall",
+        "input_summary": "pattern=ADR-043 Scenario 4 smoke top-50 win"
+      },
+      {
+        "idx": 1,
+        "tool": "palace_search",
+        "input_summary": "query=ADR-043 PM orchestration ranking wi"
+      },
+      {
+        "idx": 2,
+        "tool": "wi_search",
+        "input_summary": "query=ADR-043 Scenario 4 smoke top-50 win"
+      },
+      {
+        "idx": 3,
+        "tool": "fts_search",
+        "input_summary": "query=Scenario 4 top-50 window dep-penali"
+      },
+      {
+        "idx": 4,
+        "tool": "wi_code_research",
+        "input_summary": "goal=Find ADR-043 PM orchestration Scena"
+      },
+      {
+        "idx": 5,
+        "tool": "wi_search",
+        "input_summary": "query=rankPromptMemory dep penalty priori"
+      },
+      {
+        "idx": 6,
+        "tool": "wi_search",
+        "input_summary": "query=adr-043 pm orchestration layer prio"
+      },
+      {
+        "idx": 7,
+        "tool": "cypher_self_assess",
+        "input_summary": "goal=Root-cause ADR-043 Scenario 4 smoke, task_class=bug_investigate"
+      },
+      {
+        "idx": 8,
+        "tool": "smoke_run",
+        "input_summary": "section=4, skip_brain_live=true"
+      },
+      {
+        "idx": 9,
+        "tool": "palace_recall",
+        "input_summary": "query=ADR-043 ranking priority score depe, wing=decisions"
+      },
+      {
+        "idx": 10,
+        "tool": "fts_search",
+        "input_summary": "query=ADR-043 Accepted status PM orchestr"
+      },
+      {
+        "idx": 11,
+        "tool": "cypher_record_outcome",
+        "input_summary": "note=RCA of Scenario 4 brittleness produ, outcome=mixed, session_id=cyp_cfd11f739c30"
+      }
+    ],
+    "passed_to": "EXECUTE"
+  },
+  {
+    "session_id": "cyp_c29c0eff5ae1",
+    "goal": "review PR 4714 for correctness bugs in the ProductFunctions endpoint",
+    "intent": "review",
+    "target": "PR 4714 \u2014 ProductFunctions endpoint",
+    "task_class": "generic",
+    "phase": 2,
+    "chosen_skill": "",
+    "outcome": "mixed",
+    "scope_iters": 1,
+    "duration_ms": 117439,
+    "scope_tools": [
+      {
+        "idx": 0,
+        "tool": "(single_pass refiner)",
+        "input_summary": ""
+      }
+    ],
+    "exec_tools": [
+      {
+        "idx": 0,
+        "tool": "brain_recall",
+        "input_summary": "pattern=PR 4714 ProductFunctions endpoint r"
+      },
+      {
+        "idx": 1,
+        "tool": "wi_pr_review",
+        "input_summary": "pr=4714, repo=example-service"
+      },
+      {
+        "idx": 2,
+        "tool": "fts_search",
+        "input_summary": "limit=10, query=4714 ProductFunctions"
+      },
+      {
+        "idx": 3,
+        "tool": "wi_search",
+        "input_summary": "limit=10, query=PR 4714 ProductFunctions endpoint"
+      },
+      {
+        "idx": 4,
+        "tool": "wi_code_research",
+        "input_summary": "goal=Locate the ProductFunctions endpoin"
+      },
+      {
+        "idx": 5,
+        "tool": "wi_search_all",
+        "input_summary": "query=PR 4714 example-service ProductFunctions"
+      }
+    ],
+    "passed_to": "EXECUTE"
+  },
+  {
+    "session_id": "cyp_f4fcfec39056",
+    "intent": "review",
+    "task_class": "build-feature",
+    "phase": 2,
+    "chosen_skill": "wi-investigate",
+    "outcome": "success",
+    "scope_iters": 1,
+    "duration_ms": 45390,
+    "scope_tools": [
+      {
+        "idx": 0,
+        "tool": "(single_pass refiner)",
+        "input_summary": ""
+      }
+    ],
+    "exec_tools": [
+      {
+        "idx": 0,
+        "tool": "brain_recall",
+        "input_summary": "pattern=PROJ-16602 faker msw wrapper seed kn"
+      },
+      {
+        "idx": 1,
+        "tool": "wi_search",
+        "input_summary": "query=PROJ-16602 faker seed msw wrapper fe"
+      },
+      {
+        "idx": 2,
+        "tool": "wi_jira_analyze",
+        "input_summary": "jira_key=PROJ-16602"
+      },
+      {
+        "idx": 3,
+        "tool": "fts_search",
+        "input_summary": "query=faker seed msw wrapper lib-testing"
+      }
+    ],
+    "passed_to": "EXECUTE"
+  }
+]

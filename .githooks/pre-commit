@@ -1,0 +1,2 @@
+#!/usr/bin/env bash
+bash scripts/leak-scan.sh || exit 1

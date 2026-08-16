@@ -1,0 +1,129 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ── Design tokens (light) ────────────────────────────────────── */
+:root {
+  --bg:       #f7f7fb;
+  --bg-2:     #ffffff;
+  --bg-3:     #eeeff5;
+  --fg:       #0d0d1a;
+  --fg-2:     #4a4a6a;
+  --border:   #e2e2ee;
+  --border-2: #d0d0e0;
+  --muted:    #8888aa;
+  --accent:   #2563eb;
+  --accent-2: #1d4ed8;
+  --jira:     #3b82f6;
+  --teams:    #8b5cf6;
+  --email:    #f59e0b;
+  --github:   #64748b;
+  --success:  #10b981;
+  --warning:  #f59e0b;
+  --danger:   #ef4444;
+}
+
+/* ── Dark (system preference) ─────────────────────────────────── */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg:       #08080f;
+    --bg-2:     #0f0f1a;
+    --bg-3:     #14142a;
+    --fg:       #e8e8f4;
+    --fg-2:     #9090b8;
+    --border:   #1e1e35;
+    --border-2: #2a2a45;
+    --muted:    #5555808;
+    --accent:   #3b82f6;
+    --accent-2: #60a5fa;
+  }
+}
+
+/* ── Manual overrides ─────────────────────────────────────────── */
+[data-theme="dark"] {
+  --bg:       #08080f;
+  --bg-2:     #0f0f1a;
+  --bg-3:     #14142a;
+  --fg:       #e8e8f4;
+  --fg-2:     #9090b8;
+  --border:   #1e1e35;
+  --border-2: #2a2a45;
+  --muted:    #55558a;
+  --accent:   #3b82f6;
+  --accent-2: #60a5fa;
+}
+
+[data-theme="light"] {
+  --bg:       #f7f7fb;
+  --bg-2:     #ffffff;
+  --bg-3:     #eeeff5;
+  --fg:       #0d0d1a;
+  --fg-2:     #4a4a6a;
+  --border:   #e2e2ee;
+  --border-2: #d0d0e0;
+  --muted:    #8888aa;
+  --accent:   #2563eb;
+  --accent-2: #1d4ed8;
+}
+
+/* ── Base ─────────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background-color: var(--bg);
+  color: var(--fg);
+  font-family: 'DM Sans', system-ui, sans-serif;
+  font-size: 14px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+::-webkit-scrollbar { width: 5px; height: 5px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border-2); border-radius: 99px; }
+
+/* ── Markdown prose ────────────────────────────────────────────── */
+.prose-wi { color: var(--fg); font-size: 13.5px; line-height: 1.7; }
+.prose-wi h1 { font-family: 'Syne', sans-serif; font-size: 1.35rem; font-weight: 700; margin: 1.4em 0 0.5em; color: var(--fg); }
+.prose-wi h2 { font-family: 'Syne', sans-serif; font-size: 1.1rem; font-weight: 600; margin: 1.2em 0 0.4em; color: var(--fg); border-bottom: 1px solid var(--border); padding-bottom: 0.3em; }
+.prose-wi h3 { font-size: 0.95rem; font-weight: 600; margin: 1em 0 0.3em; color: var(--fg); }
+.prose-wi p { margin: 0 0 0.8em; }
+.prose-wi ul, .prose-wi ol { margin: 0 0 0.8em; padding-left: 1.4em; }
+.prose-wi li { margin: 0.2em 0; }
+.prose-wi code { font-family: 'DM Mono', monospace; font-size: 0.82em; background: var(--bg-3); color: var(--accent); padding: 0.15em 0.4em; border-radius: 4px; }
+.prose-wi pre { background: var(--bg-3); border: 1px solid var(--border); border-radius: 8px; padding: 1em; overflow-x: auto; margin: 0.8em 0; }
+.prose-wi pre code { background: transparent; padding: 0; color: var(--fg); }
+.prose-wi blockquote { border-left: 2px solid var(--accent); margin: 0.8em 0; padding: 0.4em 0.8em; color: var(--muted); font-style: italic; }
+.prose-wi table { width: 100%; border-collapse: collapse; font-size: 0.85em; margin: 0.8em 0; }
+.prose-wi th { text-align: left; font-weight: 600; padding: 0.4em 0.6em; border-bottom: 2px solid var(--border); color: var(--fg-2); text-transform: uppercase; font-size: 0.75em; letter-spacing: 0.05em; }
+.prose-wi td { padding: 0.4em 0.6em; border-bottom: 1px solid var(--border); }
+.prose-wi tr:last-child td { border-bottom: none; }
+.prose-wi a { color: var(--accent); text-decoration: none; }
+.prose-wi a:hover { text-decoration: underline; }
+.prose-wi hr { border: none; border-top: 1px solid var(--border); margin: 1em 0; }
+.prose-wi strong { font-weight: 600; color: var(--fg); }
+.prose-wi em { color: var(--fg-2); font-style: italic; }
+
+/* ── Skeleton shimmer ─────────────────────────────────────────── */
+.skeleton {
+  background: linear-gradient(90deg, var(--bg-3) 25%, var(--bg-2) 50%, var(--bg-3) 75%);
+  background-size: 800px 100%;
+  animation: shimmer 1.6s ease-in-out infinite;
+  border-radius: 6px;
+}
+
+/* ── Refresh progress bar ─────────────────────────────────────── */
+@keyframes progress-slide {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(250%); }
+}
+.animate-progress-bar {
+  animation: progress-slide 1.4s ease-in-out infinite;
+  width: 40%;
+}
+
+/* ── Spinner (InvestigatePanel) ───────────────────────────────── */
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}

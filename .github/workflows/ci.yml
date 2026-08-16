@@ -1,0 +1,42 @@
+name: CI
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+
+jobs:
+  leak-scan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with: { fetch-depth: 0 }
+      - uses: gitleaks/gitleaks-action@v2
+      - run: sudo apt-get update && sudo apt-get install -y ripgrep && bash scripts/leak-scan.sh
+      - run: "! git log --format=%B | rg -i -f scripts/leak-patterns.txt"   # commit MESSAGES carry leaks too (v5)
+
+  build:
+    needs: leak-scan
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Typecheck
+        run: npm run typecheck
+
+      - name: Build
+        run: npm run build
+
+      - name: Test
+        # `npm test` starts vitest in watch mode; use test:run for CI.
+        run: npm run test:run

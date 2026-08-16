@@ -1,0 +1,144 @@
+/* ============================================================================
+ * Work Intelligence MCP — Docusaurus Custom Theme
+ * ============================================================================ */
+
+:root {
+  --ifm-color-primary: #0066cc;
+  --ifm-color-primary-dark: #005bb5;
+  --ifm-color-primary-darker: #0055aa;
+  --ifm-color-primary-darkest: #004488;
+  --ifm-color-primary-light: #1a7ad9;
+  --ifm-color-primary-lighter: #3388e0;
+  --ifm-color-primary-lightest: #66a8eb;
+
+  --custom-accent-color: #0d9488;
+  --custom-accent-hover: #0f766e;
+
+  --ifm-background-color: #fafbfc;
+  --ifm-code-font-size: 95%;
+  --docusaurus-highlighted-code-line-bg: rgba(0, 102, 204, 0.08);
+
+  --badge-todo-bg: #e5e7eb;
+  --badge-todo-color: #374151;
+  --badge-inprogress-bg: #fef3c7;
+  --badge-inprogress-color: #92400e;
+  --badge-done-bg: #d1fae5;
+  --badge-done-color: #065f46;
+  --badge-blocked-bg: #fee2e2;
+  --badge-blocked-color: #991b1b;
+}
+
+[data-theme='dark'] {
+  --ifm-color-primary: #38bdf8;
+  --ifm-color-primary-dark: #0ea5e9;
+  --ifm-color-primary-darker: #0284c7;
+  --ifm-color-primary-darkest: #0369a1;
+  --ifm-color-primary-light: #7dd3fc;
+  --ifm-color-primary-lighter: #bae6fd;
+  --ifm-color-primary-lightest: #e0f2fe;
+
+  --custom-accent-color: #34d399;
+
+  --ifm-background-color: #0f172a;
+  --ifm-navbar-background-color: rgba(30, 41, 59, 0.92);
+  --ifm-footer-background-color: #0f172a;
+  --ifm-toc-border-color: #334155;
+  --docusaurus-highlighted-code-line-bg: rgba(56, 189, 248, 0.15);
+
+  --badge-todo-bg: #1e293b;
+  --badge-todo-color: #94a3b8;
+  --badge-inprogress-bg: #422006;
+  --badge-inprogress-color: #fbbf24;
+  --badge-done-bg: #052e16;
+  --badge-done-color: #4ade80;
+  --badge-blocked-bg: #450a0a;
+  --badge-blocked-color: #f87171;
+}
+
+/* ============================================================================
+ * Status Badges used in epic pages
+ * ============================================================================ */
+.badge-todo {
+  display: inline-block;
+  padding: 2px 10px;
+  border-radius: 9999px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  background: var(--badge-todo-bg);
+  color: var(--badge-todo-color);
+}
+.badge-inprogress {
+  display: inline-block;
+  padding: 2px 10px;
+  border-radius: 9999px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  background: var(--badge-inprogress-bg);
+  color: var(--badge-inprogress-color);
+}
+.badge-done {
+  display: inline-block;
+  padding: 2px 10px;
+  border-radius: 9999px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  background: var(--badge-done-bg);
+  color: var(--badge-done-color);
+}
+.badge-blocked {
+  display: inline-block;
+  padding: 2px 10px;
+  border-radius: 9999px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  background: var(--badge-blocked-bg);
+  color: var(--badge-blocked-color);
+}
+
+/* ============================================================================
+ * Terminal-style code blocks (macOS window chrome)
+ * ============================================================================ */
+.prism-code[class*='language-bash']::before,
+.prism-code[class*='language-sh']::before,
+.prism-code[class*='language-shell']::before {
+  content: '';
+  display: block;
+  height: 28px;
+  background: #3a3a3a;
+  border-radius: 6px 6px 0 0;
+  margin: -1rem -1rem 1rem -1rem;
+  background-image: radial-gradient(circle, #ff5f57 6px, transparent 6px),
+    radial-gradient(circle, #febc2e 6px, transparent 6px),
+    radial-gradient(circle, #28c840 6px, transparent 6px);
+  background-repeat: no-repeat;
+  background-size: 12px 12px, 12px 12px, 12px 12px;
+  background-position: 14px 8px, 32px 8px, 50px 8px;
+}
+
+/* ============================================================================
+ * Diagram readability in dark mode
+ * ============================================================================ */
+[data-theme='dark'] .mermaid {
+  background: #1e293b;
+  padding: 1rem;
+  border-radius: 8px;
+}
+
+/* ============================================================================
+ * Agent prompt block — distinct styling for copy-paste agent briefs
+ * ============================================================================ */
+.agent-prompt {
+  border: 2px solid var(--custom-accent-color);
+  border-radius: 8px;
+  padding: 1.25rem 1.5rem;
+  margin: 1.5rem 0;
+  background: color-mix(in srgb, var(--custom-accent-color) 6%, transparent);
+}
+.agent-prompt-title {
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--custom-accent-color);
+  margin-bottom: 0.75rem;
+}

@@ -1,0 +1,1008 @@
+[
+  {
+    "session_id": "cyp_840f3300430f",
+    "goal": "PROJ-17726: add econnreset/error logging+502 to shared createProxyMiddleware to prove+bound proxy hang",
+    "intent": "build",
+    "target": "shared createProxyMiddleware \u2014 error/ECONNRESET logging",
+    "task_class": "build-feature",
+    "actual_exec_len": 18,
+    "candidate_a": {
+      "refined_delta": "(no change \u2014 same intent \u00b7 target)",
+      "scope_tools": [
+        "stage1-fetch (unconditional)",
+        "single-pass refiner"
+      ],
+      "exec_tools": [
+        "brain_recall",
+        "fts_search",
+        "wi_search",
+        "palace_search",
+        "fts_search",
+        "palace_search",
+        "code_graph_blast_radius",
+        "wi_search",
+        "wi_jira_analyze",
+        "code_graph_blast_radius",
+        "code_graph_blast_radius",
+        "fts_search",
+        "wi_investigate",
+        "palace_recall",
+        "code_graph_blast_radius",
+        "palace_search",
+        "palace_search",
+        "cypher_record_outcome"
+      ],
+      "passed_to": "EXECUTE",
+      "outcome": "success",
+      "why": "invariants tightened (non-null refined_goal, SSE event, low-conf halt); no per-row routing change",
+      "changed": false
+    },
+    "candidate_b": {
+      "refined_delta": "+ recommended_skill: wi-investigate",
+      "scope_tools": [
+        "stage1-fetch",
+        "single-pass refiner",
+        "skill-scorer \u2192 recommended_skill"
+      ],
+      "exec_tools": [
+        "wi_dispatch(skill='wi-investigate')",
+        "cypher_record_outcome"
+      ],
+      "passed_to": "EXECUTE",
+      "outcome": "success",
+      "why": "skill-first: refiner scored wi-investigate as best match; EXECUTE dispatches directly instead of primitive tool chain of 18 calls",
+      "changed": true
+    },
+    "candidate_c": {
+      "refined_delta": "(no change to intent \u00b7 target)",
+      "scope_tools": [
+        "stage1-fetch",
+        "single-pass refiner",
+        "concreteness-classifier"
+      ],
+      "exec_tools": [],
+      "passed_to": "PM",
+      "outcome": "captured_to_board",
+      "why": "target is vague (no ticket/PR/file/ADR/branch marker) \u2192 PM capture for human triage",
+      "changed": true
+    }
+  },
+  {
+    "session_id": "cyp_93041a5b101f",
+    "goal": "PROJ-17726: add econnreset/error logging+502-response to shared createProxyMiddleware (lib-backend-express-http-proxy) to prove and bound the",
+    "intent": "build",
+    "target": "lib-backend-express-http-proxy: createProxyMiddleware error/ECONNRESET logging",
+    "task_class": "build-feature",
+    "actual_exec_len": 19,
+    "candidate_a": {
+      "refined_delta": "(no change \u2014 same intent \u00b7 target)",
+      "scope_tools": [
+        "stage1-fetch (unconditional)",
+        "single-pass refiner"
+      ],
+      "exec_tools": [
+        "brain_recall",
+        "fts_search",
+        "wi_search",
+        "palace_search",
+        "palace_search",
+        "fts_search",
+        "palace_search",
+        "wi_search",
+        "code_graph_owners",
+        "brain_verify",
+        "wi_jira_analyze",
+        "code_graph_blast_radius",
+        "palace_recall",
+        "code_graph_blast_radius",
+        "palace_search",
+        "fts_search",
+        "code_graph_blast_radius",
+        "code_graph_owners",
+        "cypher_record_outcome"
+      ],
+      "passed_to": "EXECUTE",
+      "outcome": "success",
+      "why": "invariants tightened (non-null refined_goal, SSE event, low-conf halt); no per-row routing change",
+      "changed": false
+    },
+    "candidate_b": {
+      "refined_delta": "+ recommended_skill: wi-investigate",
+      "scope_tools": [
+        "stage1-fetch",
+        "single-pass refiner",
+        "skill-scorer \u2192 recommended_skill"
+      ],
+      "exec_tools": [
+        "wi_dispatch(skill='wi-investigate')",
+        "cypher_record_outcome"
+      ],
+      "passed_to": "EXECUTE",
+      "outcome": "success",
+      "why": "skill-first: refiner scored wi-investigate as best match; EXECUTE dispatches directly instead of primitive tool chain of 19 calls",
+      "changed": true
+    },
+    "candidate_c": {
+      "refined_delta": "(no change to intent \u00b7 target)",
+      "scope_tools": [
+        "stage1-fetch",
+        "single-pass refiner",
+        "concreteness-classifier"
+      ],
+      "exec_tools": [],
+      "passed_to": "PM",
+      "outcome": "captured_to_board",
+      "why": "target is vague (no ticket/PR/file/ADR/branch marker) \u2192 PM capture for human triage",
+      "changed": true
+    }
+  },
+  {
+    "session_id": "cyp_8df957e5ba02",
+    "intent": "build",
+    "target": "fix/test-debt-2026-07-24 \u2014 94 vitest failures across 18 test files in work-intel",
+    "task_class": "build-feature",
+    "actual_exec_len": 5,
+    "candidate_a": {
+      "refined_delta": "(no change \u2014 same intent \u00b7 target)",
+      "scope_tools": [
+        "stage1-fetch (unconditional)",
+        "single-pass refiner"
+      ],
+      "exec_tools": [
+        "brain_recall",
+        "cypher_self_assess",
+        "palace_search",
+        "fts_search",
+        "cypher_record_outcome"
+      ],
+      "passed_to": "EXECUTE",
+      "outcome": "success",
+      "why": "invariants tightened (non-null refined_goal, SSE event, low-conf halt); no per-row routing change",
+      "changed": false
+    },
+    "candidate_b": {
+      "refined_delta": "+ recommended_skill: wi-investigate",
+      "scope_tools": [
+        "stage1-fetch",
+        "single-pass refiner",
+        "skill-scorer \u2192 recommended_skill"
+      ],
+      "exec_tools": [
+        "wi_dispatch(skill='wi-investigate')",
+        "cypher_record_outcome"
+      ],
+      "passed_to": "EXECUTE",
+      "outcome": "success",
+      "why": "skill-first: refiner scored wi-investigate as best match; EXECUTE dispatches directly instead of primitive tool chain of 5 calls",
+      "changed": true
+    },
+    "candidate_c": {
+      "refined_delta": "(no change to intent \u00b7 target)",
+      "scope_tools": [
+        "stage1-fetch",
+        "single-pass refiner",
+        "concreteness-classifier"
+      ],
+      "exec_tools": [
+        "brain_recall",
+        "cypher_self_assess",
+        "palace_search",
+        "fts_search",
+        "cypher_record_outcome"
+      ],
+      "passed_to": "EXECUTE",
+      "outcome": "success",
+      "why": "target has a concrete artifact reference \u2192 EXECUTE (unchanged)",
+      "changed": false
+    }
+  },
+  {
+    "session_id": "cyp_e87d577728ef",
+    "goal": "build GET /api/sync/stream SSE endpoint \u2014 per-source started/result/error/done (ADR-044 AC-U3/U4)",
+    "intent": "build",
+    "target": "GET /api/sync/stream SSE endpoint",
+    "task_class": "build-feature",
+    "actual_exec_len": 6,
+    "candidate_a": {
+      "refined_delta": "(no change \u2014 same intent \u00b7 target)",
+      "scope_tools": [
+        "stage1-fetch (unconditional)",
+        "single-pass refiner"
+      ],
+      "exec_tools": [
+        "brain_recall",
+        "palace_search",
+        "wi_search",
+        "cypher_task_list",
+        "palace_search",
+        "palace_search"
+      ],
+      "passed_to": "EXECUTE",
+      "outcome": "success",
+      "why": "invariants tightened (non-null refined_goal, SSE event, low-conf halt); no per-row routing change",
+      "changed": false
+    },
+    "candidate_b": {
+      "refined_delta": "+ recommended_skill: wi-investigate",
+      "scope_tools": [
+        "stage1-fetch",
+        "single-pass refiner",
+        "skill-scorer \u2192 recommended_skill"
+      ],
+      "exec_tools": [
+        "wi_dispatch(skill='wi-investigate')",
+        "cypher_record_outcome"
+      ],
+      "passed_to": "EXECUTE",
+      "outcome": "success",
+      "why": "skill-first: refiner scored wi-investigate as best match; EXECUTE dispatches directly instead of primitive tool chain of 6 calls",
+      "changed": true
+    },
+    "candidate_c": {
+      "refined_delta": "(no change to intent \u00b7 target)",
+      "scope_tools": [
+        "stage1-fetch",
+        "single-pass refiner",
+        "concreteness-classifier"
+      ],
+      "exec_tools": [
+        "brain_recall",
+        "palace_search",
+        "wi_search",
+        "cypher_task_list",
+        "palace_search",
+        "palace_search"
+      ],
+      "passed_to": "EXECUTE",
+      "outcome": "success",
+      "why": "target has a concrete artifact reference \u2192 EXECUTE (unchanged)",
+      "changed": false
+    }
+  },
+  {
+    "session_id": "cyp_c6188071ca7b",
+    "goal": "PMAgent stall gate multi-column (in_progress/e2e) + wire pm-auto autoLink/autoClose into loop.ts (June-23 regression)",
+    "intent": "investigate",
+    "target": "PMAgent multi-column gate stall (in_progress/e2e columns) \u2014 June-23 regression",
+    "task_class": "bug-fix",
+    "actual_exec_len": 12,
+    "candidate_a": {
+      "refined_delta": "(no change \u2014 same intent \u00b7 target)",
+      "scope_tools": [
+        "stage1-fetch (unconditional)",
+        "single-pass refiner"
+      ],
+      "exec_tools": [
+        "brain_recall",
+        "brain_context",
+        "palace_search",
+        "fts_search",
+        "wi_code_research",
+        "wi_search",
+        "fts_search",
+        "fts_search",
+        "wi_teams_search",
+        "palace_search",
+        "cypher_self_assess",
+        "cypher_record_outcome"
+      ],
+      "passed_to": "EXECUTE",
+      "outcome": "success",
+      "why": "invariants tightened (non-null refined_goal, SSE event, low-conf halt); no per-row routing change",
+      "changed": false
+    },
+    "candidate_b": {
+      "refined_delta": "+ recommended_skill: wi-investigate",
+      "scope_tools": [
+        "stage1-fetch",
+        "single-pass refiner",
+        "skill-scorer \u2192 recommended_skill"
+      ],
+      "exec_tools": [
+        "wi_dispatch(skill='wi-investigate')",
+        "cypher_record_outcome"
+      ],
+      "passed_to": "EXECUTE",
+      "outcome": "success",
+      "why": "skill-first: refiner scored wi-investigate as best match; EXECUTE dispatches directly instead of primitive tool chain of 12 calls",
+      "changed": true
+    },
+    "candidate_c": {
+      "refined_delta": "(no change to intent \u00b7 target)",
+      "scope_tools": [
+        "stage1-fetch",
+        "single-pass refiner",
+        "concreteness-classifier"
+      ],
+      "exec_tools": [
+        "brain_recall",
+        "brain_context",
+        "palace_search",
+        "fts_search",
+        "wi_code_research",
+        "wi_search",
+        "fts_search",
+        "fts_search",
+        "wi_teams_search",
+        "palace_search",
+        "cypher_self_assess",
+        "cypher_record_outcome"
+      ],
+      "passed_to": "EXECUTE",
+      "outcome": "success",
+      "why": "target has a concrete artifact reference \u2192 EXECUTE (unchanged)",
+      "changed": false
+    }
+  },
+  {
+    "session_id": "cyp_175a19103a51",
+    "goal": "fix wi_search_all EXECUTE stall: local-first FTS return + background live enrich (tsk_445432091927)",
+    "intent": "investigate",
+    "target": "wi_search_all EXECUTE stall (tsk_445432091927)",
+    "task_class": "bug-fix",
+    "actual_exec_len": 0,
+    "candidate_a": {
+      "refined_delta": "(no change \u2014 same intent \u00b7 target)",
+      "scope_tools": [
+        "stage1-fetch (unconditional)",
+        "single-pass refiner"
+      ],
+      "exec_tools": [],
+      "passed_to": "EXECUTE",
+      "outcome": "success",
+      "why": "invariants tightened (non-null refined_goal, SSE event, low-conf halt); no per-row routing change",
+      "changed": false
+    },
+    "candidate_b": {
+      "refined_delta": "+ recommended_skill: wi-investigate",
+      "scope_tools": [
+        "stage1-fetch",
+        "single-pass refiner",
+        "skill-scorer \u2192 recommended_skill"
+      ],
+      "exec_tools": [
+        "wi_dispatch(skill='wi-investigate')",
+        "cypher_record_outcome"
+      ],
+      "passed_to": "EXECUTE",
+      "outcome": "success",
+      "why": "skill-first: refiner scored wi-investigate as best match; EXECUTE dispatches directly instead of primitive tool chain of 0 calls",
+      "changed": true
+    },
+    "candidate_c": {
+      "refined_delta": "(no change to intent \u00b7 target)",
+      "scope_tools": [
+        "stage1-fetch",
+        "single-pass refiner",
+        "concreteness-classifier"
+      ],
+      "exec_tools": [],
+      "passed_to": "EXECUTE",
+      "outcome": "success",
+      "why": "target has a concrete artifact reference \u2192 EXECUTE (unchanged)",
+      "changed": false
+    }
+  },
+  {
+    "session_id": "cyp_5bd8f7a2b90d",
+    "intent": "refactor",
+    "task_class": "build-feature",
+    "actual_exec_len": 10,
+    "candidate_a": {
+      "refined_delta": "(no change \u2014 same intent \u00b7 target)",
+      "scope_tools": [
+        "stage1-fetch (unconditional)",
+        "single-pass refiner"
+      ],
+      "exec_tools": [
+        "brain_recall",
+        "wi_pr_review",
+        "fts_search",
+        "wi_search",
+        "wi_search",
+        "wi_code_research",
+        "code_graph_owners",
+        "code_graph_owners",
+        "wi_search_all",
+        "cypher_self_assess"
+      ],
+      "passed_to": "EXECUTE",
+      "outcome": "success",
+      "why": "invariants tightened (non-null refined_goal, SSE event, low-conf halt); no per-row routing change",
+      "changed": false
+    },
+    "candidate_b": {
+      "refined_delta": "+ recommended_skill: wi-investigate",
+      "scope_tools": [
+        "stage1-fetch",
+        "single-pass refiner",
+        "skill-scorer \u2192 recommended_skill"
+      ],
+      "exec_tools": [
+        "wi_dispatch(skill='wi-investigate')",
+        "cypher_record_outcome"
+      ],
+      "passed_to": "EXECUTE",
+      "outcome": "success",
+      "why": "skill-first: refiner scored wi-investigate as best match; EXECUTE dispatches directly instead of primitive tool chain of 10 calls",
+      "changed": true
+    },
+    "candidate_c": {
+      "refined_delta": "(no change to intent \u00b7 target)",
+      "scope_tools": [
+        "stage1-fetch",
+        "single-pass refiner",
+        "concreteness-classifier"
+      ],
+      "exec_tools": [
+        "brain_recall",
+        "wi_pr_review",
+        "fts_search",
+        "wi_search",
+        "wi_search",
+        "wi_code_research",
+        "code_graph_owners",
+        "code_graph_owners",
+        "wi_search_all",
+        "cypher_self_assess"
+      ],
+      "passed_to": "EXECUTE",
+      "outcome": "success",
+      "why": "target has a concrete artifact reference \u2192 EXECUTE (unchanged)",
+      "changed": false
+    }
+  },
+  {
+    "session_id": "cyp_807bd22ba4ab",
+    "goal": "harden SCOPE single-pass timeout clamp floor + fix c-alendar comment typo",
+    "intent": "refactor",
+    "target": "SCOPE single-pass timeout clamp floor logic",
+    "task_class": "build-feature",
+    "actual_exec_len": 10,
+    "candidate_a": {
+      "refined_delta": "(no change \u2014 same intent \u00b7 target)",
+      "scope_tools": [
+        "stage1-fetch (unconditional)",
+        "single-pass refiner"
+      ],
+      "exec_tools": [
+        "brain_recall",
+        "fts_search",
+        "wi_code_research",
+        "wi_code_research",
+        "fts_search",
+        "palace_search",
+        "fts_search",
+        "code_graph_owners",
+        "wi_search",
+        "cypher_record_outcome"
+      ],
+      "passed_to": "EXECUTE",
+      "outcome": "success",
+      "why": "invariants tightened (non-null refined_goal, SSE event, low-conf halt); no per-row routing change",
+      "changed": false
+    },
+    "candidate_b": {
+      "refined_delta": "+ recommended_skill: wi-investigate",
+      "scope_tools": [
+        "stage1-fetch",
+        "single-pass refiner",
+        "skill-scorer \u2192 recommended_skill"
+      ],
+      "exec_tools": [
+        "wi_dispatch(skill='wi-investigate')",
+        "cypher_record_outcome"
+      ],
+      "passed_to": "EXECUTE",
+      "outcome": "success",
+      "why": "skill-first: refiner scored wi-investigate as best match; EXECUTE dispatches directly instead of primitive tool chain of 10 calls",
+      "changed": true
+    },
+    "candidate_c": {
+      "refined_delta": "(no change to intent \u00b7 target)",
+      "scope_tools": [
+        "stage1-fetch",
+        "single-pass refiner",
+        "concreteness-classifier"
+      ],
+      "exec_tools": [],
+      "passed_to": "PM",
+      "outcome": "captured_to_board",
+      "why": "target is vague (no ticket/PR/file/ADR/branch marker) \u2192 PM capture for human triage",
+      "changed": true
+    }
+  },
+  {
+    "session_id": "cyp_94568e4b5f75",
+    "goal": "harden SCOPE single-pass timeout clamp floor + fix c-alendar comment typo",
+    "intent": "refactor",
+    "target": "SCOPE single-pass timeout clamp floor (EXECUTE phase timeout clamp \u2014 exact file ",
+    "task_class": "build-feature",
+    "actual_exec_len": 12,
+    "candidate_a": {
+      "refined_delta": "(no change \u2014 same intent \u00b7 target)",
+      "scope_tools": [
+        "stage1-fetch (unconditional)",
+        "single-pass refiner"
+      ],
+      "exec_tools": [
+        "brain_recall",
+        "fts_search",
+        "wi_code_research",
+        "wi_code_research",
+        "wi_search",
+        "palace_search",
+        "palace_search",
+        "fts_search",
+        "code_graph_blast_radius",
+        "code_graph_blast_radius",
+        "cypher_self_assess",
+        "cypher_record_outcome"
+      ],
+      "passed_to": "EXECUTE",
+      "outcome": "success",
+      "why": "invariants tightened (non-null refined_goal, SSE event, low-conf halt); no per-row routing change",
+      "changed": false
+    },
+    "candidate_b": {
+      "refined_delta": "+ recommended_skill: wi-investigate",
+      "scope_tools": [
+        "stage1-fetch",
+        "single-pass refiner",
+        "skill-scorer \u2192 recommended_skill"
+      ],
+      "exec_tools": [
+        "wi_dispatch(skill='wi-investigate')",
+        "cypher_record_outcome"
+      ],
+      "passed_to": "EXECUTE",
+      "outcome": "success",
+      "why": "skill-first: refiner scored wi-investigate as best match; EXECUTE dispatches directly instead of primitive tool chain of 12 calls",
+      "changed": true
+    },
+    "candidate_c": {
+      "refined_delta": "(no change to intent \u00b7 target)",
+      "scope_tools": [
+        "stage1-fetch",
+        "single-pass refiner",
+        "concreteness-classifier"
+      ],
+      "exec_tools": [],
+      "passed_to": "PM",
+      "outcome": "captured_to_board",
+      "why": "target is vague (no ticket/PR/file/ADR/branch marker) \u2192 PM capture for human triage",
+      "changed": true
+    }
+  },
+  {
+    "session_id": "cyp_d91841225a2c",
+    "goal": "Assess the FETCH pipeline gaps in web-server.js and produce a precise implementation plan for: (1) adding a per-source /api/sync?source=emai",
+    "intent": "analyze",
+    "target": "web-server.js FETCH pipeline (per-source sync endpoint, OutlookWatcher wiring, s",
+    "task_class": "dispatch",
+    "actual_exec_len": 29,
+    "candidate_a": {
+      "refined_delta": "(no change \u2014 same intent \u00b7 target)",
+      "scope_tools": [
+        "stage1-fetch (unconditional)",
+        "single-pass refiner"
+      ],
+      "exec_tools": [
+        "brain_recall",
+        "wi_code_research",
+        "fts_search",
+        "palace_search",
+        "wi_search",
+        "wi_search",
+        "wi_ask_topic",
+        "fts_search",
+        "fts_search",
+        "fts_search",
+        "palace_recall",
+        "palace_recall",
+        "wi_jira_report",
+        "code_graph_blast_radius",
+        "palace_search",
+        "palace_recall",
+        "brain_recall",
+        "palace_search",
+        "palace_search",
+        "cypher_task_list",
+        "palace_recall",
+        "cypher_task_show_context",
+        "code_graph_owners",
+        "code_graph_test_coverage",
+        "wi_search_all",
+        "fts_search",
+        "wi_teams_search",
+        "wi_investigate",
+        "brain_decide"
+      ],
+      "passed_to": "EXECUTE",
+      "outcome": "mixed",
+      "why": "invariants tightened (non-null refined_goal, SSE event, low-conf halt); no per-row routing change",
+      "changed": false
+    },
+    "candidate_b": {
+      "refined_delta": "+ recommended_skill: wi-audit:analyze",
+      "scope_tools": [
+        "stage1-fetch",
+        "single-pass refiner",
+        "skill-scorer \u2192 recommended_skill"
+      ],
+      "exec_tools": [
+        "wi_dispatch(skill='wi-audit:analyze')",
+        "cypher_record_outcome"
+      ],
+      "passed_to": "EXECUTE",
+      "outcome": "mixed",
+      "why": "skill-first: refiner scored wi-audit:analyze as best match; EXECUTE dispatches directly instead of primitive tool chain of 29 calls",
+      "changed": true
+    },
+    "candidate_c": {
+      "refined_delta": "(no change to intent \u00b7 target)",
+      "scope_tools": [
+        "stage1-fetch",
+        "single-pass refiner",
+        "concreteness-classifier"
+      ],
+      "exec_tools": [
+        "brain_recall",
+        "wi_code_research",
+        "fts_search",
+        "palace_search",
+        "wi_search",
+        "wi_search",
+        "wi_ask_topic",
+        "fts_search",
+        "fts_search",
+        "fts_search",
+        "palace_recall",
+        "palace_recall",
+        "wi_jira_report",
+        "code_graph_blast_radius",
+        "palace_search",
+        "palace_recall",
+        "brain_recall",
+        "palace_search",
+        "palace_search",
+        "cypher_task_list",
+        "palace_recall",
+        "cypher_task_show_context",
+        "code_graph_owners",
+        "code_graph_test_coverage",
+        "wi_search_all",
+        "fts_search",
+        "wi_teams_search",
+        "wi_investigate",
+        "brain_decide"
+      ],
+      "passed_to": "EXECUTE",
+      "outcome": "mixed",
+      "why": "target has a concrete artifact reference \u2192 EXECUTE (unchanged)",
+      "changed": false
+    }
+  },
+  {
+    "session_id": "cyp_1cab03b7c1ea",
+    "goal": "commit Phase 88 web-server.js sync-query column fixes (8 bugs) so KG-enrich is durably shipped",
+    "intent": "build",
+    "target": "web-server.js (Phase 88 sync-query column fixes)",
+    "task_class": "build-feature",
+    "actual_exec_len": 8,
+    "candidate_a": {
+      "refined_delta": "(no change \u2014 same intent \u00b7 target)",
+      "scope_tools": [
+        "stage1-fetch (unconditional)",
+        "single-pass refiner"
+      ],
+      "exec_tools": [
+        "brain_recall",
+        "cypher_self_assess",
+        "palace_search",
+        "fts_search",
+        "cypher_project_list",
+        "wi_search",
+        "palace_search",
+        "cypher_record_outcome"
+      ],
+      "passed_to": "EXECUTE",
+      "outcome": "success",
+      "why": "invariants tightened (non-null refined_goal, SSE event, low-conf halt); no per-row routing change",
+      "changed": false
+    },
+    "candidate_b": {
+      "refined_delta": "+ recommended_skill: wi-investigate",
+      "scope_tools": [
+        "stage1-fetch",
+        "single-pass refiner",
+        "skill-scorer \u2192 recommended_skill"
+      ],
+      "exec_tools": [
+        "wi_dispatch(skill='wi-investigate')",
+        "cypher_record_outcome"
+      ],
+      "passed_to": "EXECUTE",
+      "outcome": "success",
+      "why": "skill-first: refiner scored wi-investigate as best match; EXECUTE dispatches directly instead of primitive tool chain of 8 calls",
+      "changed": true
+    },
+    "candidate_c": {
+      "refined_delta": "(no change to intent \u00b7 target)",
+      "scope_tools": [
+        "stage1-fetch",
+        "single-pass refiner",
+        "concreteness-classifier"
+      ],
+      "exec_tools": [
+        "brain_recall",
+        "cypher_self_assess",
+        "palace_search",
+        "fts_search",
+        "cypher_project_list",
+        "wi_search",
+        "palace_search",
+        "cypher_record_outcome"
+      ],
+      "passed_to": "EXECUTE",
+      "outcome": "success",
+      "why": "target has a concrete artifact reference \u2192 EXECUTE (unchanged)",
+      "changed": false
+    }
+  },
+  {
+    "session_id": "cyp_d0ca2161c7de",
+    "goal": "drop 10 dead tables + migrate digest.ts off empty decisions/questions tables, drop those 2, VACUUM, schema migration bump",
+    "intent": "refactor",
+    "target": "10 dead/unused database tables identified against database-schema.md",
+    "task_class": "build-feature",
+    "actual_exec_len": 10,
+    "candidate_a": {
+      "refined_delta": "(no change \u2014 same intent \u00b7 target)",
+      "scope_tools": [
+        "stage1-fetch (unconditional)",
+        "single-pass refiner"
+      ],
+      "exec_tools": [
+        "brain_recall",
+        "palace_search",
+        "fts_search",
+        "wi_search",
+        "cypher_self_assess",
+        "wi_code_research",
+        "palace_search",
+        "palace_recall",
+        "brain_verify",
+        "cypher_record_outcome"
+      ],
+      "passed_to": "EXECUTE",
+      "outcome": "success",
+      "why": "invariants tightened (non-null refined_goal, SSE event, low-conf halt); no per-row routing change",
+      "changed": false
+    },
+    "candidate_b": {
+      "refined_delta": "+ recommended_skill: wi-investigate",
+      "scope_tools": [
+        "stage1-fetch",
+        "single-pass refiner",
+        "skill-scorer \u2192 recommended_skill"
+      ],
+      "exec_tools": [
+        "wi_dispatch(skill='wi-investigate')",
+        "cypher_record_outcome"
+      ],
+      "passed_to": "EXECUTE",
+      "outcome": "success",
+      "why": "skill-first: refiner scored wi-investigate as best match; EXECUTE dispatches directly instead of primitive tool chain of 10 calls",
+      "changed": true
+    },
+    "candidate_c": {
+      "refined_delta": "(no change to intent \u00b7 target)",
+      "scope_tools": [
+        "stage1-fetch",
+        "single-pass refiner",
+        "concreteness-classifier"
+      ],
+      "exec_tools": [],
+      "passed_to": "PM",
+      "outcome": "captured_to_board",
+      "why": "target is vague (no ticket/PR/file/ADR/branch marker) \u2192 PM capture for human triage",
+      "changed": true
+    }
+  },
+  {
+    "session_id": "cyp_cfd11f739c30",
+    "goal": "fix ADR-043 Scenario 4 smoke brittleness (top-50 window misses dep-penalized card in 136-card organic backlog) then flip ADR-043 to Accepted",
+    "intent": "investigate",
+    "target": "ADR-043 Scenario 4 smoke test \u2014 top-50 window vs dep-penalized card",
+    "task_class": "build-feature",
+    "actual_exec_len": 12,
+    "candidate_a": {
+      "refined_delta": "(no change \u2014 same intent \u00b7 target)",
+      "scope_tools": [
+        "stage1-fetch (unconditional)",
+        "single-pass refiner"
+      ],
+      "exec_tools": [
+        "brain_recall",
+        "palace_search",
+        "wi_search",
+        "fts_search",
+        "wi_code_research",
+        "wi_search",
+        "wi_search",
+        "cypher_self_assess",
+        "smoke_run",
+        "palace_recall",
+        "fts_search",
+        "cypher_record_outcome"
+      ],
+      "passed_to": "EXECUTE",
+      "outcome": "success",
+      "why": "invariants tightened (non-null refined_goal, SSE event, low-conf halt); no per-row routing change",
+      "changed": false
+    },
+    "candidate_b": {
+      "refined_delta": "+ recommended_skill: wi-investigate",
+      "scope_tools": [
+        "stage1-fetch",
+        "single-pass refiner",
+        "skill-scorer \u2192 recommended_skill"
+      ],
+      "exec_tools": [
+        "wi_dispatch(skill='wi-investigate')",
+        "cypher_record_outcome"
+      ],
+      "passed_to": "EXECUTE",
+      "outcome": "success",
+      "why": "skill-first: refiner scored wi-investigate as best match; EXECUTE dispatches directly instead of primitive tool chain of 12 calls",
+      "changed": true
+    },
+    "candidate_c": {
+      "refined_delta": "(no change to intent \u00b7 target)",
+      "scope_tools": [
+        "stage1-fetch",
+        "single-pass refiner",
+        "concreteness-classifier"
+      ],
+      "exec_tools": [
+        "brain_recall",
+        "palace_search",
+        "wi_search",
+        "fts_search",
+        "wi_code_research",
+        "wi_search",
+        "wi_search",
+        "cypher_self_assess",
+        "smoke_run",
+        "palace_recall",
+        "fts_search",
+        "cypher_record_outcome"
+      ],
+      "passed_to": "EXECUTE",
+      "outcome": "success",
+      "why": "target has a concrete artifact reference \u2192 EXECUTE (unchanged)",
+      "changed": false
+    }
+  },
+  {
+    "session_id": "cyp_c29c0eff5ae1",
+    "goal": "review PR 4714 for correctness bugs in the ProductFunctions endpoint",
+    "intent": "review",
+    "target": "PR 4714 \u2014 ProductFunctions endpoint",
+    "task_class": "generic",
+    "actual_exec_len": 6,
+    "candidate_a": {
+      "refined_delta": "(no change \u2014 same intent \u00b7 target)",
+      "scope_tools": [
+        "stage1-fetch (unconditional)",
+        "single-pass refiner"
+      ],
+      "exec_tools": [
+        "brain_recall",
+        "wi_pr_review",
+        "fts_search",
+        "wi_search",
+        "wi_code_research",
+        "wi_search_all"
+      ],
+      "passed_to": "EXECUTE",
+      "outcome": "mixed",
+      "why": "invariants tightened (non-null refined_goal, SSE event, low-conf halt); no per-row routing change",
+      "changed": false
+    },
+    "candidate_b": {
+      "refined_delta": "+ recommended_skill: wi-code:pr-review",
+      "scope_tools": [
+        "stage1-fetch",
+        "single-pass refiner",
+        "skill-scorer \u2192 recommended_skill"
+      ],
+      "exec_tools": [
+        "wi_dispatch(skill='wi-code:pr-review')",
+        "cypher_record_outcome"
+      ],
+      "passed_to": "EXECUTE",
+      "outcome": "mixed",
+      "why": "skill-first: refiner scored wi-code:pr-review as best match; EXECUTE dispatches directly instead of primitive tool chain of 6 calls",
+      "changed": true
+    },
+    "candidate_c": {
+      "refined_delta": "(no change to intent \u00b7 target)",
+      "scope_tools": [
+        "stage1-fetch",
+        "single-pass refiner",
+        "concreteness-classifier"
+      ],
+      "exec_tools": [
+        "brain_recall",
+        "wi_pr_review",
+        "fts_search",
+        "wi_search",
+        "wi_code_research",
+        "wi_search_all"
+      ],
+      "passed_to": "EXECUTE",
+      "outcome": "mixed",
+      "why": "target has a concrete artifact reference \u2192 EXECUTE (unchanged)",
+      "changed": false
+    }
+  },
+  {
+    "session_id": "cyp_f4fcfec39056",
+    "intent": "review",
+    "task_class": "build-feature",
+    "actual_exec_len": 4,
+    "candidate_a": {
+      "refined_delta": "(no change \u2014 same intent \u00b7 target)",
+      "scope_tools": [
+        "stage1-fetch (unconditional)",
+        "single-pass refiner"
+      ],
+      "exec_tools": [
+        "brain_recall",
+        "wi_search",
+        "wi_jira_analyze",
+        "fts_search"
+      ],
+      "passed_to": "EXECUTE",
+      "outcome": "success",
+      "why": "invariants tightened (non-null refined_goal, SSE event, low-conf halt); no per-row routing change",
+      "changed": false
+    },
+    "candidate_b": {
+      "refined_delta": "+ recommended_skill: wi-investigate",
+      "scope_tools": [
+        "stage1-fetch",
+        "single-pass refiner",
+        "skill-scorer \u2192 recommended_skill"
+      ],
+      "exec_tools": [
+        "wi_dispatch(skill='wi-investigate')",
+        "cypher_record_outcome"
+      ],
+      "passed_to": "EXECUTE",
+      "outcome": "success",
+      "why": "skill-first: refiner scored wi-investigate as best match; EXECUTE dispatches directly instead of primitive tool chain of 4 calls",
+      "changed": true
+    },
+    "candidate_c": {
+      "refined_delta": "(no change to intent \u00b7 target)",
+      "scope_tools": [
+        "stage1-fetch",
+        "single-pass refiner",
+        "concreteness-classifier"
+      ],
+      "exec_tools": [
+        "brain_recall",
+        "wi_search",
+        "wi_jira_analyze",
+        "fts_search"
+      ],
+      "passed_to": "EXECUTE",
+      "outcome": "success",
+      "why": "target has a concrete artifact reference \u2192 EXECUTE (unchanged)",
+      "changed": false
+    }
+  }
+]

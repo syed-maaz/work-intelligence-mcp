@@ -1,0 +1,75 @@
+{
+  "version": "1.0",
+  "registry": {
+    "loadsFrom": "wi.config.json",
+    "discovery": "enabled-flags"
+  },
+  "connectors": {
+    "jira": {
+      "displayName": "Jira",
+      "modes": ["mcp", "browser", "both"],
+      "capabilities": ["issues", "board", "transitions", "sprint", "my-issues"],
+      "config": {
+        "enabled": "connectors.jira.enabled",
+        "mode": "connectors.jira.mode",
+        "requiredEnv": ["JIRA_MCP_TOKEN"]
+      },
+      "dataIngested": ["issues", "transitions", "sprint_config"]
+    },
+    "github": {
+      "displayName": "GitHub",
+      "modes": ["api", "mcp", "both"],
+      "capabilities": ["prs", "issues", "commits", "search"],
+      "config": {
+        "enabled": "connectors.github.enabled",
+        "mode": "connectors.github.mode",
+        "requiredEnv": ["GITHUB_TOKEN"]
+      },
+      "dataIngested": ["prs", "commits"]
+    },
+    "slack": {
+      "displayName": "Slack",
+      "modes": ["api"],
+      "capabilities": ["messages", "channels"],
+      "config": {
+        "enabled": "connectors.slack.enabled",
+        "mode": "connectors.slack.mode",
+        "requiredEnv": ["SLACK_TOKEN"]
+      },
+      "dataIngested": ["messages"]
+    },
+    "linear": {
+      "displayName": "Linear",
+      "modes": ["api"],
+      "capabilities": ["issues", "projects", "cycles"],
+      "config": {
+        "enabled": "connectors.linear.enabled",
+        "mode": "connectors.linear.mode",
+        "requiredEnv": ["LINEAR_API_KEY"]
+      },
+      "dataIngested": ["issues"]
+    },
+    "teams": {
+      "displayName": "Microsoft Teams",
+      "modes": ["browser"],
+      "capabilities": ["chats", "meetings", "updates"],
+      "config": {
+        "enabled": "connectors.teams.enabled",
+        "mode": "connectors.teams.mode",
+        "requiredEnv": ["BROWSER_PROFILE_PATH"]
+      },
+      "dataIngested": ["chats", "meetings"]
+    },
+    "outlook": {
+      "displayName": "Outlook",
+      "modes": ["browser"],
+      "capabilities": ["mail", "calendar"],
+      "config": {
+        "enabled": "connectors.outlook.enabled",
+        "mode": "connectors.outlook.mode",
+        "requiredEnv": ["BROWSER_PROFILE_PATH"]
+      },
+      "dataIngested": ["mail", "calendar"]
+    }
+  }
+}

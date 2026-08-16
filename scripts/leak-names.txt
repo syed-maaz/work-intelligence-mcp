@@ -1,0 +1,2 @@
+# public name deny-list — add names YOUR org must never leak
+# (the maintainer keeps the real list private)

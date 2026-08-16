@@ -1,0 +1,45 @@
+{
+  "manifest_version": 3,
+  "name": "Work Intelligence Data Collector",
+  "version": "1.0.0",
+  "description": "Read-only data collector for Microsoft Teams and Outlook. Securely extracts visible messages and sends to local database.",
+  "permissions": [
+    "storage"
+  ],
+  "host_permissions": [
+    "https://teams.microsoft.com/*",
+    "https://outlook.office365.com/*",
+    "https://outlook.office.com/*"
+  ],
+  "content_scripts": [
+    {
+      "matches": ["https://teams.microsoft.com/*"],
+      "js": ["scripts/teams-collector.js"],
+      "run_at": "document_idle"
+    },
+    {
+      "matches": [
+        "https://outlook.office365.com/*",
+        "https://outlook.office.com/*"
+      ],
+      "js": ["scripts/outlook-collector.js"],
+      "run_at": "document_idle"
+    }
+  ],
+  "background": {
+    "service_worker": "scripts/background.js"
+  },
+  "action": {
+    "default_popup": "popup.html",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "48": "icons/icon48.png",
+      "128": "icons/icon128.png"
+    }
+  },
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  }
+}
