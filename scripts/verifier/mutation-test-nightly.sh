@@ -13,7 +13,9 @@
 # Runs nightly. Idempotent — safe to invoke ad-hoc as well.
 
 set -u
-WI_DB_PATH="${WI_DB_PATH:-$HOME/.work-intelligence-mcp/data.db}"
+# Honor DATABASE_PATH (app convention) before the legacy home-DB fallback —
+# otherwise a smoke/CI run silently writes health rows into the live home DB.
+WI_DB_PATH="${WI_DB_PATH:-${DATABASE_PATH:-$HOME/.work-intelligence-mcp/data.db}}"
 REPO_ROOT="${REPO_ROOT:-$(cd "$(dirname "$0")/../.." && pwd)}"
 NOW_MS=$(($(date +%s) * 1000))
 
