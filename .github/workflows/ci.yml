@@ -12,9 +12,17 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with: { fetch-depth: 0 }
-      - uses: gitleaks/gitleaks-action@v2
-      - run: sudo apt-get update && sudo apt-get install -y ripgrep && bash scripts/leak-scan.sh
-      - run: "! git log --format=%B | rg -i -f scripts/leak-patterns.txt"   # commit MESSAGES carry leaks too (v5)
+      - name: Install ripgrep
+        run: sudo apt-get update && sudo apt-get install -y ripgrep
+      - name: Leak scan (patterns + names, all files)
+        run: bash scripts/leak-scan.sh
+      - name: gitleaks (independent second scanner, pinned)
+        run: |
+          GL_VER=8.24.3
+          curl -sSL "https://github.com/gitleaks/gitleaks/releases/download/v${GL_VER}/gitleaks_${GL_VER}_linux_x64.tar.gz" | tar -xz gitleaks
+          ./gitleaks detect --source . --no-banner --redact --exit-code 1
+      - name: Commit messages carry no leaks
+        run: "! git log --format=%B | rg -i -f scripts/leak-patterns.txt"
 
   build:
     needs: leak-scan
