@@ -52,7 +52,7 @@ const POLL_MS = 30_000;
 
 const PROJECT_PALETTE: Record<string, string> = {
   wi: 'bg-indigo-100 text-indigo-800 border-indigo-300',
-  example-service: 'bg-cyan-100 text-cyan-800 border-cyan-300',
+  'example-service': 'bg-cyan-100 text-cyan-800 border-cyan-300',
   operations: 'bg-fuchsia-100 text-fuchsia-800 border-fuchsia-300',
 };
 const POSTURE_TINT: Record<string, string> = {
