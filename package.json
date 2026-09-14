@@ -1,6 +1,6 @@
 {
   "name": "work-intelligence-mcp",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "MCP server for work intelligence - integrates Microsoft Graph and Jira with AI-powered insights",
   "type": "module",
   "main": "dist/server.js",
