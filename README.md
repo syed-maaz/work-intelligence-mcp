@@ -1,14 +1,12 @@
 # Work Intelligence MCP
 
-<!-- TODO(owner): on first publish, replace <owner> in the badge URLs below with your GitHub username. -->
 
-[![CI](https://img.shields.io/github/actions/workflow/status/<owner>/work-intelligence-mcp/ci.yml?branch=main&label=build&logo=github&style=flat-square)](https://github.com/<owner>/work-intelligence-mcp/actions/workflows/ci.yml)
+[![CI](https://img.shields.io/github/actions/workflow/status/syed-maaz/work-intelligence-mcp/ci.yml?branch=main&label=build&logo=github&style=flat-square)](https://github.com/syed-maaz/work-intelligence-mcp/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg?style=flat-square)](LICENSE)
-[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](https://github.com/<owner>/work-intelligence-mcp/pulls)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](https://github.com/syed-maaz/work-intelligence-mcp/pulls)
 
 A local-first assistant that watches your Jira / Slack / GitHub and learns which tools actually solve which problems — an agentic loop that grades itself mechanically, no LLM-as-judge. Runs on your machine; your data never leaves it.
 
-![Work Intelligence — annotated loop-trace demo](docs/static/demo-loop.gif)
 
 > **Placeholder box.** The GIF is generated from your own run: `npm run demo:trace` renders the loop's persisted audit rows (goal → tool pick → recall → verdict → prior update) into `docs/static/demo-loop.gif`. It needs a real API key once, then it's reproducible forever — nothing here is hand-faked. Until you run it, the box stays empty by design.
 
