@@ -8,7 +8,7 @@
 A local-first assistant that watches your Jira / Slack / GitHub and learns which tools actually solve which problems — an agentic loop that grades itself mechanically, no LLM-as-judge. Runs on your machine; your data never leaves it.
 
 
-> **Placeholder box.** The GIF is generated from your own run: `npm run demo:trace` renders the loop's persisted audit rows (goal → tool pick → recall → verdict → prior update) into `docs/static/demo-loop.gif`. It needs a real API key once, then it's reproducible forever — nothing here is hand-faked. Until you run it, the box stays empty by design.
+> **Watch it think:** the annotated loop trace lives at [`docs/docs/walkthroughs/loop-trace.md`](docs/docs/walkthroughs/loop-trace.md) — generated from the loop's own persisted audit rows (`npm run demo:trace`). A screen recording lands here after the first keyed run; nothing is hand-faked.
 
 ## The loop, annotated
 
