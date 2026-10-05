@@ -103,3 +103,5 @@ GEMINI.md
 ARCHITECTURE.md
 CYPHER.md
 *.png-screenshots
+docs/.docusaurus/
+docs/build/

@@ -6,8 +6,8 @@ const config: Config = {
   title: 'Work Intelligence MCP',
   tagline: 'AI-powered work communications intelligence — Teams, Outlook, Jira',
   favicon: 'img/favicon.svg',
-  url: 'http://localhost:3000',
-  baseUrl: '/',
+  url: 'https://syed-maaz.github.io',
+  baseUrl: '/work-intelligence-mcp/',
   onBrokenLinks: 'warn',
   onBrokenMarkdownLinks: 'warn',
 
