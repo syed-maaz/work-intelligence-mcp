@@ -24,6 +24,17 @@
  * Without ANTHROPIC_API_KEY this prints a graceful note and exits 0 (CI
  * never hard-fails without a key); evaluation.md is left untouched.
  */
+// ── Hermetic demo guard ─────────────────────────────────────────────────────
+// The loop's search tool may otherwise reach LIVE connectors (real Chrome
+// profile cookies, real Outlook/Teams/Jira). A demo must never touch the
+// user's real accounts or ship their data into a recording/eval. Force a
+// non-existent browser profile + demo mode unless the caller overrides.
+// FORCED override (not ??=): a real .env typically points at the user's live
+// Chrome profile — a demo must not copy their cookies or scrape their inbox.
+// Opt back into live sources explicitly with WI_DEMO_BROWSER_PROFILE=<path>.
+process.env.BROWSER_PROFILE_PATH = process.env.WI_DEMO_BROWSER_PROFILE ?? '/tmp/wi-demo-no-profile';
+process.env.WI_DEMO_MODE ??= '1';
+
 import { randomUUID } from 'node:crypto';
 import { spawnSync } from 'node:child_process';
 import { readFileSync, writeFileSync } from 'node:fs';

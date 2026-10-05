@@ -31,7 +31,11 @@ matches the gold label. FAIL = it did not — no partial credit, no self-reporti
 
 <!-- score line is updated in place by scripts/demo-eval.mjs after a real run -->
 
-**Score (held-out, human-labeled):** picked the right tool **0/10**
+**Score (held-out, human-labeled):** picked the right tool **9/10** (latest run)
+
+> **Run variance, stated up front:** two consecutive runs scored **7/10** and **9/10** on the
+> same task set. The loop samples — reruns are not identical. Treat this as a directional
+> existence proof, not a benchmark number.
 
 ## Mechanical facts
 
@@ -39,10 +43,10 @@ Not self-scored — directly measured from the run. Safe to state without the lo
 
 | Metric | Value |
 | --- | --- |
-| Mean iterations per task | — |
-| Total tool calls (all tasks) | — |
-| Total tokens (input/output/cache-read/cache-write) | — |
-| Est. API cost (USD, per analyzer.ts pricing) | — |
+| Mean iterations per task | 6.9 |
+| Total tool calls (all tasks) | 69 |
+| Total tokens (input/output/cache-read/cache-write) | 49078/18535/572036/1976 |
+| Est. API cost (USD, per analyzer.ts pricing) | 1.0071 |
 
 ## Failure analysis
 
@@ -56,7 +60,8 @@ flag it for triage.
 
 | # | Goal | Gold label | Loop's actual choice | Likely cause | Verdict |
 | --- | --- | --- | --- | --- | --- |
-| — | — | — | — | — | — |
+| 1 | Who owns the widget dashboard migration tracked in PROJ-103 on acme/widgets? | `alex` | "I can't give you an owner — I can't confirm the thing exists"; search returns the corpus row but surfaces content, not message authorship | The gold label requires inferring **owner = message author**; the search tool returns content snippets and the loop doesn't attribute authorship to ownership. Present in BOTH runs. | Loop limitation (attribution gap), label arguably strict |
+| 2 | Who drafted the rollback plan for the acme/widgets v2 release? | `cara` | "couldn't definitively identify who drafted the rollback plan" | Same attribution gap: the corpus line is passive ("rollback plan ... drafted"); author `cara` never appears in searchable content. Observed in the 7/10 run. | Loop limitation (same class) |
 
 ### Known limitations of this eval
 

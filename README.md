@@ -5,21 +5,23 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg?style=flat-square)](LICENSE)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](https://github.com/syed-maaz/work-intelligence-mcp/pulls)
 
+![The agentic loop running on fictional demo data — goal, tool picks, recall, verdict](docs/static/demo-loop.gif)
+
 A local-first assistant that watches your Jira / Slack / GitHub and learns which tools actually solve which problems — an agentic loop that grades itself mechanically, no LLM-as-judge. Runs on your machine; your data never leaves it.
 
 
-> **Watch it think:** the annotated loop trace lives at [`docs/docs/walkthroughs/loop-trace.md`](docs/docs/walkthroughs/loop-trace.md) — generated from the loop's own persisted audit rows (`npm run demo:trace`). A screen recording lands here after the first keyed run; nothing is hand-faked.
+> **Watch it think:** the GIF above is a real recording of `npm run demo:trace` (fictional demo data, connectors disabled) — the loop's own audit rows, nothing hand-faked. Full annotated trace: [`docs/docs/walkthroughs/loop-trace.md`](docs/docs/walkthroughs/loop-trace.md). Raw terminal cast: [`docs/static/demo-loop.cast`](docs/static/demo-loop.cast).
 
 ## The loop, annotated
 
 One goal in, one verdict out — every step is a row in SQLite, so the loop can be graded mechanically. This is the shape of a run; regenerate it anytime with `npm run demo:trace`, or read the full annotated trace at [`docs/docs/walkthroughs/loop-trace.md`](docs/docs/walkthroughs/loop-trace.md):
 
 ```
-goal    → "What happened with the PROJ-101 widget rollout on acme/widgets?"
-pick    → wi-recall-lanes — eligible: catalog description matches the query
-recall  → 9 lanes hit (memory, decisions, people): 3 notes + 2 prior verdicts
-execute → 4 tool calls, status=success, 12.4s, ~21k tokens
-verdict → success — recorded as a mechanical signal, not an opinion
+goal    → "What happened with the PROJ-101 widget rollout on acme/widgets? Summarize ... open items."
+pick    → wi_search_all → wi_teams_search → recall — each choice visible in the audit rows
+recall  → query-only lanes on the demo corpus (palace lanes empty → sqlite lane carries)
+execute → local-first search, status=completed, per-step durations + tokens persisted
+verdict → success — written to cypher_outcomes as a mechanical signal, not an opinion
 priors  → (skill, task_class) α/β move only via learn.ts; the loop never grades itself
 ```
 

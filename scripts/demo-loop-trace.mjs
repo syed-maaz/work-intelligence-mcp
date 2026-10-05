@@ -18,6 +18,17 @@
  * loop makes real paid Anthropic calls (loop.ts getAnthropicClient throws
  * without a key), so the placeholder page ships and CI never hard-fails.
  */
+// ── Hermetic demo guard ─────────────────────────────────────────────────────
+// The loop's search tool may otherwise reach LIVE connectors (real Chrome
+// profile cookies, real Outlook/Teams/Jira). A demo must never touch the
+// user's real accounts or ship their data into a recording/eval. Force a
+// non-existent browser profile + demo mode unless the caller overrides.
+// FORCED override (not ??=): a real .env typically points at the user's live
+// Chrome profile — a demo must not copy their cookies or scrape their inbox.
+// Opt back into live sources explicitly with WI_DEMO_BROWSER_PROFILE=<path>.
+process.env.BROWSER_PROFILE_PATH = process.env.WI_DEMO_BROWSER_PROFILE ?? '/tmp/wi-demo-no-profile';
+process.env.WI_DEMO_MODE ??= '1';
+
 import { randomUUID } from 'node:crypto';
 import { spawnSync } from 'node:child_process';
 import { mkdirSync, writeFileSync } from 'node:fs';
@@ -217,7 +228,7 @@ export async function runDemoTrace() {
 
   const steps = readSteps(db, sessionId);
   const sessionRow = db.prepare(
-    `SELECT session_id, goal, outcome, outcome_note, chosen_skill, iterations, total_tokens,
+    `SELECT session_id, goal, outcome, outcome_note, chosen_skill, scope_iters, total_tokens,
             duration_ms, prior_count, prior_success_rate
        FROM cypher_sessions WHERE session_id = ?`,
   ).get(sessionId);
