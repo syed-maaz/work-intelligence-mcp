@@ -23,8 +23,14 @@ jobs:
         run: bash scripts/leak-scan.sh --strict
       - name: gitleaks (independent second scanner, pinned)
         run: |
-          GL_VER=8.24.3
-          curl -fsSL "https://github.com/gitleaks/gitleaks/releases/download/v${GL_VER}/gitleaks_${GL_VER}_linux_x64.tar.gz" | tar -xz gitleaks
+          set -euo pipefail
+          # Archive traversal requires this version; verify the pinned release bytes.
+          GL_VER=8.30.1
+          GL_SHA256=551f6fc83ea457d62a0d98237cbad105af8d557003051f41f3e7ca7b3f2470eb
+          GL_ARCHIVE="$RUNNER_TEMP/gitleaks_${GL_VER}_linux_x64.tar.gz"
+          curl -fsSL "https://github.com/gitleaks/gitleaks/releases/download/v${GL_VER}/gitleaks_${GL_VER}_linux_x64.tar.gz" -o "$GL_ARCHIVE"
+          printf '%s %s\n' "$GL_SHA256" "$GL_ARCHIVE" | sha256sum --check
+          tar -xzf "$GL_ARCHIVE" gitleaks
           ./gitleaks detect --source . --no-banner --redact --exit-code 1 --ignore-gitleaks-allow --max-archive-depth 2 --config scripts/release-gitleaks.toml --gitleaks-ignore-path scripts/release-gitleaks-ignore.txt
       - name: Commit messages carry no leaks
         shell: bash
