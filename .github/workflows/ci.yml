@@ -6,23 +6,36 @@ on:
   pull_request:
     branches: [main, master]
 
+permissions:
+  contents: read
+
 jobs:
   leak-scan:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
         with: { fetch-depth: 0 }
+      - uses: actions/setup-node@v4
+        with: { node-version: 24 }
       - name: Install ripgrep
         run: sudo apt-get update && sudo apt-get install -y ripgrep
       - name: Leak scan (patterns + names, all files)
-        run: bash scripts/leak-scan.sh
+        run: bash scripts/leak-scan.sh --strict
       - name: gitleaks (independent second scanner, pinned)
         run: |
           GL_VER=8.24.3
-          curl -sSL "https://github.com/gitleaks/gitleaks/releases/download/v${GL_VER}/gitleaks_${GL_VER}_linux_x64.tar.gz" | tar -xz gitleaks
-          ./gitleaks detect --source . --no-banner --redact --exit-code 1
+          curl -fsSL "https://github.com/gitleaks/gitleaks/releases/download/v${GL_VER}/gitleaks_${GL_VER}_linux_x64.tar.gz" | tar -xz gitleaks
+          ./gitleaks detect --source . --no-banner --redact --exit-code 1 --ignore-gitleaks-allow --max-archive-depth 2 --config scripts/release-gitleaks.toml --gitleaks-ignore-path scripts/release-gitleaks-ignore.txt
       - name: Commit messages carry no leaks
-        run: "! git log --format=%B | rg -i -f scripts/leak-patterns.txt"
+        shell: bash
+        run: |
+          set -euo pipefail
+          git log --format=%B > /tmp/wi-commit-messages
+          set +e
+          rg --quiet -i -f scripts/leak-patterns.txt -f scripts/leak-names.txt /tmp/wi-commit-messages
+          scan_status=$?
+          set -e
+          test "$scan_status" = 1
 
   build:
     needs: leak-scan
@@ -48,6 +61,10 @@ jobs:
       - name: Build
         run: npm run build
 
+      - name: Scanner and demo boundary regressions
+        run: node --test tests/release/leak-scan.test.mjs tests/release/demo-sandbox.test.mjs
+      - name: Fictional recall outcome
+        run: npm run demo && npm run demo:recall
       - name: Test
         # `npm test` starts vitest in watch mode; use test:run for CI.
         run: npm run test:run
