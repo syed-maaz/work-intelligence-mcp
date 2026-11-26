@@ -7,7 +7,7 @@
 
 ![The agentic loop running on fictional demo data — goal, tool picks, recall, verdict](docs/static/demo-loop.gif)
 
-A local-first assistant that watches your Jira / Slack / GitHub and learns which tools actually solve which problems — an agentic loop that grades itself mechanically, no LLM-as-judge. Runs on your machine; your data never leaves it.
+A local-first assistant that watches your Jira / Slack / GitHub and learns which tools actually solve which problems — an agentic loop that grades itself mechanically, no LLM-as-judge. Runs on your machine; stored work data stays in local SQLite; model requests send selected context to your configured model provider.
 
 
 > **Watch it think:** the GIF above is a real recording of `npm run demo:trace` (fictional demo data, connectors disabled) — the loop's own audit rows, nothing hand-faked. Full annotated trace: [`docs/docs/walkthroughs/loop-trace.md`](docs/docs/walkthroughs/loop-trace.md). Raw terminal cast: [`docs/static/demo-loop.cast`](docs/static/demo-loop.cast).
@@ -29,14 +29,12 @@ priors  → (skill, task_class) α/β move only via learn.ts; the loop never gra
 
 ```bash
 git clone <your-fork> work-intelligence-mcp && cd work-intelligence-mcp
-npm run setup        # install deps, write .env, validate config
-npm run demo         # seed demo data + exercise one recall lane (no credentials needed)
-npm run web:bridge   # HTTP bridge on :3132
-# Terminal 2:
-npm run web:dev      # web UI → http://localhost:5175
+npm run setup        # install deps, build, validate config; environment files unchanged
+npm run demo         # seed isolated fictional data (no credentials needed)
+npm run demo:recall  # exercise local recall without a model key
 ```
 
-A stranger goes from clone to a running UI in under 5 minutes — no API keys required (the demo runs fully offline).
+The offline demo uses a disposable database, home directory and empty browser profile. It never loads your environment file or connects to live accounts. Supply only a model key in your process environment for a paid trace run.
 
 ## How it works — four systems, one idea
 
@@ -47,7 +45,7 @@ A stranger goes from clone to a running UI in under 5 minutes — no API keys re
 
 ## Status — working, measured, local-first
 
-- **Demo works end-to-end, offline:** `npm run setup && npm run demo && npm run web:bridge` — no API key, no Ollama (`WI_EMBED_STUB=1`).
+- **Demo works end-to-end, offline:** `npm run setup && npm run demo && npm run demo:recall` — no API key, no Ollama (`WI_EMBED_STUB=1`).
 - **Tests:** 1,400+ unit tests plus 500+ structural smoke checks in `scripts/smoke-bridge.sh`.
 - **Schema:** v108 — 64 forward-only migrations in `src/db/migrations/`, every one applied in a ledger.
 - **Four LLM systems ship today:** the tool-use loop, 9-lane recall, mechanical outcome learning, SCOPE→EXECUTE refinement.

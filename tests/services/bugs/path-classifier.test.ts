@@ -126,7 +126,7 @@ describe('classifyAllTargets — aggregate', () => {
 });
 
 describe('getRepoRoot()', () => {
-  it('returns an absolute path ending in the working repo dir name', () => {
+  it('returns an absolute path that ends with the WI repo dir name', () => {
     const root = getRepoRoot();
     expect(root.startsWith('/')).toBe(true);
     expect(root.endsWith(process.cwd().split('/').pop() ?? '')).toBe(true);

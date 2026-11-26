@@ -105,3 +105,13 @@ CYPHER.md
 *.png-screenshots
 docs/.docusaurus/
 docs/build/
+
+# Local release artifacts and hermetic demo state
+.wi-release/
+.wi-demo/
+data/*.wi-demo.json
+
+# Public presentation and reproducible installs are maintained in private assets.
+!ARCHITECTURE.md
+!package-lock.json
+!web/package-lock.json

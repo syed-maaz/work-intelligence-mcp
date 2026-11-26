@@ -1,5 +1,5 @@
 import Database from 'better-sqlite3';
-import { initializeDatabase, createBackup } from './schema.js';
+import { initializeDatabase } from './schema.js';
 import path from 'node:path';
 import { existsSync, mkdirSync } from 'node:fs';
 import { getDatabasePath as getConfiguredDatabasePath } from '../services/wi-config.js';
@@ -25,8 +25,7 @@ export function getDatabase(config?: DatabaseConfig): Database.Database {
     return dbInstance;
   }
 
-  const defaultPath = getConfiguredDatabasePath();
-  const databasePath = process.env.DATABASE_PATH || config?.path || defaultPath;
+  const databasePath = process.env.DATABASE_PATH || config?.path || getConfiguredDatabasePath();
   const databaseDir = path.dirname(databasePath);
 
   // Ensure database directory exists
@@ -50,6 +49,15 @@ export function getDatabase(config?: DatabaseConfig): Database.Database {
   // This must run before initializeDatabase() so migrations see WAL mode.
   // The config.enableWAL flag is kept for backward compat but WAL is always on.
   dbInstance.pragma('journal_mode = WAL');
+
+  // Multi-process hygiene (bridge + MCP stdio servers + menubar share the DB):
+  // - synchronous=NORMAL is the recommended WAL pairing: durable across app
+  //   crashes, only vulnerable to power loss, ~no fsync per commit.
+  // - wal_autocheckpoint lower than the 1000-page default keeps the -wal file
+  //   from starving (a persistent reader can starve the default cadence, and
+  //   we have seen the WAL reach ~1 GB).
+  dbInstance.pragma('synchronous = NORMAL');
+  dbInstance.pragma('wal_autocheckpoint = 400');
 
   // Initialize schema
   initializeDatabase(dbInstance);
@@ -87,10 +95,10 @@ export function transaction<T>(
   return db.transaction(callback)();
 }
 
-export function backupDatabase(backupPath?: string): void {
+export async function backupDatabase(backupPath?: string): Promise<void> {
   const db = getDatabase();
   const backupLocation = backupPath || path.join(
-    path.dirname(getConfiguredDatabasePath()),
+    path.dirname(db.name),
     'backups',
     `backup-${new Date().toISOString().replace(/[:.]/g, '-')}.db`
   );
@@ -100,7 +108,7 @@ export function backupDatabase(backupPath?: string): void {
     mkdirSync(backupDir, { recursive: true });
   }
 
-  createBackup(db, backupLocation);
+  await db.backup(backupLocation);
 }
 
 export function getDatabasePath(): string | null {

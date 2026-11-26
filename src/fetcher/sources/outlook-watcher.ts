@@ -38,6 +38,7 @@ const JIRA_PATTERNS = [
 ];
 
 function runAppleScript(script: string): string {
+  if (process.env.WI_DEMO_MODE === '1') return '';
   try {
     return execFileSync('osascript', ['-e', script], {
       timeout: 10_000,
@@ -98,6 +99,7 @@ export class OutlookWatcher {
   }
 
   start(): boolean {
+    if (process.env.WI_DEMO_MODE === '1') return false;
     try {
       // Seed initial unread count so first fire only triggers on actual new mail
       this.lastUnreadCount = getUnreadCount();

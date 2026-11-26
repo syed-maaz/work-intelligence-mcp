@@ -386,6 +386,8 @@ export interface LoopOptions {
   max_wallclock_ms?: number;
   on_event?: (event: LoopEvent) => void;
   anthropic_client?: Anthropic;
+  /** Explicit caller tool whitelist; replaces posture selection when supplied. */
+  tools?: ToolDefinition[];
 }
 
 /**
@@ -629,7 +631,7 @@ export function isToolEligibleForPosture(
  * `ANTHROPIC_BASE_URL` is set, the SDK rejects an empty `x-api-key`, so
  * we pass a sentinel `'x-proxy'` and the real key as Bearer Authorization.
  */
-async function getAnthropicClient(): Promise<Anthropic> {
+export async function getAnthropicClient(): Promise<Anthropic> {
   const { default: AnthropicSdk } = await import('@anthropic-ai/sdk');
   const apiKey = process.env.ANTHROPIC_API_KEY;
   if (!apiKey) {
@@ -1986,7 +1988,7 @@ ${multiIntentSubGoals.map((s, i) => `  ${i + 1}. [intent=${s.intent}] ${s.goal}`
   }
 
   // ── Tool selection for the dispatch posture ──────────────────────────────
-  const eligibleTools = toolsForPosture(opts.posture);
+  const eligibleTools = opts.tools ?? toolsForPosture(opts.posture);
   if (eligibleTools.length === 0) {
     // Posture filter excluded every tool — misconfiguration, fail closed.
     const result: LoopResult = {
