@@ -41,8 +41,7 @@ export interface GitHubConfig {
   mode: 'mcp' | 'api' | 'both';
   mcp: GitHubMcpConfig;
   api: GitHubApiConfig;
-  /** Enterprise GitHub host (e.g. github.tools.corp.example.com). Empty = public github.com only. */
-  enterpriseHost: string;
+  enterpriseHost?: string;
 }
 
 export interface SlackApiConfig {
@@ -128,6 +127,10 @@ export interface DatabaseConfig {
   pathEnvVar: string;
 }
 
+export interface ModelsConfig {
+  configPathEnvVar: string;
+}
+
 export interface BridgeConfig {
   port: number;
   allowedOriginsEnvVar: string;
@@ -139,7 +142,7 @@ export interface FeaturesConfig {
   pmOrchestrationEnabled: boolean;
   pmAgentEnabled: boolean;
   stage1Enabled: boolean;
-  syncIntervalMs: number;
+  syncIntervalMs?: number;
 }
 
 export interface WiConfig {
@@ -148,6 +151,7 @@ export interface WiConfig {
   repos: RepoConfig[];
   mempalace: MemPalaceConfig;
   database: DatabaseConfig;
+  models?: ModelsConfig;
   bridge: BridgeConfig;
   features: FeaturesConfig;
 }
@@ -164,7 +168,7 @@ export function clearWiConfigCache(): void {
 export function loadWiConfig(configPath?: string): WiConfig {
   if (cachedConfig) return cachedConfig;
 
-  const resolvedPath = configPath ?? path.resolve(__dirname, '..', '..', 'wi.config.json');
+  const resolvedPath = configPath ?? process.env.WI_CONFIG_PATH ?? path.resolve(__dirname, '..', '..', 'wi.config.json');
   
   if (!fs.existsSync(resolvedPath)) {
     throw new Error(`wi.config.json not found at ${resolvedPath}. Copy wi.config.json.example to wi.config.json and configure.`);
@@ -231,6 +235,10 @@ export function getDatabaseConfig(): DatabaseConfig {
   return getWiConfig().database;
 }
 
+export function getModelsConfig(): ModelsConfig {
+  return getWiConfig().models ?? { configPathEnvVar: 'MODEL_CONFIG_PATH' };
+}
+
 export function getBridgeConfig(): BridgeConfig {
   return getWiConfig().bridge;
 }
@@ -250,7 +258,11 @@ export function getJiraMcpUrl(): string {
   const config = getJiraConfig();
   if (!config.enabled) throw new Error('Jira connector is not enabled');
   if (config.mode === 'browser') throw new Error('Jira is configured for browser mode, not MCP');
-  return resolveEnvVar(config.mcp.tokenEnvVar, config.mcp.url);
+  // URL from JIRA_MCP_URL env / config.mcp.url — NEVER from tokenEnvVar.
+  // Old code resolved tokenEnvVar and returned the OAuth TOKEN as the server
+  // URL, which blocked McpClient's stored-token server_url fallback and broke
+  // every MCP call ("fetch failed"). Empty string = use stored server_url.
+  return process.env.JIRA_MCP_URL ?? config.mcp.url ?? '';
 }
 
 export function getJiraMcpClientName(): string {
@@ -267,8 +279,18 @@ export function getJiraBrowserBaseUrl(): string {
 }
 
 export function getJiraBrowseUrl(key: string): string {
-  const base = getJiraBrowserBaseUrl();
+  // URL builder — must work in every connector mode. getJiraBrowserBaseUrl()
+  // throws for MCP mode (it's a scraper-mode guard); a browse-link helper must
+  // not (web-server.js calls it unguarded in refreshMyIssuesCache/_fetchBoardTab —
+  // the throw killed every "my issues" refresh in mcp mode).
+  let base = '';
+  try {
+    const config = getJiraConfig();
+    if (config.enabled) base = config.browser.baseUrl ?? '';
+  } catch { /* config absent */ }
   if (base) return `${base}/browse/${key}`;
+  const domain = process.env.JIRA_DOMAIN;
+  if (domain) return `https://${domain}/browse/${key}`;
   // Fallback for backward compatibility
   return `https://jira.example.com/browse/${key}`;
 }
@@ -304,12 +326,13 @@ export function getGitHubMcpUrl(): string {
   const config = getGitHubConfig();
   if (!config.enabled) throw new Error('GitHub connector is not enabled');
   if (config.mode === 'api') throw new Error('GitHub is configured for API mode, not MCP');
-  return resolveEnvVar(config.mcp.tokenEnvVar, config.mcp.url);
+  // Same fix as getJiraMcpUrl — never resolve the token as a URL.
+  return process.env.GITHUB_MCP_URL ?? config.mcp.url ?? '';
 }
 
 export function getDatabasePath(): string {
   const config = getDatabaseConfig();
-  return resolveEnvVar(config.pathEnvVar, './data/intelligence.db');
+  return process.env.DATABASE_PATH || resolveEnvVar(config.pathEnvVar, './data/intelligence.db');
 }
 
 export function getMemPalacePath(): string {
@@ -318,14 +341,14 @@ export function getMemPalacePath(): string {
 }
 
 export function getBridgePort(): number {
-  const envVal = Number(process.env.PORT);
-  if (!Number.isNaN(envVal) && envVal > 0) return envVal;
+  const port=Number(process.env.PORT);
+  if (Number.isInteger(port) && port > 0 && port <= 65535) return port;
   return getBridgeConfig().port;
 }
 
 export function getSyncIntervalMs(): number {
-  const envVal = Number(process.env.SYNC_INTERVAL_MS);
-  if (!Number.isNaN(envVal) && envVal > 0) return envVal;
+  const interval=Number(process.env.SYNC_INTERVAL_MS);
+  if (Number.isFinite(interval) && interval > 0) return interval;
   return getFeaturesConfig().syncIntervalMs ?? 900_000;
 }
 
