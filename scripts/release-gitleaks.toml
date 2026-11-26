@@ -1,0 +1,3 @@
+# Trusted release rules: retain every default secret detector.
+[extend]
+useDefault = true

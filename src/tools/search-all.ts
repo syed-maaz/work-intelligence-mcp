@@ -44,6 +44,8 @@ export interface SearchAllArgs {
   maxResults?: number;
   /** U-15: relevance (BM25) vs recency (newest timestamp first). Default: relevance */
   sortBy?: 'relevance' | 'recency';
+  /** Skip backend synthesis when the consuming agent will reason over evidence. */
+  summarize?: boolean;
   /**
    * Fetch strategy (tsk_445432091927). Default 'live-blocking' preserves the
    * legacy contract: fetch Outlook+Jira live and block until done, then search.
@@ -52,7 +54,7 @@ export interface SearchAllArgs {
    * Cypher EXECUTE path uses this so a single dispatch can't stall 60-138s on
    * an Outlook scrape (p95 target <15s).
    */
-  mode?: 'live-blocking' | 'local-first';
+  mode?: 'live-blocking' | 'local-first' | 'local-only';
 }
 
 // ---------------------------------------------------------------------------
@@ -387,7 +389,7 @@ function formatResponse(
 export async function searchAll(
   db: Database.Database,
   args: SearchAllArgs,
-  session: BrowserSessionManager,
+  session: BrowserSessionManager | null,
   anthropicApiKey?: string
 ): Promise<string> {
   const {
@@ -399,7 +401,8 @@ export async function searchAll(
     maxResults = 50,
     sortBy = 'relevance',
     mode = 'live-blocking',
-  } = args;
+    summarize = true,
+  } = process.env.WI_DEMO_MODE === '1' ? { ...args, mode: 'local-only', summarize: false } : args;
 
   if (!query?.trim()) return 'Error: query is required.';
 
@@ -409,7 +412,7 @@ export async function searchAll(
   const sinceIso = sinceDate.toISOString();
 
   // Single shared cache topic — avoids unbounded ghost topics from per-query rows
-  const topicId = ensureSearchCacheTopic(db);
+  const topicId = mode === 'local-only' ? null : ensureSearchCacheTopic(db);
 
   const fetchNotes: string[] = [];
   const PER_SOURCE_TIMEOUT_MS = 15_000;  // ADR-044 S4: parallel per-source cap
@@ -431,6 +434,7 @@ export async function searchAll(
   // filteredMeetings + fetchNotes). The migration is an internal refactor of
   // HOW data is fetched, not WHAT the caller receives.
   const runLiveFetch = async (): Promise<void> => {
+    if (!session || topicId === null) throw new Error('Live search requires a browser session');
     const specs: SourceSpec[] = [];
 
     // local — always first, always ok, never blocks.
@@ -511,8 +515,10 @@ export async function searchAll(
       process.stderr.write(`[search_all] background enrich failed: ${err instanceof Error ? err.message : String(err)}\n`);
     });
     fetchNotes.push('Live fetch running in background (local-first mode) — results below are from the last sync; re-run for freshly-scraped data.');
-  } else {
+  } else if (mode !== 'local-only') {
     await runLiveFetch();
+  } else {
+    fetchNotes.push('Stored evidence only — no sources were refreshed. Check source freshness before using this for current status.');
   }
 
   // ---- DB search ----
@@ -546,8 +552,9 @@ export async function searchAll(
 
   // ---- AI summary ----
 
-  const claudeContext = buildClaudeContext(query, filteredMessages, filteredMeetings);
-  const aiSummary = await summarise(query, claudeContext, anthropicApiKey, db);
+  const aiSummary = summarize
+    ? await summarise(query, buildClaudeContext(query, filteredMessages, filteredMeetings), anthropicApiKey, db)
+    : '';
 
   return formatResponse(query, filteredMessages, filteredMeetings, aiSummary, fetchNotes);
 }

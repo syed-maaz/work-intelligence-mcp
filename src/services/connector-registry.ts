@@ -29,6 +29,8 @@
  */
 
 import fs from 'node:fs';
+import { ADAPTERS } from '../fetcher/sources/adapter.js';
+export { ADAPTERS };
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import type Database from 'better-sqlite3';
@@ -56,17 +58,12 @@ import { TeamsMeetingsScraper } from '../fetcher/sources/teams-meetings.js';
 import { fetchSlackMessages } from '../fetcher/sources/slack.js';
 import { fetchLinearIssues } from '../fetcher/sources/linear.js';
 import { getGitHubApiBaseUrl, getGitHubApiToken, getRepos, getWiConfig } from './wi-config.js';
-import { ADAPTERS } from '../fetcher/sources/adapter.js';
-import type { AdapterContext } from '../fetcher/sources/adapter.js';
-
-// STEP 11 — the ADAPTERS array is the registry's single dispatch table.
-export { ADAPTERS };
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-/** Per-source wall-clock cap for the orchestrator (90s). */
-const DEFAULT_TIMEOUT_MS = 90_000;
+/** Per-source wall-clock cap for the orchestrator (150s). */
+const DEFAULT_TIMEOUT_MS = 150_000;
 
 /** Root-level capabilities manifest (dist/services/.. / src/services/.. both = repo root). */
 const MANIFEST_PATH = path.resolve(__dirname, '..', '..', 'capabilities.json');
@@ -196,24 +193,19 @@ export interface BuildSpecOpts {
  * Build orchestrator SourceSpecs for all enabled connectors. Never throws:
  * each connector wires inside its own try/catch and is skipped (with a warn)
  * on any failure.
- *
- * STEP 11 (OSS release): dispatch goes through the ADAPTERS array — there is
- * no switch to edit when a connector is added. Each adapter wraps the real
- * source-spec builder (src/fetcher/sources/adapter.ts).
  */
 export function buildSourceSpecs(db: Database.Database, opts?: BuildSpecOpts): SourceSpec[] {
+  if (process.env.WI_DEMO_MODE === '1') return [];
   const specs: SourceSpec[] = [];
-  const ctx: AdapterContext = { db, since: opts?.since, config: null };
   for (const name of getEnabledConnectors()) {
-    const a = ADAPTERS.find((x) => x.name === name);
-    if (!a) {
-      console.warn(`no adapter for ${name}, skipping`);
-      continue;
-    }
     try {
-      specs.push(...a.buildSourceSpecs(ctx));
+      const adapter = ADAPTERS.find(item => item.name === name);
+      if (adapter) specs.push(...adapter.buildSourceSpecs({db, since:opts?.since}));
+      else console.warn('[registry] unknown connector — skipping');
     } catch (err) {
-      console.warn(`adapter ${name} failed`, err);
+      console.warn(
+        `[registry] connector "${name}" failed to wire — skipping: ${err instanceof Error ? err.message : String(err)}`,
+      );
     }
   }
   if (opts?.timeoutMs) {

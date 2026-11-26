@@ -24,7 +24,6 @@ import {
 export interface AdapterContext {
   db: Database.Database;
   since?: Date;
-  config: any;
 }
 
 export interface ConnectorAdapter {

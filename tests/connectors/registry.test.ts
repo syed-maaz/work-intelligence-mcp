@@ -4,6 +4,13 @@
  */
 
 import { describe, it, expect, vi, beforeEach } from 'vitest';
+vi.mock('../../src/services/wi-config.js', async (importOriginal) => ({
+  ...await importOriginal<Record<string, unknown>>(),
+  getWiConfig: () => ({connectors:Object.fromEntries(
+    [['jira','mcp'],['github','api'],['linear','api'],['outlook','browser'],['slack','api'],['teams','browser']]
+      .map(([name,mode]) => [name,{enabled:false,mode}]),
+  )}),
+}));
 import {
   getCapabilitiesManifest,
   getEnabledConnectors,

@@ -7,9 +7,9 @@ ships. No real person names, no employer domains, no internal ticket IDs
 ## Setup + demo
 
 ```bash
-npm run setup        # install deps, write .env, validate config
-npm run demo         # offline demo: seeded data + one recall lane
-npm run web:bridge   # HTTP bridge on :3132
+npm run setup        # install deps, build, validate config; environment files unchanged
+npm run demo         # offline demo: isolated fictional data
+npm run demo:recall  # local recall only; no live connectors
 npm run web:dev      # web UI on :5175
 ```
 
