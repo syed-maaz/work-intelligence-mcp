@@ -359,6 +359,18 @@ export default function SystemHealthPage() {
     refetchInterval: 30_000,
   });
 
+      const { data: connectorsData } = useQuery({
+        queryKey: ["connectors"],
+        queryFn: api.connectors,
+        retry: 1,
+      });
+
+      const connectors = Object.entries(connectorsData?.configured ?? {}).map(
+        ([name, status]) => ({
+          ...status,
+          name,
+        }),
+      );
   const detectMut = useMutation({
     mutationFn: api.detectRelationships,
     onSuccess: (res) => {
@@ -382,30 +394,57 @@ export default function SystemHealthPage() {
       <div
         className="flex items-start gap-2 px-3 py-2 rounded-lg text-xs"
         style={{
-          background: 'color-mix(in srgb, var(--accent) 10%, transparent)',
-          color: 'var(--fg-2)',
-          border: '1px solid var(--border)',
+          background: "color-mix(in srgb, var(--accent) 10%, transparent)",
+          color: "var(--fg-2)",
+          border: "1px solid var(--border)",
         }}
       >
-        <AlertTriangle size={14} className="shrink-0 mt-0.5" style={{ color: 'var(--accent)' }} />
+        <AlertTriangle
+          size={14}
+          className="shrink-0 mt-0.5"
+          style={{ color: "var(--accent)" }}
+        />
         <span>
-          <strong>macOS recommended.</strong> Calendar and Outlook live watchers use AppleScript and are not supported on Linux or Windows.
-          Teams/Jira browser scraping works on any OS with <code className="font-mono text-[10px]">BROWSER_PROFILE_PATH</code>.
-          See <a href="/setup" className="underline" style={{ color: 'var(--accent)' }}>Setup</a> and GETTING-STARTED.md.
+          <strong>macOS recommended.</strong> Calendar and Outlook live watchers
+          use AppleScript and are not supported on Linux or Windows. Teams/Jira
+          browser scraping works on any OS with{" "}
+          <code className="font-mono text-[10px]">BROWSER_PROFILE_PATH</code>.
+          See{" "}
+          <a
+            href="/setup"
+            className="underline"
+            style={{ color: "var(--accent)" }}
+          >
+            Setup
+          </a>{" "}
+          and GETTING-STARTED.md.
         </span>
       </div>
 
       {/* Header */}
       <div className="flex items-center gap-2">
-        <Activity size={14} style={{ color: 'var(--accent)' }} />
-        <h1 className="text-sm font-semibold flex-1" style={{ color: 'var(--fg)' }}>System Health</h1>
+        <Activity size={14} style={{ color: "var(--accent)" }} />
+        <h1
+          className="text-sm font-semibold flex-1"
+          style={{ color: "var(--fg)" }}
+        >
+          System Health
+        </h1>
         {health?.lastSync && (
-          <span className="text-[10px]" style={{ color: 'var(--muted)' }}>
+          <span className="text-[10px]" style={{ color: "var(--muted)" }}>
             Last sync {relativeTime(health.lastSync)}
           </span>
         )}
-        <Button size="sm" variant="ghost" onClick={handleRunChecks} disabled={detectMut.isPending}>
-          <RefreshCw size={11} className={detectMut.isPending ? 'animate-spin' : ''} />
+        <Button
+          size="sm"
+          variant="ghost"
+          onClick={handleRunChecks}
+          disabled={detectMut.isPending}
+        >
+          <RefreshCw
+            size={11}
+            className={detectMut.isPending ? "animate-spin" : ""}
+          />
           <span className="ml-1">Run Checks</span>
         </Button>
       </div>
@@ -413,34 +452,99 @@ export default function SystemHealthPage() {
       {/* 3-col stat cards */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
         <StatCard
-          icon={<AlertTriangle size={11} style={{ color: (health?.dataQuality.errors ?? 0) > 0 ? 'var(--danger)' : 'var(--muted)' }} />}
+          icon={
+            <AlertTriangle
+              size={11}
+              style={{
+                color:
+                  (health?.dataQuality.errors ?? 0) > 0
+                    ? "var(--danger)"
+                    : "var(--muted)",
+              }}
+            />
+          }
           label="Data Quality"
-          value={healthLoading ? '…' : health?.dataQuality.open ?? 0}
+          value={healthLoading ? "…" : (health?.dataQuality.open ?? 0)}
           badge={
-            (health?.dataQuality.errors ?? 0) > 0
-              ? <Badge variant="danger">{health!.dataQuality.errors} error{health!.dataQuality.errors !== 1 ? 's' : ''}</Badge>
-              : health?.dataQuality.open === 0
-              ? <Badge variant="success">Clean</Badge>
-              : undefined
+            (health?.dataQuality.errors ?? 0) > 0 ? (
+              <Badge variant="danger">
+                {health!.dataQuality.errors} error
+                {health!.dataQuality.errors !== 1 ? "s" : ""}
+              </Badge>
+            ) : health?.dataQuality.open === 0 ? (
+              <Badge variant="success">Clean</Badge>
+            ) : undefined
           }
           note="open issues"
         />
         <StatCard
-          icon={<AlertCircle size={11} style={{ color: (health?.actionTriage.pending ?? 0) > 0 ? '#fbbf24' : 'var(--muted)' }} />}
+          icon={
+            <AlertCircle
+              size={11}
+              style={{
+                color:
+                  (health?.actionTriage.pending ?? 0) > 0
+                    ? "#fbbf24"
+                    : "var(--muted)",
+              }}
+            />
+          }
           label="Action Triage"
-          value={healthLoading ? '…' : health?.actionTriage.pending ?? 0}
+          value={healthLoading ? "…" : (health?.actionTriage.pending ?? 0)}
           note="pending review"
           linkTo="/action-items"
         />
         <StatCard
-          icon={<Network size={11} style={{ color: 'var(--accent)' }} />}
+          icon={<Network size={11} style={{ color: "var(--accent)" }} />}
           label="Relationships"
-          value={healthLoading ? '…' : health?.relationships.total ?? 0}
+          value={healthLoading ? "…" : (health?.relationships.total ?? 0)}
           note="cross-topic links"
-          action={{ label: 'Detect Now', onClick: () => detectMut.mutate(), loading: detectMut.isPending }}
+          action={{
+            label: "Detect Now",
+            onClick: () => detectMut.mutate(),
+            loading: detectMut.isPending,
+          }}
         />
       </div>
 
+      {/* Connector Health */}
+      <div
+        className="rounded-lg border p-3"
+        style={{
+          borderColor: "var(--border)",
+          background: "var(--bg-2)",
+        }}
+      >
+        <div className="flex items-center gap-2 mb-3">
+          <Network size={13} style={{ color: "var(--accent)" }} />
+          <h2 className="text-xs font-semibold" style={{ color: "var(--fg)" }}>
+            Connector Health
+          </h2>
+        </div>
+
+        <div className="space-y-2">
+          {connectors.map((connector) => (
+            <div
+              key={connector.name}
+              className="flex items-center justify-between rounded-md px-2 py-2"
+              style={{ background: "var(--bg)" }}
+            >
+              <span className="text-xs" style={{ color: "var(--fg)" }}>
+                {connector.name}
+              </span>
+
+              <span
+                className="text-[10px] font-medium"
+                style={{
+                  color: connector.hasRequiredEnv ? "#10b981" : "#f59e0b",
+                }}
+              >
+                {connector.hasRequiredEnv ? "Ready" : "Missing env"}
+              </span>
+            </div>
+          ))}
+        </div>
+      </div>
       <DataQualitySection />
       <RelationshipsSection />
       <IngestionLogSection />
