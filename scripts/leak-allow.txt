@@ -1,1 +1,1 @@
-^scripts/leak-(patterns|names|allow)\.txt
+^scripts/leak-(patterns|names|allow)\.txt$

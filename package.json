@@ -16,9 +16,9 @@
     "typecheck": "tsc --noEmit",
     "config:validate": "node scripts/config-validate.mjs",
     "setup": "node scripts/setup.mjs",
-    "demo": "node --import tsx/esm scripts/seed-demo.mjs",
-    "demo:trace": "node --import tsx/esm scripts/demo-loop-trace.mjs",
-    "demo:eval": "node --import tsx/esm scripts/demo-eval.mjs",
+    "demo": "node scripts/seed-demo.mjs",
+    "demo:trace": "node scripts/demo-loop-trace.mjs",
+    "demo:eval": "node scripts/demo-eval.mjs",
     "docs:start": "cd docs && npm start",
     "docs:build": "cd docs && npm run build",
     "docs:install": "cd docs && npm install",
@@ -61,7 +61,9 @@
     "smoke:ui": "node scripts/smoke-ui.mjs",
     "smoke:all": "npm run smoke:bridge && npm run smoke:outcome && npm run smoke:bridge:ts && npm run smoke:killswitch && npm run smoke:bug-killswitch && npm run smoke:bug-resolver-killswitch && npm run smoke:tool-catalog && npm run smoke:ui",
     "adr-039:check": "bash scripts/adr-039-dogfood-check.sh",
-    "wi:opro:dry-run": "bash scripts/wi-opro-dry-run.sh"
+    "wi:opro:dry-run": "bash scripts/wi-opro-dry-run.sh",
+    "test:security": "node --test tests/release/*.test.mjs",
+    "demo:recall": "node scripts/demo-recall.mjs"
   },
   "keywords": [
     "mcp",
@@ -86,7 +88,8 @@
     "tsx": "^4.19.2",
     "turndown": "^7.2.4",
     "turndown-plugin-gfm": "^1.0.2",
-    "zod": "^3.24.1"
+    "zod": "^3.24.1",
+    "ajv": "^8.17.1"
   },
   "devDependencies": {
     "@types/better-sqlite3": "^7.6.12",
