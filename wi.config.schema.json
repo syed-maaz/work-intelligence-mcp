@@ -165,6 +165,12 @@
         "pathEnvVar": { "type": "string", "default": "DATABASE_PATH" }
       }
     },
+    "models": {
+      "type": "object",
+      "properties": {
+        "configPathEnvVar": { "type": "string", "default": "MODEL_CONFIG_PATH" }
+      }
+    },
     "bridge": {
       "type": "object",
       "properties": {
@@ -180,7 +186,7 @@
         "pmOrchestrationEnabled": { "type": "boolean", "default": false },
         "pmAgentEnabled": { "type": "boolean", "default": false },
         "stage1Enabled": { "type": "boolean", "default": false },
-        "syncIntervalMs": { "type": "integer", "default": 900000 }
+        "syncIntervalMs": { "type": "integer", "minimum": 1, "default": 900000 }
       }
     }
   },

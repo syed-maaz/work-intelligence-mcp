@@ -74,6 +74,7 @@ function stubEmbedding(text: string): Float32Array {
 }
 
 async function embed(text: string): Promise<Float32Array | null> {
+  if (process.env.WI_DEMO_MODE === '1') return process.env.WI_EMBED_STUB === '1' ? stubEmbedding(text) : null;
   try {
     const resp = await fetch(`${ollamaBaseUrl()}/api/embeddings`, {
       method: 'POST',
@@ -104,6 +105,7 @@ export { embed };
 
 /** Ping Ollama and confirm the configured embedder model is available. */
 export async function checkOllamaAvailable(): Promise<boolean> {
+  if (process.env.WI_DEMO_MODE === '1') return false;
   try {
     const resp = await fetch(`${ollamaBaseUrl()}/api/tags`, { signal: AbortSignal.timeout(3000) });
     if (!resp.ok) return false;

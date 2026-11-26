@@ -648,9 +648,9 @@ kill "$sse_pid" 2>/dev/null
 wait "$sse_pid" 2>/dev/null
 
 # 10f.2 — schema check on the SSE stream. We require started + result + done.
-started_count=$(grep -c "^event: started" "$sse_out" 2>/dev/null || echo 0)
-result_count=$(grep -c "^event: result" "$sse_out" 2>/dev/null || echo 0)
-done_count=$(grep -c "^event: done" "$sse_out" 2>/dev/null || echo 0)
+started_count=$(grep -c "^event: started" "$sse_out" 2>/dev/null || true)
+result_count=$(grep -c "^event: result" "$sse_out" 2>/dev/null || true)
+done_count=$(grep -c "^event: done" "$sse_out" 2>/dev/null || true)
 
 if [ "$started_count" -ge 1 ] && [ "$result_count" -ge 1 ] && [ "$done_count" -ge 1 ]; then
   pass "SSE schema — emitted started($started_count) + result($result_count) + done($done_count) events for /api/code-graph/index/stream"
@@ -1901,7 +1901,7 @@ fi
 # 24.2 — Real LLM round-trip with confirm_mode='auto'. Skipped when
 # SKIP_BRAIN_LIVE_CALL is set (mirrors § 7 cost-control gating).
 if [ "${SKIP_BRAIN_LIVE_CALL:-}" = "1" ]; then
-  pass "§ 24.2 — SKIPPED (SKIP_BRAIN_LIVE_CALL=1)"
+  skip "§ 24.2" "SKIP_BRAIN_LIVE_CALL=1"
 else
   stream_24_2=$(curl -fsS -N -X POST "${BRIDGE_URL}/api/wi/dispatch/stream" \
     -H 'content-type: application/json' \
@@ -1953,7 +1953,7 @@ else
   # real auto-mode dispatch but that adds 60s+ and Anthropic tokens to smoke.)
   sqlite3 "$DB_25" "INSERT INTO cypher_sessions (session_id, goal, user, status) VALUES ('smk-25-fresh', 'real user goal for cap13-lite smoke', 'owner', 'done');" 2>/dev/null
 
-  node --env-file=.env -e "
+  node -e "
     import('./dist/services/cypher/cap13-lite.js').then(async ({ recordPlanShapeGap }) => {
       const { getDatabase } = await import('./dist/db/connection.js');
       const db = getDatabase();
@@ -3083,7 +3083,7 @@ if [ -z "$DB_39" ] || [ ! -f "$DB_39" ]; then
   fail "§ 39 — could not resolve DB path from /api/status"
 else
   # § 39.1 — refined-goal-schema accepts a valid payload via dist/ helper.
-  valid_39=$(node --env-file=.env -e "
+  valid_39=$(node -e "
     import('./dist/services/cypher/refined-goal-schema.js').then(({ validateRefinedGoal }) => {
       const r = validateRefinedGoal({
         intent: 'investigate',
@@ -3105,7 +3105,7 @@ else
   fi
 
   # § 39.2 — refined-goal-schema rejects a payload missing a required field.
-  invalid_39=$(node --env-file=.env -e "
+  invalid_39=$(node -e "
     import('./dist/services/cypher/refined-goal-schema.js').then(({ validateRefinedGoal }) => {
       const r = validateRefinedGoal({
         intent: 'build',
@@ -3134,7 +3134,7 @@ else
 
   # § 39.3 — isRefinementEnabled() honors strict '1' match (AC-16) and falls
   # back to false for every other value (rollback contract — AC-20).
-  flag_39=$(node --env-file=.env -e "
+  flag_39=$(node -e "
     import('./dist/services/cypher/loop.js').then(({ isRefinementEnabled }) => {
       const cases = [
         { v: '1',     want: true  },
@@ -3177,7 +3177,7 @@ else
   # Spinning a full runLoop call requires Anthropic credentials, which smoke
   # never has — instead we verify the phase-resolution contract via the
   # exported helper which is the same code path runLoop reads.
-  rollback_39=$(node --env-file=.env -e "
+  rollback_39=$(node -e "
     delete process.env.CYPHER_REFINEMENT_ENABLED;
     import('./dist/services/cypher/loop.js').then(({ isRefinementEnabled }) => {
       // Mirror the resolution logic at runLoop top: requestedPhase='scope' +
@@ -3195,7 +3195,7 @@ else
 
   # § 39.6 — Same resolution with the flag ON yields effectivePhase='scope'.
   # Pair with 39.5 to prove the flag is the ONLY toggle (AC-16).
-  scope_39=$(node --env-file=.env -e "
+  scope_39=$(node -e "
     process.env.CYPHER_REFINEMENT_ENABLED = '1';
     import('./dist/services/cypher/loop.js').then(({ isRefinementEnabled }) => {
       const requestedPhase = 'scope';
@@ -3272,7 +3272,7 @@ fi
 #          Requires access to the DB file; skip if not readable.
 #          Honors DATABASE_PATH first (the smoke DB), never silently
 #          falls back to reading a foreign/home DB.
-WI_DB_PATH="${WI_DB_PATH:-${DATABASE_PATH:-$HOME/.work-intelligence-mcp/data.db}}"
+WI_DB_PATH="${DATABASE_PATH:-${WI_DB_PATH:-$HOME/.work-intelligence-mcp/data.db}}"
 if [ -r "$WI_DB_PATH" ]; then
   worker_count=$(sqlite3 "$WI_DB_PATH" 'SELECT COUNT(*) FROM workers' 2>/dev/null || echo "-1")
   # v90 seeded exactly 4; later migrations may register additional workers,
@@ -3299,7 +3299,7 @@ if [ -r "$WI_DB_PATH" ]; then
     fail "§ 40.6 — schema_version=$ver, expected ≥ 90"
   fi
 else
-  pass "§ 40.4-40.6 — SKIPPED (WI_DB_PATH=$WI_DB_PATH not readable)"
+  skip "§ 40.4-40.6" "WI_DB_PATH=$WI_DB_PATH not readable"
 fi
 
 # ── 41. ADR-040 commit 2: v91 outcome_evidence + DoD triggers ─────────────────
@@ -3357,7 +3357,7 @@ if [ -r "$WI_DB_PATH" ]; then
     fail "§ 41.5 — expected CHECK failure, got: $(echo "$scratch_output" | head -c 200)"
   fi
 else
-  pass "§ 41.1-41.5 — SKIPPED (WI_DB_PATH=$WI_DB_PATH not readable)"
+  skip "§ 41.1-41.5" "WI_DB_PATH=$WI_DB_PATH not readable"
 fi
 
 # ── 42. ADR-040 commit 3: v92 subagent_dispatches + verifier crons ────────────
@@ -3414,7 +3414,7 @@ if [ -r "$WI_DB_PATH" ]; then
     fail "§ 42.5 — no new verifier_health row (before=$before after=$after)"
   fi
 else
-  pass "§ 42.1-42.5 — SKIPPED (WI_DB_PATH=$WI_DB_PATH not readable)"
+  skip "§ 42.1-42.5" "WI_DB_PATH=$WI_DB_PATH not readable"
 fi
 
 # ── 43. ADR-040 commit 4: STUB replacement + skill auto-discovery ─────────────
@@ -3460,7 +3460,7 @@ fi
 # dynamic-tool import path. Fall back to counting distinct wi_* tool
 # names in the source; ≥ 19 hardcoded is the pre-4 baseline. The
 # auto-registered 17 land at runtime, not in source.
-hardcoded_wi=$(grep -cE "name: 'wi_" src/services/cypher/tool-catalog.ts 2>/dev/null || echo 0)
+hardcoded_wi=$(grep -cE "name: 'wi_" src/services/cypher/tool-catalog.ts 2>/dev/null || true)
 if [ "$hardcoded_wi" -ge 19 ] 2>/dev/null; then
   pass "§ 43.4 — $hardcoded_wi wi_* tools in source (auto-discovery lands +17 more at boot)"
 else
@@ -3506,7 +3506,7 @@ if [ -r "$WI_DB_PATH" ]; then
       fail "§ 44.3 — no valid token in response: $(echo $tok_resp | head -c 200)"
     fi
   else
-    pass "§ 44.3 — SKIPPED (no task+session pair available)"
+    skip "§ 44.3" "no task+session pair available"
   fi
 
   # § 44.4 — invalid token → 403
@@ -3535,7 +3535,7 @@ if [ -r "$WI_DB_PATH" ]; then
     fail "§ 44.5 — expected 422 for empty-hash, got $empty_code"
   fi
 else
-  pass "§ 44.1-44.5 — SKIPPED (WI_DB_PATH=$WI_DB_PATH not readable)"
+  skip "§ 44.1-44.5" "WI_DB_PATH=$WI_DB_PATH not readable"
 fi
 
 # ── 45. ADR-040 commit 5: panel + backpressure + acceptance_text draft ─────
@@ -3565,7 +3565,7 @@ if [ -r "$WI_DB_PATH" ]; then
       fail "§ 45.2 — expected 400 for non-review task, got $panel_code"
     fi
   else
-    pass "§ 45.2 — SKIPPED (no ready tasks available)"
+    skip "§ 45.2" "no ready tasks available"
   fi
 
   # § 45.3 — seed 5 aging e2e cards, fire /wi, expect 429
@@ -3599,7 +3599,7 @@ if [ -r "$WI_DB_PATH" ]; then
     fail "§ 45.4 — expected 200 after cleanup, got $clean_code"
   fi
 else
-  pass "§ 45.2-45.4 — SKIPPED (WI_DB_PATH not readable)"
+  skip "§ 45.2-45.4" "WI_DB_PATH not readable"
 fi
 
 # ── 46. ADR-040 commit 6: /api/board/health + drift alert + dogfood-check ─────
@@ -3642,7 +3642,7 @@ if [ -r "$WI_DB_PATH" ]; then
     fail "§ 46.3 — dogfood-check script missing or not executable"
   fi
 else
-  pass "§ 46.1-46.3 — SKIPPED (WI_DB_PATH not readable)"
+  skip "§ 46.1-46.3" "WI_DB_PATH not readable"
 fi
 
 # ── § 47 — Prompt-memory recognition routing (v98, 2026-07-15) ──────────────
@@ -3680,7 +3680,10 @@ if [ -r "$WI_DB_PATH" ] && command -v sqlite3 >/dev/null 2>&1; then
     fail "§ 47.3 — scope/execute boundary broke: $scope_leak"
   fi
   # § 47.4 — live semantic recognition (Ollama-gated). SKIP cleanly when down.
-  ollama_up=$(curl -fsS -m 3 http://localhost:11434/api/tags 2>/dev/null | grep -c 'nomic-embed-text' || echo 0)
+  ollama_up=0
+  if [ "${WI_DEMO_MODE:-0}" != "1" ]; then
+    ollama_up=$(curl -fsS -m 3 http://localhost:11434/api/tags 2>/dev/null | grep -c 'nomic-embed-text' || true)
+  fi
   if [ "$ollama_up" != "0" ]; then
     hint=$(node --import tsx/esm -e "
       import('./src/db/connection.js').then(async ({ getDatabase }) => {
@@ -3703,10 +3706,10 @@ if [ -r "$WI_DB_PATH" ] && command -v sqlite3 >/dev/null 2>&1; then
       pass "§ 47.5 — recognition returned no wi-investigate match (thin history, non-blocking): $hint"
     fi
   else
-    pass "§ 47.4-47.5 — SKIPPED (Ollama not reachable; recognition falls back to word-overlap)"
+    skip "§ 47.4-47.5" "demo mode or Ollama unavailable; semantic recognition requires a model"
   fi
 else
-  pass "§ 47.1-47.5 — SKIPPED (WI_DB_PATH=$WI_DB_PATH not readable)"
+  skip "§ 47.1-47.5" "WI_DB_PATH=$WI_DB_PATH not readable"
 fi
 
 # ── § 48 — Board hygiene: smoke dispatches must NOT seed a card (2026-07-15) ─
@@ -3725,7 +3728,7 @@ if [ -r "$WI_DB_PATH" ] && command -v sqlite3 >/dev/null 2>&1; then
     fail "§ 48 — smoke dispatch leaked a board card (tasks $b48 → $a48)"
   fi
 else
-  pass "§ 48 — SKIPPED (WI_DB_PATH not readable)"
+  skip "§ 48" "WI_DB_PATH not readable"
 fi
 
 # ── 49. Board worker — no-execute-work card is blocked, not advanced ───────────
@@ -3794,7 +3797,7 @@ SQL
     DELETE FROM tasks WHERE id IN ('$TID_B','$TID_A');
 SQL
 else
-  pass "§ 49.1-49.2 — SKIPPED (WI_DB_PATH not readable or sqlite3 missing)"
+  skip "§ 49.1-49.2" "WI_DB_PATH not readable or sqlite3 missing"
 fi
 
 # ── 50. ADR-044 AC-U3/U4 — GET /api/sync/stream SSE ────────────────────────────
